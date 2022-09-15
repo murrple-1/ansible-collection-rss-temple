@@ -1,0 +1,61 @@
+---
+- name: Setup Dependencies
+  block:
+    - ansible.builtin.apt_key:
+        url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+        state: present
+      become: yes
+
+    - ansible.builtin.apt_repository:
+        repo: "deb [arch={{ [ansible_architecture] | map('extract', deb_architecture) | first }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        state: present
+        filename: docker
+      become: yes
+
+    - ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+          - python3-pip
+        update_cache: yes
+      become: yes
+
+    - ansible.builtin.pip:
+        name:
+          - docker
+          - docker-compose
+      become: yes
+
+- name: Make RSS Temple directory
+  ansible.builtin.file:
+    path: rss_temple
+    state: directory
+    mode: '0755'
+
+- name: Copy Docker-Compose YAML
+  ansible.builtin.copy:
+    src: files/docker-compose.yml
+    dest: rss_temple/docker-compose.yml
+
+- name: Template Caddyfile
+  ansible.builtin.template:
+    src: templates/Caddyfile.j2
+    dest: rss_temple/Caddyfile
+    mode: '0644'
+
+- name: Clone Server repository
+  ansible.builtin.git:
+    repo: https://github.com/murrple-1/rss_temple.git
+    dest: rss_temple/rss_temple
+
+- name: Clone HTTP repository
+  ansible.builtin.git:
+    repo: https://github.com/murrple-1/rss_temple_http.git
+    dest: rss_temple/rss_temple_http
+
+- name: Start Docker Compose
+  community.docker.docker_compose:
+    project_src: rss_temple
+  become: yes

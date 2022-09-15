@@ -1,0 +1,49 @@
+version: "3.9"
+services:
+  rss_temple:
+    image: rss_temple:latest
+    build: rss_temple/
+    expose:
+      - "4000"
+    command: pipenv run daphne -b 0.0.0.0 -p 8001 rss_temple.asgi:application
+  rss_temple_daemon_feed_scrapper:
+    image: rss_temple:latest
+    build: rss_temple/
+    command: pipenv run python manage.py feed_scrapper_daemon
+  rss_temple_daemon_notify:
+    image: rss_temple:latest
+    build: rss_temple/
+    command: pipenv run python manage.py notify_daemon
+  rss_temple_daemon_session_cleanup:
+    image: rss_temple:latest
+    build: rss_temple/
+    command: pipenv run python manage.py session_cleanup_daemon
+  rss_temple_subscription_setup:
+    image: rss_temple:latest
+    build: rss_temple/
+    command: pipenv run python manage.py subscription_setup_daemon
+  rss_temple_app:
+    image: rss_temple_app:latest
+    build: rss_temple_http/rss-temple/
+    expose:
+      - "3000"
+  rss_temple_home:
+    image: rss_temple_home:latest
+    build: rss_temple_http/rss-temple-home/
+    expose:
+      - "3001"
+  redis:
+    image: redis:7
+  postgresql:
+    image: postgresql:14
+    volumes:
+      - postgresql_data:/data
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+    volumes:
+      - caddy_data:/data
+volumes:
+  postgresql_data:
+  caddy_data:
