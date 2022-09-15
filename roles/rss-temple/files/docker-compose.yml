@@ -27,6 +27,8 @@ services:
     build: rss_temple_http/rss-temple/
     expose:
       - "3000"
+    volumes:
+      - angular_cache:/srv/.angular
   rss_temple_home:
     image: rss_temple_home:latest
     build: rss_temple_http/rss-temple-home/
@@ -47,3 +49,4 @@ services:
 volumes:
   postgresql_data:
   caddy_data:
+  angular_cache:
