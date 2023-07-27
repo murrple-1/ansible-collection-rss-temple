@@ -1,0 +1,6 @@
+---
+# Remote directory path where to store the app config files
+service_path: ~/rss_temple_app/
+
+# If you want your Docker services to be prefixed (as in, `rss_temple-app` -> `staging-rss_temple-app`), set this string
+app_docker_service_prefix: ''

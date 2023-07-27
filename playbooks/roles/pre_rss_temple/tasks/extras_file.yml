@@ -1,0 +1,13 @@
+---
+- name: Create Extra Vars file
+  ansible.builtin.copy:
+    dest: ~/pre-rss-temple-extras.{{ ansible_date_time.iso8601_basic }}.yml
+    mode: '0600'
+    content: |
+      {{  {
+          "service_path": service_path,
+          "server_domains": server_domains,
+          "app_domains": app_domains,
+          "home_domains": home_domains,
+          "should_add_ansible_user_to_docker_group": should_add_ansible_user_to_docker_group,
+        } | to_nice_yaml(explicit_start=True) }}

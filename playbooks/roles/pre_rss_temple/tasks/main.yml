@@ -1,0 +1,42 @@
+---
+- ansible.builtin.include_tasks: extras_file.yml
+
+- name: Dependencies (Debian)
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  ansible.builtin.include_tasks: dependencies__debian.yml
+
+- name: Dependencies (Red Hat)
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
+  ansible.builtin.include_tasks: dependencies__red_hat.yml
+
+- name: Dependencies
+  ansible.builtin.import_tasks: dependencies.yml
+
+- name: Setup `{{ service_path }}/`
+  ansible.builtin.file:
+    path: '{{ service_path }}/'
+    state: directory
+    mode: '0775'
+
+- ansible.builtin.include_tasks: _absolute_service_path.yml
+
+- ansible.builtin.include_tasks: setup_config.yml
+
+- name: Setup global Docker network
+  community.docker.docker_network:
+    name: rss_temple_net
+  become: true
+
+- name: Docker Compose Up
+  community.docker.docker_compose:
+    project_src: '{{ absolute_service_path }}'
+    pull: true
+  become: true
+
+- name: Firewall (Ubuntu)
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  ansible.builtin.include_tasks: firewall__debian.yml
+
+- name: Firewall (Red Hat)
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
+  ansible.builtin.include_tasks: firewall__red_hat.yml

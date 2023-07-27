@@ -1,0 +1,13 @@
+---
+- name: Setup Config (pre-rss-temple)
+  hosts: all
+
+  tasks:
+    - ansible.builtin.include_role:
+        name: pre_rss_temple
+        tasks_from: _absolute_service_path
+        public: true
+
+    - ansible.builtin.include_role:
+        name: pre_rss_temple
+        tasks_from: setup_config

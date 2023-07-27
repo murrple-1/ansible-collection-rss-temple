@@ -1,0 +1,6 @@
+---
+- name: Prepare server to host some/all the RSS Temple subprojects
+  hosts: all
+
+  roles:
+    - pre_rss_temple

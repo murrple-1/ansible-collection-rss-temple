@@ -1,0 +1,18 @@
+---
+- ansible.builtin.include_tasks: extras_file.yml
+
+- name: Setup `{{ service_path }}/`
+  ansible.builtin.file:
+    path: '{{ service_path }}/'
+    state: directory
+    mode: '0775'
+
+- ansible.builtin.include_tasks: _absolute_service_path.yml
+
+- ansible.builtin.include_tasks: setup_config.yml
+
+- name: Docker Compose Up
+  community.docker.docker_compose:
+    project_src: '{{ absolute_service_path }}'
+    pull: true
+  become: true

@@ -1,3 +1,1 @@
-# Ansible Collection - rss_temple.general
-
-Documentation for the collection.
+# ansible-collection-rss-temple

@@ -1,0 +1,7 @@
+---
+- name: Install dependencies via `pip`
+  become: true
+  ansible.builtin.pip:
+    name:
+      - docker
+      - docker-compose

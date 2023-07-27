@@ -1,0 +1,35 @@
+---
+- name: Enable and Start Firewalld
+  become: true
+  ansible.builtin.service:
+    name: firewalld
+    enabled: true
+    state: started
+  notify:
+    - firewall changed
+
+- ansible.builtin.meta: flush_handlers
+
+- name: Allow SSH traffic
+  become: true
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Allow HTTP traffic
+  become: true
+  ansible.posix.firewalld:
+    service: http
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Allow HTTPS traffic
+  become: true
+  ansible.posix.firewalld:
+    service: https
+    permanent: true
+    immediate: true
+    state: enabled

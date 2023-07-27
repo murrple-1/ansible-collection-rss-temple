@@ -1,0 +1,55 @@
+---
+- name: Set Docker's repo/distro fact
+  ansible.builtin.set_fact:
+    docker_repo_distro_name: centos
+
+- name: Install Docker's `rpm` key
+  become: true
+  ansible.builtin.rpm_key:
+    key: https://download.docker.com/linux/{{ docker_repo_distro_name }}/gpg
+
+- name: Install Docker's `yum` repo
+  become: true
+  ansible.builtin.yum_repository:
+    name: docker
+    description: docker repository
+    baseurl: https://download.docker.com/linux/{{ docker_repo_distro_name }}/$releasever/$basearch/stable
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://download.docker.com/linux/{{ docker_repo_distro_name }}/gpg
+
+- name: Remove conflicting packages which are occassionally installed by default
+  become: true
+  ansible.builtin.yum:
+    name:
+      - podman
+      - buildah
+    state: absent
+
+- name: Install dependencies via `yum`
+  become: true
+  ansible.builtin.yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+      - python3-pip
+      - git
+    state: present
+    update_cache: true
+
+- name: Add `{{ ansible_user }}` to `docker` group
+  when: should_add_ansible_user_to_docker_group
+  become: true
+  ansible.builtin.user:
+    name: '{{ ansible_user }}'
+    append: true
+    groups: docker
+
+- name: Start Docker Service
+  become: true
+  ansible.builtin.service:
+    name: docker
+    enabled: true
+    state: started

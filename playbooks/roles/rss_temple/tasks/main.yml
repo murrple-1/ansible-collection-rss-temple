@@ -1,0 +1,34 @@
+---
+- ansible.builtin.include_tasks: extras_file.yml
+
+- name: Setup `{{ service_path }}/`
+  ansible.builtin.file:
+    path: '{{ service_path }}/overrides/'
+    state: directory
+    mode: '0775'
+
+- ansible.builtin.include_tasks: _absolute_service_path.yml
+
+- name: Setup `overrides/`
+  ansible.builtin.file:
+    path: '{{ absolute_service_path }}/overrides/'
+    state: directory
+    mode: '0775'
+
+- ansible.builtin.include_tasks: setup_config.yml
+
+- name: Docker Compose Up
+  community.docker.docker_compose:
+    project_src: '{{ absolute_service_path }}'
+    pull: true
+  become: true
+  notify:
+    - docker compose up'd
+
+- ansible.builtin.meta: flush_handlers
+
+- name: Setup PostgreSQL User
+  ansible.builtin.import_tasks: app_postgres_user.yml
+
+- name: Initial App Setup
+  ansible.builtin.import_tasks: initial_app_setup.yml

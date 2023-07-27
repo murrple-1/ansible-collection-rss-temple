@@ -1,0 +1,102 @@
+version: '3.9'
+
+x-rss-temple-image: &rss-temple-image
+  image: 'murraychristopherson/rss_temple:{{ docker_version }}'
+
+services:
+  {{ app_docker_service_prefix }}redis:
+    image: redis
+    restart: always
+  {{ app_docker_service_prefix }}postgresql:
+    image: postgres:13
+    restart: always
+    expose:
+      - '5432'
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - default
+  {{ app_docker_service_prefix }}caddy-rss_temple:
+    image: caddy:2
+    restart: always
+    expose:
+      - '8000'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data/
+      - django_static:/srv/
+    networks:
+      - default
+      - rss_temple_net
+  {{ app_docker_service_prefix }}rss_temple:
+    <<: *rss-temple-image
+    command: >
+      bash -c "while ! python ./manage.py testready; do
+                 sleep 0.1
+               done
+
+               python ./manage.py collectstatic --noinput &
+
+               python ./manage.py migrate
+
+               exec daphne -b 0.0.0.0 -p 8000 rss_temple.asgi:application
+              "
+    restart: always
+    environment:
+      APP_IN_DOCKER: 'true'
+    env_file:
+      - .env
+    volumes:
+      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+      - django_static:/code/_static/
+  {{ app_docker_service_prefix }}rss_temple_feedscrapperdaemon:
+    <<: *rss-temple-image
+    command: >
+      bash -c "while ! python ./manage.py testready; do
+                 sleep 0.1
+               done
+
+               while ! python ./manage.py migrate --check; do
+                 sleep 5
+               done
+
+
+               exec python ./manage.py feedscrapperdaemon
+              "
+    restart: always
+    environment:
+      APP_IN_DOCKER: 'true'
+    env_file:
+      - .env
+    volumes:
+      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+  {{ app_docker_service_prefix }}rss_temple_subscriptionsetupdaemon:
+    <<: *rss-temple-image
+    command: >
+      bash -c "while ! python ./manage.py testready; do
+                 sleep 0.1
+               done
+
+               while ! python ./manage.py migrate --check; do
+                 sleep 5
+               done
+
+
+               exec python ./manage.py feedscrapperdaemon
+              "
+    restart: always
+    environment:
+      APP_IN_DOCKER: 'true'
+    env_file:
+      - .env
+    volumes:
+      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+volumes:
+  db_data:
+  caddy_data:
+  django_static:
+networks:
+  rss_temple_net:
+    external: true

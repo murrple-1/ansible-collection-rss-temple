@@ -1,0 +1,143 @@
+---
+- name: Check if '{{ app_postgres_user }}' Postgres User already exists
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - "SELECT 1 FROM pg_roles WHERE rolname='{{ app_postgres_user }}'"
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: false
+  register: _django_user_exists_ret
+
+- ansible.builtin.set_fact:
+    django_user_exists: "{{ '1' in _django_user_exists_ret.stdout }}"
+
+- name: Create '{{ app_postgres_user }}' Postgres User
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - "CREATE USER {{ app_postgres_user }} WITH PASSWORD '{{ _app_postgres_password }}'"
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
+- name: Alter Default Privileges to ALL for '{{ app_postgres_user }}'
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - 'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO {{ app_postgres_user }}'
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
+- name: Grant ALL Privileges on existing tables to '{{ app_postgres_user }}'
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ app_postgres_user }}'
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
+- name: "Django-Specific: Alter client_encoding to utf8 for '{{ app_postgres_user }}'"
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - "ALTER ROLE {{ app_postgres_user }} SET client_encoding TO 'utf8'"
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
+- name: "Django-Specific: Alter default_transaction_isolation to read committed for '{{ app_postgres_user }}'"
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - "ALTER ROLE {{ app_postgres_user }} SET default_transaction_isolation TO 'read committed'"
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
+- name: "Django-Specific: Alter timezone to UTC for '{{ app_postgres_user }}'"
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - "ALTER ROLE {{ app_postgres_user }} SET timezone TO 'UTC'"
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists

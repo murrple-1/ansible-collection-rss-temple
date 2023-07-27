@@ -1,0 +1,64 @@
+---
+- name: Continue when DB is Migrated
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - '{{ app_docker_service_prefix }}rss_temple'
+      - python
+      - ./manage.py
+      - migrate
+      - --check
+  become: true
+  register: _migrate_check_result
+  changed_when: false
+  until: _migrate_check_result.rc == 0
+  retries: 10
+  delay: 5
+
+- name: Create App Superuser
+  when: app_superuser_email
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - DJANGO_SUPERUSER_PASSWORD={{ app_superuser_password | quote }}
+      - '{{ app_docker_service_prefix }}rss_temple'
+      - python
+      - ./manage.py
+      - createsuperuser
+      - --email
+      - '{{ app_superuser_email }}'
+      - --noinput
+  become: true
+  register: _create_su_results
+  changed_when: "'Superuser created successfully' in _create_su_results.stdout"
+  failed_when: "'Superuser created successfully' not in _create_su_results.stdout and 'That email is already taken' not in _create_su_results.stderr"
+
+- name: Setup Social Apps
+  when: app_site_domain and app_site_name and app_google_client_id and app_google_secret and app_facebook_client_id and app_facebook_secret
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - '{{ app_docker_service_prefix }}rss_temple'
+      - python
+      - ./manage.py
+      - setupsocialapps
+      - '{{ app_site_domain }}'
+      - '{{ app_site_name }}'
+      - '{{ app_google_client_id }}'
+      - '{{ app_google_secret }}'
+      - '{{ app_facebook_client_id }}'
+      - '{{ app_facebook_secret }}'
+  become: true
+  register: _seed_recurring_tasks_result
+  changed_when: "'new social app' in _seed_recurring_tasks_result.stderr"
+  failed_when: "'social apps setup complete' not in _seed_recurring_tasks_result.stderr"

@@ -1,0 +1,28 @@
+---
+- name: Deploy RSS Temple Homepage
+  hosts: all
+
+  vars_prompt:
+    - name: docker_version
+      prompt: Docker tag name
+      default: latest
+      private: false
+
+    - name: app_url
+      prompt: URL for the RSS Temple app
+      default: https://app.rsstemple.com
+
+    - name: twitter_url
+      prompt: URL for our Twitter page
+      default: https://twitter.com/rsstemple
+
+    - name: facebook_url
+      prompt: URL for our Facebook page
+      default: https://www.facebook.com/RSSTemple/
+
+    - name: instagram_url
+      prompt: URL for our Instagram page
+      default: https://www.instagram.com/rsstempleapp/
+
+  roles:
+    - rss_temple_home

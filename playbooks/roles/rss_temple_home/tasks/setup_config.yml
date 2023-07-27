@@ -1,0 +1,14 @@
+---
+- ansible.builtin.include_role:
+    name: common
+    tasks_from: safe_template_overwrite
+  loop:
+    - name: docker-compose.yml
+      template: templates/docker-compose.yml.j2
+      dest: '{{ absolute_service_path }}/docker-compose.yml'
+    - name: .env
+      template: templates/.env.j2
+      dest: '{{ absolute_service_path }}/.env'
+    - name: webserver/Caddyfile
+      template: templates/Caddyfile.j2
+      dest: '{{ absolute_service_path }}/Caddyfile'

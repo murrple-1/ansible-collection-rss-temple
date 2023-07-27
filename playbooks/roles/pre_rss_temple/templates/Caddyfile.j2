@@ -1,0 +1,26 @@
+{% if server_domains %}{{ server_domains | join(", ") }} {
+	log
+
+	encode gzip
+
+	reverse_proxy caddy-rss_temple:8000
+}
+{% endif %}{% if app_domains %}
+
+{{ app_domains | join(", ") }} {
+	log
+
+	encode gzip
+
+	reverse_proxy caddy-rss_temple_app:4200
+}
+{% endif %}{% if home_domains %}
+
+{{ home_domains | join(", ") }} {
+	log
+
+	encode gzip
+
+	reverse_proxy cadd-rss_temple_home:3000
+}
+{% endif %}

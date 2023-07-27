@@ -1,0 +1,38 @@
+---
+- name: Deploy RSS Temple app
+  hosts: all
+
+  vars_prompt:
+    - name: docker_version
+      prompt: Docker tag name
+      default: latest
+      private: false
+
+    - name: app_api_host
+      prompt: Host domain for the API
+      default: https://api.rsstemple.com
+
+    - name: app_google_client_id
+      prompt: Google Client ID
+
+    - name: app_facebook_client_id
+      prompt: Facebook App ID
+
+    - name: app_onboarding_youtube_embeded_url
+      prompt: Embeded Youtube Video URL for onboarding
+      default: https://www.youtube.com/embed/dQw4w9WgXcQ
+
+    - name: app_issue_tracker_url
+      prompt: URL for Issue tracking
+      default: https://github.com/murrple-1/rss_temple/issues
+
+    - name: app_client_repo_url
+      prompt: URL to the client/app Git repo
+      default: https://github.com/murrple-1/rss_temple_http
+
+    - name: app_server_repo_url
+      prompt: URL to the server Git repo
+      default: https://github.com/murrple-1/rss_temple
+
+  roles:
+    - rss_temple_app

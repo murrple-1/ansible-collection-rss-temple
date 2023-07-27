@@ -1,0 +1,6 @@
+---
+- name: Pause for Docker containers to initialize
+  ansible.builtin.pause:
+    seconds: 5
+  listen:
+    - docker compose up'd

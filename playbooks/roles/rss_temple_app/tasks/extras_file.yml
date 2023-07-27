@@ -1,0 +1,18 @@
+---
+- name: Create Extra Vars file
+  ansible.builtin.copy:
+    dest: ~/rss-temple-app-extras.{{ ansible_date_time.iso8601_basic }}.yml
+    mode: '0600'
+    content: |
+      {{  {
+          "service_path": service_path,
+          "app_docker_service_prefix": app_docker_service_prefix,
+          "docker_version": docker_version,
+          "app_api_host": app_api_host,
+          "app_google_client_id": app_google_client_id,
+          "app_facebook_client_id": app_facebook_client_id,
+          "app_onboarding_youtube_embeded_url": app_onboarding_youtube_embeded_url,
+          "app_issue_tracker_url": app_issue_tracker_url,
+          "app_client_repo_url": app_client_repo_url,
+          "app_server_repo_url": app_server_repo_url,
+        } | to_nice_yaml(explicit_start=True) }}

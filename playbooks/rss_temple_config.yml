@@ -1,0 +1,84 @@
+---
+- name: Setup Config (Server)
+  hosts: all
+
+  vars_prompt:
+    - name: docker_version
+      prompt: Docker tag name
+      default: latest
+      private: false
+
+    - name: postgres_admin_password
+      prompt: Postgres Root Password
+      default: __rand__
+      private: true
+
+    - name: app_postgres_password
+      prompt: App Postgres Password
+      default: __rand__
+      private: true
+
+    - name: app_superuser_email
+      prompt: App SuperUser Email
+      private: false
+
+    - name: app_superuser_password
+      prompt: App SuperUser Password
+      default: __rand__
+      private: true
+
+    - name: app_secret_key
+      prompt: Value for `SECRET_KEY` property of `nabla.settings`
+      default: __rand__
+      private: true
+
+  pre_tasks:
+    - name: Generate Random Passwords and the like
+      block:
+        - when: postgres_admin_password == '__rand__'
+          ansible.builtin.set_fact:
+            _postgres_admin_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'postgres_admin_password.' + inventory_hostname + '.password') }}"
+
+        - when: postgres_admin_password != '__rand__'
+          ansible.builtin.set_fact:
+            _postgres_admin_password: "{{ postgres_admin_password }}"
+
+        - when: app_postgres_password == '__rand__'
+          ansible.builtin.set_fact:
+            _app_postgres_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'app_postgres_password.' + inventory_hostname + '.password') }}"
+
+        - when: app_postgres_password != '__rand__'
+          ansible.builtin.set_fact:
+            _app_postgres_password: "{{ app_postgres_password }}"
+
+        - when: app_superuser_password == '__rand__'
+          ansible.builtin.set_fact:
+            _app_superuser_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'app_superuser_password.' + inventory_hostname + '.password') }}"
+
+        - when: app_superuser_password != '__rand__'
+          ansible.builtin.set_fact:
+            _app_superuser_password: "{{ app_superuser_password }}"
+
+        - when: app_secret_key == '__rand__'
+          ansible.builtin.set_fact:
+            _app_secret_key: "{{ lookup('django_secret', 'rss_temple.' + 'app_secret_key.' + inventory_hostname + '.django_secret') }}"
+
+        - when: app_secret_key != '__rand__'
+          ansible.builtin.set_fact:
+            _app_secret_key: "{{ app_secret_key }}"
+
+  tasks:
+    - ansible.builtin.include_role:
+        name: rss_temple
+        tasks_from: _absolute_service_path
+        public: true
+
+    - name: Validate Variables
+      block:
+        - ansible.builtin.fail:
+            msg: '`app_superuser_email` is malformed'
+          when: app_superuser_email and app_superuser_email is not match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+
+    - ansible.builtin.include_role:
+        name: rss_temple
+        tasks_from: setup_config

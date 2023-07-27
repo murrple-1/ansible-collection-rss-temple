@@ -1,0 +1,34 @@
+---
+- name: Create Extra Vars file
+  ansible.builtin.copy:
+    dest: ~/rss-temple-extras.{{ ansible_date_time.iso8601_basic }}.yml
+    mode: '0600'
+    content: |
+      {{  {
+          "service_path": service_path,
+          "postgres_admin_user": postgres_admin_user,
+          "postgres_name": postgres_name,
+          "app_postgres_user": app_postgres_user,
+          "app_docker_service_prefix": app_docker_service_prefix,
+          "timezone": timezone,
+          "app_debug": app_debug,
+          "docker_version": docker_version,
+          "postgres_admin_password": postgres_admin_password,
+          "app_postgres_password": app_postgres_password,
+          "app_superuser_email": app_superuser_email,
+          "app_superuser_password": app_superuser_password,
+          "app_secret_key": app_secret_key,
+          "app_email_host": app_email_host,
+          "app_email_port": app_email_port,
+          "app_email_host_user": app_email_host_user,
+          "app_email_host_password": app_email_host_password,
+          "app_email_use_tls": app_email_use_tls,
+          "app_email_use_ssl": app_email_use_ssl,
+          "app_email_timeout": app_email_timeout,
+          "app_site_domain": app_site_domain,
+          "app_site_name": app_site_name,
+          "app_google_client_id": app_google_client_id,
+          "app_google_secret": app_google_secret,
+          "app_facebook_client_id": app_facebook_client_id,
+          "app_facebook_secret": app_facebook_secret,
+        } | to_nice_yaml(explicit_start=True) }}

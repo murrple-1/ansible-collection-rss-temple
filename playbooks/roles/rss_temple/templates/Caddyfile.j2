@@ -1,0 +1,27 @@
+:8000 {
+	encode gzip
+
+	@nocache {
+		path *.manifest *.appcache *.html *.xml *.json
+	}
+	header @nocache {
+		?Cache-Control "no-cache"
+	}
+
+	@yearcache {
+		path *.css *.js
+	}
+	header @yearcache {
+		?Cache-Control "max-age=31536000"
+	}
+
+	handle_path /static* {
+		root * /srv
+		file_server
+	}
+
+	@web {
+		path *
+	}
+	reverse_proxy @web {{ app_docker_service_prefix }}rss_temple:8000
+}

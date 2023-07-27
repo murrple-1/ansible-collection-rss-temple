@@ -1,0 +1,29 @@
+---
+- name: Enable UFW
+  become: true
+  community.general.ufw:
+    state: enabled
+  notify:
+    - firewall changed
+
+- ansible.builtin.meta: flush_handlers
+
+- name: Allow SSH traffic
+  become: true
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow HTTP traffic
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow HTTPS traffic
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: '443'
+    proto: tcp

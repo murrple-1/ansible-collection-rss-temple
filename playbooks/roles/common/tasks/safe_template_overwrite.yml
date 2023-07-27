@@ -1,0 +1,36 @@
+---
+- name: Setup `{{ item.name }}` temp file
+  ansible.builtin.template:
+    src: '{{ item.template }}'
+    dest: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    mode: '0664'
+
+- name: Copy in `{{ item.name }}`
+  ansible.builtin.copy:
+    src: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    dest: '{{ item.dest }}'
+    remote_src: true
+    force: false
+    mode: '0664'
+
+- name: Stat `{{ item.name }}` temp file
+  ansible.builtin.stat:
+    path: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    get_checksum: true
+    get_mime: false
+    get_attributes: false
+  register: _temp_file_stat
+
+- name: Stat `{{ item.name }}`
+  ansible.builtin.stat:
+    path: '{{ item.dest }}'
+    get_checksum: true
+    get_mime: false
+    get_attributes: false
+  register: _file_stat
+
+- name: Remove `{{ item.name }}` temp file
+  ansible.builtin.file:
+    path: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    state: absent
+  when: _temp_file_stat.stat.checksum == _file_stat.stat.checksum
