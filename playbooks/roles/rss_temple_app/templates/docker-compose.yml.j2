@@ -5,39 +5,20 @@ x-rss-temple-app-image: &rss-temple-app-image
 
 services:
   {{ app_docker_service_prefix }}caddy-rss_temple_app:
-    image: caddy:2
+    <<: *rss-temple-app-image
     restart: always
     expose:
       - '4200'
     volumes:
       - caddy_data:/data/
-      - caddy_srv:/srv/
+      - caddy_config:/config/
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
       - default
       - rss_temple_net
-  {{ app_docker_service_prefix }}rss_temple_app:
-    <<: *rss-temple-app-image
-    entrypoint: >
-      sh -c "if [ ! -f /srv/index.html ]; then
-                 echo '<html><body><h1>Building...</h1></body></html>' > /srv/index.html
-               fi
-
-               cp ./src/environments/environment.production.ts ./src/environments/environment.ts
-               yarn generate-licenses-file
-               yarn collect-envvars
-               yarn run ng build -c production
-               rm -rf /dist/* && cp -R /srv/dist/* /dist/
-              "
-    env_file:
-      - .env
-    volumes:
-      - caddy_srv:/dist/
-      - angular_cache:/srv/.angular/
 volumes:
   caddy_data:
-  caddy_srv:
-  angular_cache:
+  caddy_config:
 networks:
   rss_temple_net:
     external: true

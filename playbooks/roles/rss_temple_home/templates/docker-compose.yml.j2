@@ -4,13 +4,14 @@ x-rss-temple-home-image: &rss-temple-home-image
   image: 'murraychristopherson/rss_temple_home:{{ docker_version }}'
 
 services:
-  {{ app_docker_service_prefix }}caddy:
+  {{ app_docker_service_prefix }}caddy-rss_temple_home:
     image: caddy:2
     restart: always
     expose:
       - '3000'
     volumes:
       - caddy_data:/data/
+      - caddy_config:/config/
       - caddy_srv:/srv/
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
@@ -18,20 +19,13 @@ services:
       - rss_temple_net
   {{ app_docker_service_prefix }}rss_temple_home:
     <<: *rss-temple-home-image
-    entrypoint: >
-      sh -c "if [ ! -f /dist/index.html ]; then
-                 echo '<html><body><h1>Building...</h1></body></html>' > /dist/index.html
-               fi
-
-               yarn run grunt build --app-url=\\\"$$APP_URL\\\" --twitter-url=\\\"$$TWITTER_URL\\\" --fb-url=\\\"$$FB_URL\\\" --insta-url=\\\"$$INSTA_URL\\\"
-               rm -rf /dist/* && cp -R /srv/dist/* /dist/
-              "
     env_file:
       - .env
     volumes:
-      - caddy_srv:/dist/
+      - caddy_srv:/srv/
 volumes:
   caddy_data:
+  caddy_config:
   caddy_srv:
 networks:
   rss_temple_net:

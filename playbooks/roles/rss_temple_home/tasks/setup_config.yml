@@ -9,6 +9,11 @@
     - name: .env
       template: templates/.env.j2
       dest: '{{ absolute_service_path }}/.env'
-    - name: webserver/Caddyfile
-      template: templates/Caddyfile.j2
+
+- ansible.builtin.include_role:
+    name: common
+    tasks_from: safe_file_overwrite
+  loop:
+    - name: Caddyfile
+      src: files/Caddyfile
       dest: '{{ absolute_service_path }}/Caddyfile'
