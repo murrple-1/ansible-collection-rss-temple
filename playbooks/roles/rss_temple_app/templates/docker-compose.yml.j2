@@ -13,6 +13,7 @@ services:
       - caddy_data:/data/
       - caddy_config:/config/
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./config.json:/srv/assets/config.json
     networks:
       - default
       - rss_temple_net
