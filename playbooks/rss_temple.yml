@@ -82,6 +82,16 @@
       prompt: Facebook Secret
       private: true
 
+    - name: app_account_confirm_email_url
+      prompt: URL to put in emails for account email verification
+      default: http://localhost:4200/verify
+
+    - name: app_password_confirm_reset_url_format
+      prompt: |
+        Format string of URL to put in emails for password reset requests
+        Must contain the `{token}` and `{userId}` format tokens
+      default: http://localhost:4200/resetpassword?token={token}&userId={userId}
+
   pre_tasks:
     - name: Validate Variables
       block:
