@@ -19,6 +19,7 @@ services:
       - rss_temple_net
   {{ app_docker_service_prefix }}rss_temple_home:
     <<: *rss-temple-home-image
+    restart: always
     env_file:
       - .env
     volumes:
