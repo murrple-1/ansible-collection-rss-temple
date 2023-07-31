@@ -1,4 +1,2 @@
-*.password
-*.django_secret
 test_*.yml
 __pycache__/

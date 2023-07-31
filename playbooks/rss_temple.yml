@@ -103,7 +103,7 @@
       block:
         - when: postgres_admin_password == '__rand__'
           ansible.builtin.set_fact:
-            _postgres_admin_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'postgres_admin_password.' + inventory_hostname + '.password') }}"
+            _postgres_admin_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'postgres_admin_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
         - when: postgres_admin_password != '__rand__'
           ansible.builtin.set_fact:
@@ -111,7 +111,7 @@
 
         - when: app_postgres_password == '__rand__'
           ansible.builtin.set_fact:
-            _app_postgres_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'app_postgres_password.' + inventory_hostname + '.password') }}"
+            _app_postgres_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'app_postgres_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
         - when: app_postgres_password != '__rand__'
           ansible.builtin.set_fact:
@@ -119,7 +119,7 @@
 
         - when: app_superuser_password == '__rand__'
           ansible.builtin.set_fact:
-            _app_superuser_password: "{{ lookup('ansible.builtin.password', 'rss_temple.' + 'app_superuser_password.' + inventory_hostname + '.password') }}"
+            _app_superuser_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'app_superuser_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
         - when: app_superuser_password != '__rand__'
           ansible.builtin.set_fact:
@@ -127,7 +127,7 @@
 
         - when: app_secret_key == '__rand__'
           ansible.builtin.set_fact:
-            _app_secret_key: "{{ lookup('django_secret', 'rss_temple.' + 'app_secret_key.' + inventory_hostname + '.django_secret') }}"
+            _app_secret_key: "{{ lookup('django_secret', 'rss_temple.' + '_credentials/app_secret_key.' + inventory_hostname + '.django_secret') }}"
 
         - when: app_secret_key != '__rand__'
           ansible.builtin.set_fact:

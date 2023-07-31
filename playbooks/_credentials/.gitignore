@@ -1,0 +1,2 @@
+*.password
+*.django_secret
