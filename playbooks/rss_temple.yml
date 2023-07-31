@@ -34,6 +34,9 @@
       default: __rand__
       private: true
 
+    - name: app_csrf_cookie_domain
+      prompt: CSRF Cookie Domain
+
     - name: app_email_host
       prompt: Email host
 
