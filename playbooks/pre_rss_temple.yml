@@ -2,5 +2,12 @@
 - name: Prepare server to host some/all the RSS Temple subprojects
   hosts: all
 
+  vars_prompt:
+    - name: papertrail_destination_host
+      prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com')
+
+    - name: papertrail_destination_port
+      prompt: Papertrail Destination Port
+
   roles:
     - pre_rss_temple

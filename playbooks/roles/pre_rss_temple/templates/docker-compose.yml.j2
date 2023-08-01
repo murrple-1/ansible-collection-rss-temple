@@ -13,6 +13,12 @@ services:
     networks:
       - default
       - rss_temple_net
+  logspout:
+    image: gliderlabs/logspout:latest
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: syslog+tls://{{ papertrail_destination_host }}:{{ papertrail_destination_port| int }}
 volumes:
   caddy_data:
 networks:
