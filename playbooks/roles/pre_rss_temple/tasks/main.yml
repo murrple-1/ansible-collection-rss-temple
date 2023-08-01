@@ -40,3 +40,6 @@
 - name: Firewall (Red Hat)
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
   ansible.builtin.include_tasks: firewall__red_hat.yml
+
+- name: Papertrail
+  ansible.builtin.include_tasks: papertrail.yml

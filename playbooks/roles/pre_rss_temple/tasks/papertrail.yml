@@ -1,0 +1,43 @@
+---
+- name: Install dependencies via `apt`
+  become: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  ansible.builtin.apt:
+    name:
+      - rsyslog-gnutls
+    state: present
+
+- name: Install dependencies via `yum`
+  become: true
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
+  ansible.builtin.yum:
+    name:
+      - rsyslog-gnutls
+    state: present
+
+- name: Save papertrail-bundle.pem
+  become: true
+  ansible.builtin.get_url:
+    url: https://papertrailapp.com/tools/papertrail-bundle.pem
+    dest: /etc/papertrail-bundle.pem
+    mode: '0644'
+
+- name: Setup rsyslog.conf
+  ansible.builtin.blockinfile:
+    path: /etc/rsyslog.conf
+    block: |
+      $DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem
+      $ActionSendStreamDriver gtls
+      $ActionSendStreamDriverMode 1
+      $ActionSendStreamDriverAuthMode x509/name
+      $ActionSendStreamDriverPermittedPeer *.papertrailapp.com
+
+      *.*    @@{{ papertrail_destination_host }}:{{ papertrail_destination_port | int }}
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - Papertrail'
+  become: true
+
+- name: Restart service rsyslog
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+  become: true
