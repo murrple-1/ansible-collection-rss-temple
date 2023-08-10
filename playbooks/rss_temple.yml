@@ -131,7 +131,7 @@
 
         - when: app_secret_key == '__rand__'
           ansible.builtin.set_fact:
-            _app_secret_key: "{{ lookup('django_secret', 'rss_temple.' + '_credentials/app_secret_key.' + inventory_hostname + '.django_secret') }}"
+            _app_secret_key: "{{ lookup('django_secret', '_credentials/rss_temple.' + 'app_secret_key.' + inventory_hostname + '.django_secret') }}"
 
         - when: app_secret_key != '__rand__'
           ansible.builtin.set_fact:
