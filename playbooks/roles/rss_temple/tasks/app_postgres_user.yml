@@ -82,6 +82,26 @@
   changed_when: true
   when: not django_user_exists
 
+- name: Grant ALL on schema to '{{ app_postgres_user }}'
+  ansible.builtin.command:
+    chdir: '{{ absolute_service_path }}'
+    argv:
+      - docker
+      - compose
+      - exec
+      - -e
+      - PGPASSWORD={{ _postgres_admin_password | quote }}
+      - '{{ app_docker_service_prefix }}postgresql'
+      - psql
+      - -U
+      - '{{ postgres_admin_user }}'
+      - -c
+      - 'GRANT ALL ON SCHEMA public TO {{ app_postgres_user }}'
+      - '{{ postgres_name }}'
+  become: true
+  changed_when: true
+  when: not django_user_exists
+
 - name: "Django-Specific: Alter client_encoding to utf8 for '{{ app_postgres_user }}'"
   ansible.builtin.command:
     chdir: '{{ absolute_service_path }}'
