@@ -78,7 +78,7 @@
       prompt: |
         Format string of URL to put in emails for password reset requests
         Must contain the `{token}` and `{userId}` format tokens
-      default: http://localhost:4200/resetpassword?token={token}&userId={userId}
+      default: http://localhost:4200/resetpassword?token=%(token)s&userId=%(userId)s
 
     - name: app_social_connections_url
       prompt: 'Unknown usage: app_social_connections_url'
