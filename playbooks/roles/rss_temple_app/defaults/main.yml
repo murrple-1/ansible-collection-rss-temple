@@ -4,3 +4,6 @@ service_path: ~/rss_temple_app/
 
 # If you want your Docker services to be prefixed (as in, `rss_temple-app` -> `staging-rss_temple-app`), set this string
 app_docker_service_prefix: ''
+
+# Max age property for `Strict-Transport-Security` HTTP header. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+strict_transport_security_max_age: 31536000

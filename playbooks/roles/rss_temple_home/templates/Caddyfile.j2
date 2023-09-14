@@ -1,0 +1,12 @@
+:3000 {
+  header {
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+    Content-Security-Policy "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; base-uri 'self'; form-action 'self'; font-src 'self' fonts.gstatic.com"
+    X-XSS-Protection "1"
+    Strict-Transport-Security "max-age={{ strict_transport_security_max_age }}; includeSubDomains"
+  }
+
+  root * /srv/
+  file_server
+}

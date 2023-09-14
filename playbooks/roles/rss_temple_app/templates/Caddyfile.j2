@@ -1,0 +1,13 @@
+:4200 {
+  header {
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+    Content-Security-Policy "default-src 'none'; script-src 'self'; connect-src 'self' *.rsstemple.com; img-src * data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; font-src 'self' data:; frame-src *"
+    X-XSS-Protection "1"
+    Strict-Transport-Security "max-age={{ strict_transport_security_max_age }}; includeSubDomains"
+  }
+
+  root * /srv/
+  file_server
+  try_files {path} /index.html
+}
