@@ -104,6 +104,10 @@
       prompt: 'Unknown usage: app_social_connections_url'
       default: http://localhost:4200/main/profile
 
+    - name: app_social_signup_url
+      prompt: 'Unknown usage: app_social_signup_url'
+      default: http://localhost:4200/register
+
   pre_tasks:
     - name: Validate Variables
       block:
