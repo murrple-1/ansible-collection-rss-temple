@@ -34,5 +34,13 @@
       prompt: URL to the server Git repo
       default: https://github.com/murrple-1/rss_temple
 
+    - name: og_image
+      prompt: URL for the OpenGraph image
+      default: https://app.rsstemple.com/assets/images/og_image.jpg
+
+    - name: og_url
+      prompt: URL for the OpenGraph URL
+      default: https://app.rsstemple.com
+
   roles:
     - rss_temple_app

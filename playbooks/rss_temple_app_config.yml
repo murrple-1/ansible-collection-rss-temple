@@ -8,6 +8,14 @@
       default: latest
       private: false
 
+    - name: og_image
+      prompt: URL for the OpenGraph image
+      default: https://app.rsstemple.com/assets/images/og_image.jpg
+
+    - name: og_url
+      prompt: URL for the OpenGraph URL
+      default: https://app.rsstemple.com
+
   tasks:
     - ansible.builtin.include_role:
         name: rss_temple_app

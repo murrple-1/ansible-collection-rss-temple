@@ -7,3 +7,9 @@ app_docker_service_prefix: ''
 
 # Max age property for `Strict-Transport-Security` HTTP header. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 strict_transport_security_max_age: 31536000
+
+# OpenGraph title
+og_title_prefix: RSS Temple
+
+# OpenGraph description
+og_description: The Zen of Syndication

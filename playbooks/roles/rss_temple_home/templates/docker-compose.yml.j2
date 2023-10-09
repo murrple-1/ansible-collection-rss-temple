@@ -19,11 +19,26 @@ services:
       - rss_temple_net
   {{ app_docker_service_prefix }}rss_temple_home:
     <<: *rss-temple-home-image
+    command: >
+      ash -c "
+        [ \"$(ls -A /srv/)\" ] || echo '<html><body><h1>Building Site...</h1></body></html>' > /srv/index.html
+        yarn run grunt --verbose build --app-url=\"$$APP_URL\" --twitter-url=\"$$TWITTER_URL\" --fb-url=\"$$FB_URL\" --insta-url=\"$$INSTA_URL\" --head-custom-dir=\"/custom/\"
+
+        rm -rf /srv/* && cp -R /build/dist/* /srv/
+
+        while :; do
+          sleep 3600
+        done
+      "
     restart: always
     env_file:
       - .env
     volumes:
       - caddy_srv:/srv/
+      - ./index.head.html:/custom/index.head.html
+      - ./contact.head.html:/custom/contact.head.html
+      - ./privacy.head.html:/custom/privacy.head.html
+      - ./tos.head.html:/custom/tos.head.html
 volumes:
   caddy_data:
   caddy_config:

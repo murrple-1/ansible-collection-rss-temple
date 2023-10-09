@@ -12,3 +12,6 @@
     - name: Caddyfile
       template: templates/Caddyfile.j2
       dest: '{{ absolute_service_path }}/Caddyfile'
+    - name: index.head.html
+      template: templates/index.head.html.j2
+      dest: '{{ absolute_service_path }}/index.head.html'

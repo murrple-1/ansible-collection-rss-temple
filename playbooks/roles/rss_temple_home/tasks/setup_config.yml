@@ -12,3 +12,15 @@
     - name: Caddyfile
       template: templates/Caddyfile.j2
       dest: '{{ absolute_service_path }}/Caddyfile'
+    - name: index.head.html
+      template: templates/index.head.html.j2
+      dest: '{{ absolute_service_path }}/index.head.html'
+    - name: contact.head.html
+      template: templates/contact.head.html.j2
+      dest: '{{ absolute_service_path }}/contact.head.html'
+    - name: privacy.head.html
+      template: templates/privacy.head.html.j2
+      dest: '{{ absolute_service_path }}/privacy.head.html'
+    - name: tos.head.html
+      template: templates/tos.head.html.j2
+      dest: '{{ absolute_service_path }}/tos.head.html'

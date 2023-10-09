@@ -31,4 +31,9 @@
           "app_google_secret": app_google_secret,
           "app_facebook_client_id": app_facebook_client_id,
           "app_facebook_secret": app_facebook_secret,
+          "app_account_confirm_email_url": app_account_confirm_email_url,
+          "app_account_email_verification_sent_url": app_account_email_verification_sent_url,
+          "app_password_confirm_reset_url_format": app_password_confirm_reset_url_format,
+          "app_social_connections_url": app_social_connections_url,
+          "app_social_signup_url": app_social_signup_url,
         } | to_nice_yaml(explicit_start=True) }}

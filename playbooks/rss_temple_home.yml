@@ -24,5 +24,13 @@
       prompt: URL for our Instagram page
       default: https://www.instagram.com/rsstempleapp/
 
+    - name: og_image_host
+      prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.png")
+      default: https://rsstemple.com
+
+    - name: og_url_host
+      prompt: Hostname for the OpenGraph URL (formatted similar to "<HOSTNAME>/contact.html")
+      default: https://rsstemple.com
+
   roles:
     - rss_temple_home

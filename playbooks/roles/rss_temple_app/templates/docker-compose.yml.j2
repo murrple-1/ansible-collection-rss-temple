@@ -6,6 +6,14 @@ x-rss-temple-app-image: &rss-temple-app-image
 services:
   {{ app_docker_service_prefix }}caddy-rss_temple_app:
     <<: *rss-temple-app-image
+    command: >
+      ash -c "
+        if [ -e /custom/index.head.html ]; then
+          sed -i -e \"/<!-- DEPLOYMENT HEAD START -->/,/<!-- DEPLOYMENT HEAD END -->/{/<!-- DEPLOYMENT HEAD START -->/{r /custom/index.head.html
+      p};/<!-- DEPLOYMENT HEAD END -->/!d}\" /srv/index.html
+        fi
+        exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+      "
     restart: always
     expose:
       - '4200'
@@ -14,6 +22,7 @@ services:
       - caddy_config:/config/
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./config.json:/srv/assets/config.json
+      - ./index.head.html:/custom/index.head.html
     networks:
       - default
       - rss_temple_net

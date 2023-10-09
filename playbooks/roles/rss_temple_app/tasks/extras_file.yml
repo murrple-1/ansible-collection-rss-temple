@@ -15,4 +15,8 @@
           "app_issue_tracker_url": app_issue_tracker_url,
           "app_client_repo_url": app_client_repo_url,
           "app_server_repo_url": app_server_repo_url,
+          "og_title": og_title,
+          "og_image": og_image,
+          "og_url": og_url,
+          "og_description": og_description,
         } | to_nice_yaml(explicit_start=True) }}

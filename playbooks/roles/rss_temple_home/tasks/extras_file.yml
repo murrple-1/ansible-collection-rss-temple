@@ -12,4 +12,8 @@
           "twitter_url": twitter_url,
           "facebook_url": facebook_url,
           "instagram_url": instagram_url,
+          "og_title_prefix": og_title_prefix,
+          "og_image_host": og_image_host,
+          "og_url_host": og_url_host,
+          "og_description": og_description,
         } | to_nice_yaml(explicit_start=True) }}
