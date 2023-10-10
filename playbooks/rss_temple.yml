@@ -64,6 +64,10 @@
       prompt: Email timeout (seconds)
       default: '10.0'
 
+    - name: app_default_from_email
+      prompt: Default FROM email address
+      default: noreply@rsstemple.com
+
     - name: app_site_domain
       prompt: Site domain
       default: rsstemple.com
