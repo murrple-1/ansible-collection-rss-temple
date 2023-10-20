@@ -21,10 +21,10 @@ services:
     <<: *rss-temple-home-image
     command: >
       ash -c "
-        [ \"$(ls -A /srv/)\" ] || echo '<html><body><h1>Building Site...</h1></body></html>' > /srv/index.html
-        yarn run grunt --verbose build --app-url=\"$$APP_URL\" --twitter-url=\"$$TWITTER_URL\" --fb-url=\"$$FB_URL\" --insta-url=\"$$INSTA_URL\" --head-custom-dir=\"/custom/\"
+        [ \"$$(ls -A /srv/)\" ] || echo '<html><body><h1>Building Site...</h1></body></html>' > /srv/index.html
+        yarn run build
 
-        rm -rf /srv/* && cp -R /build/dist/* /srv/
+        rm -rf /srv/* && cp -R /build/_site/* /srv/
 
         while :; do
           sleep 3600
@@ -33,6 +33,8 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      HEAD_CUSTOM_DIR: '/custom/'
     volumes:
       - caddy_srv:/srv/
       - ./index.head.html:/custom/index.head.html
