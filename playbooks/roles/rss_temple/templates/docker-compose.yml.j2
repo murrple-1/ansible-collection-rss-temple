@@ -52,20 +52,9 @@ services:
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
       - django_static:/code/_static/
-  {{ app_docker_service_prefix }}rss_temple_feedscrapperdaemon:
+  {{ app_docker_service_prefix }}rss_temple_dramatiq:
     <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py feedscrapperdaemon
-              "
+    command: dramatiq api_dramatiq.tasks -Q rss_temple
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
@@ -73,7 +62,7 @@ services:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_subscriptionsetupdaemon:
+  {{ app_docker_service_prefix }}rss_temple_schedulerdaemon:
     <<: *rss-temple-image
     command: >
       bash -c "while ! python ./manage.py checkready; do
@@ -84,113 +73,7 @@ services:
                  sleep 5
                done
 
-
-               exec python ./manage.py subscriptionsetupdaemon
-              "
-    restart: always
-    environment:
-      APP_IN_DOCKER: 'true'
-    env_file:
-      - .env
-    volumes:
-      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_archivefeedentriesdaemon:
-    <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py archivefeedentriesdaemon
-              "
-    restart: always
-    environment:
-      APP_IN_DOCKER: 'true'
-    env_file:
-      - .env
-    volumes:
-      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_expireddatapurgedaemon:
-    <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py expireddatapurgedaemon
-              "
-    restart: always
-    environment:
-      APP_IN_DOCKER: 'true'
-    env_file:
-      - .env
-    volumes:
-      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_extracttopimagesdaemon:
-    <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py extracttopimagesdaemon
-              "
-    restart: always
-    environment:
-      APP_IN_DOCKER: 'true'
-    env_file:
-      - .env
-    volumes:
-      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_feedlabeldaemon:
-    <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py feedlabeldaemon
-              "
-    restart: always
-    environment:
-      APP_IN_DOCKER: 'true'
-    env_file:
-      - .env
-    volumes:
-      - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_userlabeldaemon:
-    <<: *rss-temple-image
-    command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
-
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
-
-
-               exec python ./manage.py userlabeldaemon
+               exec python ./manage.py schedulerdaemon
               "
     restart: always
     environment:
