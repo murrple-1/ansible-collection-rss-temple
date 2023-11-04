@@ -13,3 +13,6 @@ og_title: RSS Temple App
 
 # OpenGraph description
 og_description: The Zen of Syndication
+
+# Threshold (between 0.0 and 1.0) over which randomly we will show the "Is this article labeled like...?" alert
+app_force_label_threshold: 0.8

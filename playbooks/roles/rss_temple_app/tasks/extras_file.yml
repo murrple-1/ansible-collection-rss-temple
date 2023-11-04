@@ -19,4 +19,5 @@
           "og_image": og_image,
           "og_url": og_url,
           "og_description": og_description,
+          "app_force_label_threshold": app_force_label_threshold,
         } | to_nice_yaml(explicit_start=True) }}
