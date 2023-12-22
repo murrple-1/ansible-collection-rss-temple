@@ -73,6 +73,8 @@ services:
                  sleep 5
                done
 
+               python ./manage.py checkclassifierlabels
+
                exec python ./manage.py schedulerdaemon
               "
     restart: always
