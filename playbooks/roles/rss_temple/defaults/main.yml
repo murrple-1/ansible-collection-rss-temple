@@ -22,6 +22,3 @@ app_debug: false
 
 # Max number of bytes downloadable before considered too to fit in memory
 app_download_max_size: 1000000
-
-# Number of bytes per chunk to download. Should be tuned relative to `app_feed_max_size`
-app_download_chunk_size: 1000
