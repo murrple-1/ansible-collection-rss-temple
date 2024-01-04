@@ -21,4 +21,4 @@ timezone: UTC
 app_debug: false
 
 # Max number of bytes downloadable before considered too to fit in memory
-app_download_max_size: 1000000
+app_download_max_byte_count: 1000000

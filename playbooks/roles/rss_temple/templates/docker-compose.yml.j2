@@ -75,7 +75,7 @@ services:
 
                python ./manage.py checkclassifierlabels
 
-               exec python ./manage.py schedulerdaemon --extract-top-images-response-max-size {{ app_download_max_size | int | string }} --feed-scrape-feed-max-size {{ app_download_max_size | int | string }} --setup-subscriptions-response-max-size {{ app_download_max_size | int | string }}
+               exec python ./manage.py schedulerdaemon --extract-top-images-response-max-byte-count {{ app_download_max_byte_count | int | string }} --feed-scrape-response-max-byte-count {{ app_download_max_byte_count | int | string }} --setup-subscriptions-response-max-byte-count {{ app_download_max_byte_count | int | string }}
               "
     restart: always
     environment:
