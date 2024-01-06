@@ -34,16 +34,17 @@ services:
   {{ app_docker_service_prefix }}rss_temple:
     <<: *rss-temple-image
     command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
+      sh -c "
+        while ! python ./manage.py checkready; do
+          sleep 0.1
+        done
 
-               python ./manage.py collectstatic --noinput &
+        python ./manage.py collectstatic --noinput &
 
-               python ./manage.py migrate
+        python ./manage.py migrate
 
-               exec daphne -b 0.0.0.0 -p 8000 rss_temple.asgi:application
-              "
+        exec daphne -b 0.0.0.0 -p 8000 rss_temple.asgi:application
+      "
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
@@ -65,18 +66,22 @@ services:
   {{ app_docker_service_prefix }}rss_temple_schedulerdaemon:
     <<: *rss-temple-image
     command: >
-      bash -c "while ! python ./manage.py checkready; do
-                 sleep 0.1
-               done
+      sh -c "
+        while ! python ./manage.py checkready; do
+          sleep 0.1
+        done
 
-               while ! python ./manage.py migrate --check; do
-                 sleep 5
-               done
+        while ! python ./manage.py migrate --check; do
+          sleep 5
+        done
 
-               python ./manage.py checkclassifierlabels
+        python ./manage.py checkclassifierlabels
 
-               exec python ./manage.py schedulerdaemon --extract-top-images-response-max-byte-count {{ app_download_max_byte_count | int | string }} --feed-scrape-response-max-byte-count {{ app_download_max_byte_count | int | string }} --setup-subscriptions-response-max-byte-count {{ app_download_max_byte_count | int | string }}
-              "
+        exec python ./manage.py schedulerdaemon \\
+          --extract-top-images-response-max-byte-count {{ app_download_max_byte_count | int }} \\
+          --feed-scrape-response-max-byte-count {{ app_download_max_byte_count | int }} \\
+          --setup-subscriptions-response-max-byte-count {{ app_download_max_byte_count | int }}
+      "
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
