@@ -6,6 +6,7 @@ x-rss-temple-image: &rss-temple-image
 services:
   {{ app_docker_service_prefix }}redis:
     image: redis:7
+    command: redis-server --maxmemory {{ redis_max_memory }} --maxmemory-policy {{ redis_max_memory_policy }}
     restart: always
   {{ app_docker_service_prefix }}postgresql:
     image: postgres:15

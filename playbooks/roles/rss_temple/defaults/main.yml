@@ -20,5 +20,11 @@ timezone: UTC
 # Are the services running in debug mode? Should be false in production, unless specifically needed
 app_debug: false
 
-# Max number of bytes downloadable before considered too to fit in memory
+# Max number of bytes downloadable before considered too big to fit in memory
 app_download_max_byte_count: 1000000
+
+# Redis Max Memory in bytes. 0 for no limit. See https://redis.io/docs/reference/eviction/
+redis_max_memory: 0
+
+# Redis Max Memory policy. See https://redis.io/docs/reference/eviction/
+redis_max_memory_policy: noeviction
