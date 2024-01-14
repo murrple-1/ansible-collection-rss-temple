@@ -49,6 +49,9 @@ services:
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
+{% if app_malloc_conf %}
+      MALLOC_CONF: {{ app_malloc_conf | quote }}
+{% endif %}
     env_file:
       - .env
     volumes:
@@ -60,6 +63,9 @@ services:
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
+{% if dramatiq_malloc_conf %}
+      MALLOC_CONF: {{ dramatiq_malloc_conf | quote }}
+{% endif %}
     env_file:
       - .env
     volumes:
@@ -86,6 +92,9 @@ services:
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
+{% if schedulerdaemon_malloc_conf %}
+      MALLOC_CONF: {{ schedulerdaemon_malloc_conf | quote }}
+{% endif %}
     env_file:
       - .env
     volumes:

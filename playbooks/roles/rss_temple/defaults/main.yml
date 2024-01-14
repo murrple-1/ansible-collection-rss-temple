@@ -2,8 +2,10 @@
 # Remote directory path where to store the app config files
 service_path: ~/rss_temple/
 
-# jemalloc configuration env var. See https://github.com/jemalloc/jemalloc/blob/dev/TUNING.md
-malloc_config: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+# jemalloc configuration env vars. See https://github.com/jemalloc/jemalloc/blob/dev/TUNING.md
+app_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+dramatiq_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+schedulerdaemon_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
 
 # PostgreSQL role name of the root/admin
 postgres_admin_user: postgres
