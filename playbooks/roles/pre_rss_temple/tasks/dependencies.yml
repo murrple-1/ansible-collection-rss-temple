@@ -3,5 +3,6 @@
   become: true
   ansible.builtin.pip:
     name:
-      - docker
+      # TODO pinned until https://github.com/docker/docker-py/issues/3194 is resolved
+      - docker==6.1.3
       - docker-compose

@@ -1,15 +1,15 @@
 ---
 # Remote directory path where to store the app config files
-service_path: ~/rss_temple_home/
+rss_temple_home__service_path: ~/rss_temple_home/
 
 # If you want your Docker services to be prefixed (as in, `rss_temple-home` -> `staging-rss_temple-home`), set this string
-app_docker_service_prefix: ''
+rss_temple_home__app_docker_service_prefix: ''
 
 # Max age property for `Strict-Transport-Security` HTTP header. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
-strict_transport_security_max_age: 31536000
+rss_temple_home__strict_transport_security_max_age: 31536000
 
 # OpenGraph title
-og_title_prefix: RSS Temple
+rss_temple_home__og_title_prefix: RSS Temple
 
 # OpenGraph description
-og_description: The Zen of Syndication
+rss_temple_home__og_description: The Zen of Syndication

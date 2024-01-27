@@ -1,9 +1,9 @@
 ---
 - ansible.builtin.include_tasks: extras_file.yml
 
-- name: Setup `{{ service_path }}/`
+- name: Setup `{{ rss_temple__service_path }}/`
   ansible.builtin.file:
-    path: '{{ service_path }}/overrides/'
+    path: '{{ rss_temple__service_path }}/overrides/'
     state: directory
     mode: '0775'
 
@@ -11,7 +11,7 @@
 
 - name: Setup `overrides/`
   ansible.builtin.file:
-    path: '{{ absolute_service_path }}/overrides/'
+    path: '{{ rss_temple__absolute_service_path }}/overrides/'
     state: directory
     mode: '0775'
 
@@ -19,7 +19,7 @@
 
 - name: Docker Compose Up
   community.docker.docker_compose:
-    project_src: '{{ absolute_service_path }}'
+    project_src: '{{ rss_temple__absolute_service_path }}'
     pull: true
   become: true
   notify:

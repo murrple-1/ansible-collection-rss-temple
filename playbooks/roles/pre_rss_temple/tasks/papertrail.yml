@@ -32,7 +32,7 @@
       $ActionSendStreamDriverAuthMode x509/name
       $ActionSendStreamDriverPermittedPeer *.papertrailapp.com
 
-      *.*    @@{{ papertrail_destination_host }}:{{ papertrail_destination_port | int }}
+      *.*    @@{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
     marker: '# {mark} ANSIBLE MANAGED BLOCK - Papertrail'
   become: true
 

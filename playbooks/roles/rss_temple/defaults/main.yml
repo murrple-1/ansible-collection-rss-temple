@@ -1,35 +1,35 @@
 ---
 # Remote directory path where to store the app config files
-service_path: ~/rss_temple/
+rss_temple__service_path: ~/rss_temple/
 
 # jemalloc configuration env vars. See https://github.com/jemalloc/jemalloc/blob/dev/TUNING.md
-app_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
-dramatiq_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
-schedulerdaemon_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+rss_temple__app_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+rss_temple__dramatiq_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
+rss_temple__schedulerdaemon_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000
 
 # PostgreSQL role name of the root/admin
-postgres_admin_user: postgres
+rss_temple__postgres_admin_user: postgres
 
 # PostgreSQL DB name of the DB
-postgres_name: postgres
+rss_temple__postgres_name: postgres
 
 # PostgreSQL role name of the semi-limited role used by rss_temple
-app_postgres_user: monk
+rss_temple__app_postgres_user: monk
 
 # If you want your Docker services to be prefixed (as in, `rss_temple` -> `staging-rss_temple`), set this string
-app_docker_service_prefix: ''
+rss_temple__app_docker_service_prefix: ''
 
 # Name of the local timezone for `tzdata`
-timezone: UTC
+rss_temple__timezone: UTC
 
 # Are the services running in debug mode? Should be false in production, unless specifically needed
-app_debug: false
+rss_temple__app_debug: false
 
 # Max number of bytes downloadable before considered too big to fit in memory
-app_download_max_byte_count: 1000000
+rss_temple__app_download_max_byte_count: 1000000
 
 # Redis Max Memory in bytes. 0 for no limit. See https://redis.io/docs/reference/eviction/
-redis_max_memory: 0
+rss_temple__redis_max_memory: 0
 
 # Redis Max Memory policy. See https://redis.io/docs/reference/eviction/
-redis_max_memory_policy: noeviction
+rss_temple__redis_max_memory_policy: noeviction

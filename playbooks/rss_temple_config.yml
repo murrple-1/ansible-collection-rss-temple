@@ -3,129 +3,129 @@
   hosts: all
 
   vars_prompt:
-    - name: docker_version
+    - name: rss_temple__docker_version
       prompt: Docker tag name
       default: latest
       private: false
 
-    - name: postgres_admin_password
+    - name: rss_temple__postgres_admin_password
       prompt: Postgres Root Password
       default: __rand__
       private: true
 
-    - name: app_postgres_password
+    - name: rss_temple__app_postgres_password
       prompt: App Postgres Password
       default: __rand__
       private: true
 
-    - name: app_superuser_email
+    - name: rss_temple__app_superuser_email
       prompt: App SuperUser Email
       private: false
 
-    - name: app_superuser_password
+    - name: rss_temple__app_superuser_password
       prompt: App SuperUser Password
       default: __rand__
       private: true
 
-    - name: app_secret_key
+    - name: rss_temple__app_secret_key
       prompt: Value for `SECRET_KEY` property of `nabla.settings`
       default: __rand__
       private: true
 
-    - name: app_email_host
+    - name: rss_temple__app_email_host
       prompt: Email host
 
-    - name: app_email_port
+    - name: rss_temple_app_email_port
       prompt: Email port
       default: '25'
 
-    - name: app_email_host_user
+    - name: rss_temple__app_email_host_user
       prompt: Email host user
 
-    - name: app_email_host_password
+    - name: rss_temple__app_email_host_password
       prompt: Email host password
       private: true
 
-    - name: app_email_use_tls
+    - name: rss_temple__app_email_use_tls
       prompt: Email use TLS
       default: 'true'
 
-    - name: app_email_use_ssl
+    - name: rss_temple__app_email_use_ssl
       prompt: Email use SSL
       default: 'false'
 
-    - name: app_email_timeout
+    - name: rss_temple__app_email_timeout
       prompt: Email timeout (seconds)
       default: '10.0'
 
-    - name: app_default_from_email
+    - name: rss_temple__app_default_from_email
       prompt: Default FROM email address
       default: noreply@rsstemple.com
 
-    - name: app_site_domain
+    - name: rss_temple__app_site_domain
       prompt: Site domain
       default: rsstemple.com
 
-    - name: app_site_name
+    - name: rss_temple__app_site_name
       prompt: Site name
       default: RSS Temple
 
-    - name: app_account_confirm_email_url
+    - name: rss_temple__app_account_confirm_email_url
       prompt: URL to put in emails for account email verification
       default: http://localhost:4200/verify?token=%(key)s
 
-    - name: app_account_email_verification_sent_url
-      prompt: 'Unknown usage: app_account_email_verification_sent_url'
+    - name: rss_temple__app_account_email_verification_sent_url
+      prompt: 'Unknown usage: rss_temple__app_account_email_verification_sent_url'
       default: http://localhost:4200/emailsent
 
-    - name: app_password_confirm_reset_url_format
+    - name: rss_temple__app_password_confirm_reset_url_format
       prompt: |
         Format string of URL to put in emails for password reset requests
         Must contain the `{token}` and `{userId}` format tokens
       default: http://localhost:4200/resetpassword?token=%(token)s&userId=%(userId)s
 
-    - name: app_social_connections_url
+    - name: rss_temple__app_social_connections_url
       prompt: 'Unknown usage: app_social_connections_url'
       default: http://localhost:4200/main/profile
 
-    - name: app_social_signup_url
+    - name: rss_temple__app_social_signup_url
       prompt: 'Unknown usage: app_social_signup_url'
       default: http://localhost:4200/register
 
   pre_tasks:
     - name: Generate Random Passwords and the like
       block:
-        - when: postgres_admin_password == '__rand__'
+        - when: rss_temple__postgres_admin_password == '__rand__'
           ansible.builtin.set_fact:
-            _postgres_admin_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'postgres_admin_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
+            _rss_temple__postgres_admin_password: "{{ lookup('ansible.builtin.password', '_credentials/' + 'rss_temple__postgres_admin_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
-        - when: postgres_admin_password != '__rand__'
+        - when: rss_temple__postgres_admin_password != '__rand__'
           ansible.builtin.set_fact:
-            _postgres_admin_password: "{{ postgres_admin_password }}"
+            _rss_temple__postgres_admin_password: "{{ rss_temple__postgres_admin_password }}"
 
-        - when: app_postgres_password == '__rand__'
+        - when: rss_temple__app_postgres_password == '__rand__'
           ansible.builtin.set_fact:
-            _app_postgres_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'app_postgres_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
+            _rss_temple__app_postgres_password: "{{ lookup('ansible.builtin.password', '_credentials/' + 'rss_temple__app_postgres_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
-        - when: app_postgres_password != '__rand__'
+        - when: rss_temple__app_postgres_password != '__rand__'
           ansible.builtin.set_fact:
-            _app_postgres_password: "{{ app_postgres_password }}"
+            _rss_temple__app_postgres_password: "{{ rss_temple__app_postgres_password }}"
 
-        - when: app_superuser_password == '__rand__'
+        - when: rss_temple__app_superuser_password == '__rand__'
           ansible.builtin.set_fact:
-            _app_superuser_password: "{{ lookup('ansible.builtin.password', '_credentials/rss_temple.' + 'app_superuser_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
+            _rss_temple__app_superuser_password: "{{ lookup('ansible.builtin.password', '_credentials/' + 'rss_temple__app_superuser_password.' + inventory_hostname + '.password') }}"  # noqa yaml[line-length]
 
-        - when: app_superuser_password != '__rand__'
+        - when: rss_temple__app_superuser_password != '__rand__'
           ansible.builtin.set_fact:
-            _app_superuser_password: "{{ app_superuser_password }}"
+            _rss_temple__app_superuser_password: "{{ rss_temple__app_superuser_password }}"
 
-        - when: app_secret_key == '__rand__'
+        - when: rss_temple__app_secret_key == '__rand__'
           ansible.builtin.set_fact:
-            _app_secret_key: "{{ lookup('django_secret', '_credentials/rss_temple.' + 'app_secret_key.' + inventory_hostname + '.django_secret') }}"
+            _rss_temple__app_secret_key: "{{ lookup('django_secret', '_credentials/' + 'rss_temple__app_secret_key.' + inventory_hostname + '.django_secret') }}"  # noqa yaml[line-length]
 
-        - when: app_secret_key != '__rand__'
+        - when: rss_temple__app_secret_key != '__rand__'
           ansible.builtin.set_fact:
-            _app_secret_key: "{{ app_secret_key }}"
+            _rss_temple__app_secret_key: "{{ rss_temple__app_secret_key }}"
 
   tasks:
     - ansible.builtin.include_role:
@@ -136,8 +136,8 @@
     - name: Validate Variables
       block:
         - ansible.builtin.fail:
-            msg: '`app_superuser_email` is malformed'
-          when: app_superuser_email and app_superuser_email is not match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+            msg: '`rss_temple__app_superuser_email` is malformed'
+          when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
 
     - ansible.builtin.include_role:
         name: rss_temple

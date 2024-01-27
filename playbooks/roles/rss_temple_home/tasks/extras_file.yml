@@ -5,15 +5,15 @@
     mode: '0600'
     content: |
       {{  {
-          "service_path": service_path,
-          "app_docker_service_prefix": app_docker_service_prefix,
-          "docker_version": docker_version,
-          "app_url": app_url,
-          "twitter_url": twitter_url,
-          "facebook_url": facebook_url,
-          "instagram_url": instagram_url,
-          "og_title_prefix": og_title_prefix,
-          "og_image_host": og_image_host,
-          "og_url_host": og_url_host,
-          "og_description": og_description,
+          "rss_temple_home__service_path": rss_temple_home__service_path,
+          "rss_temple_home__app_docker_service_prefix": rss_temple_home__app_docker_service_prefix,
+          "rss_temple_home__docker_version": rss_temple_home__docker_version,
+          "rss_temple_home__app_url": rss_temple_home__app_url,
+          "rss_temple_home__twitter_url": rss_temple_home__twitter_url,
+          "rss_temple_home__facebook_url": rss_temple_home__facebook_url,
+          "rss_temple_home__instagram_url": rss_temple_home__instagram_url,
+          "rss_temple_home__og_title_prefix": rss_temple_home__og_title_prefix,
+          "rss_temple_home__og_image_host": rss_temple_home__og_image_host,
+          "rss_temple_home__og_url_host": rss_temple_home__og_url_host,
+          "rss_temple_home__og_description": rss_temple_home__og_description,
         } | to_nice_yaml(explicit_start=True) }}

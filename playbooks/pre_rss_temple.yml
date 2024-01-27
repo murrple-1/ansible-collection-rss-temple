@@ -3,10 +3,10 @@
   hosts: all
 
   vars_prompt:
-    - name: papertrail_destination_host
+    - name: pre_rss_temple__papertrail_destination_host
       prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com')
 
-    - name: papertrail_destination_port
+    - name: pre_rss_temple__papertrail_destination_port
       prompt: Papertrail Destination Port
 
   roles:

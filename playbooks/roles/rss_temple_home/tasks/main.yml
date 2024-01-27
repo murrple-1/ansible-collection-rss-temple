@@ -1,9 +1,9 @@
 ---
 - ansible.builtin.include_tasks: extras_file.yml
 
-- name: Setup `{{ service_path }}/`
+- name: Setup `{{ rss_temple_home__service_path }}/`
   ansible.builtin.file:
-    path: '{{ service_path }}/'
+    path: '{{ rss_temple_home__service_path }}/'
     state: directory
     mode: '0775'
 
@@ -13,6 +13,6 @@
 
 - name: Docker Compose Up
   community.docker.docker_compose:
-    project_src: '{{ absolute_service_path }}'
+    project_src: '{{ rss_temple_home__absolute_service_path }}'
     pull: true
   become: true

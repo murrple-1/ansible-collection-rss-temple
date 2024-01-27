@@ -5,13 +5,13 @@
   loop:
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
-      dest: '{{ absolute_service_path }}/docker-compose.yml'
+      dest: '{{ rss_temple__absolute_service_path }}/docker-compose.yml'
     - name: .env
       template: templates/.env.j2
-      dest: '{{ absolute_service_path }}/.env'
+      dest: '{{ rss_temple__absolute_service_path }}/.env'
     - name: Caddyfile
       template: templates/Caddyfile.j2
-      dest: '{{ absolute_service_path }}/Caddyfile'
+      dest: '{{ rss_temple__absolute_service_path }}/Caddyfile'
     - name: overrides/local_settings.py
       template: templates/local_settings.py.j2
-      dest: '{{ absolute_service_path }}/overrides/local_settings.py'
+      dest: '{{ rss_temple__absolute_service_path }}/overrides/local_settings.py'

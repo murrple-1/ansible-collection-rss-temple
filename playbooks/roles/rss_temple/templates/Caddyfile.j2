@@ -23,5 +23,5 @@
 	@web {
 		path *
 	}
-	reverse_proxy @web {{ app_docker_service_prefix }}rss_temple:8000
+	reverse_proxy @web {{ rss_temple__app_docker_service_prefix }}rss_temple:8000
 }

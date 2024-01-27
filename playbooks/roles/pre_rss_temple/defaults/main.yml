@@ -1,15 +1,15 @@
 ---
 # Remote directory path where to clone the `gray-infra` repo to
-service_path: ~/rss_temple_infra/
+pre_rss_temple__service_path: ~/rss_temple_infra/
 
 # list of fully-qualified domains that should direct to the rss_temple server
-server_domains: []
+pre_rss_temple__server_domains: []
 
 # list of fully-qualified domains that should direct to the rss_temple_app server
-app_domains: []
+pre_rss_temple__app_domains: []
 
 # list of fully-qualified domains that should direct to the rss_temple_home server
-home_domains: []
+pre_rss_temple__home_domains: []
 
 # Should the Ansible user be added to the `docker` group (so docker commands can be run without `sudo`)
-should_add_ansible_user_to_docker_group: true
+pre_rss_temple__should_add_ansible_user_to_docker_group: true

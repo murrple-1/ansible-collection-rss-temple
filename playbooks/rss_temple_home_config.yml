@@ -3,16 +3,16 @@
   hosts: all
 
   vars_prompt:
-    - name: docker_version
+    - name: rss_temple_home__docker_version
       prompt: Docker tag name
       default: latest
       private: false
 
-    - name: og_image_host
+    - name: rss_temple_home__og_image_host
       prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.png")
       default: https://rsstemple.com
 
-    - name: og_url_host
+    - name: rss_temple_home__og_url_host
       prompt: Hostname for the OpenGraph URL (formatted similar to "<HOSTNAME>/contact.html")
       default: https://rsstemple.com
 

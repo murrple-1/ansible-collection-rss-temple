@@ -5,7 +5,7 @@
   loop:
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
-      dest: '{{ absolute_service_path }}/docker-compose.yml'
+      dest: '{{ pre_rss_temple__absolute_service_path }}/docker-compose.yml'
     - name: Caddyfile
       template: templates/Caddyfile.j2
-      dest: '{{ absolute_service_path }}/Caddyfile'
+      dest: '{{ pre_rss_temple__absolute_service_path }}/Caddyfile'

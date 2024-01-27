@@ -3,9 +3,9 @@
   block:
     - ansible.builtin.command:
         cmd: pwd
-        chdir: '{{ service_path }}'
+        chdir: '{{ rss_temple_home__service_path }}'
       changed_when: false
       register: _pwd_ret
 
     - ansible.builtin.set_fact:
-        absolute_service_path: '{{ _pwd_ret.stdout }}'
+        rss_temple_home__absolute_service_path: '{{ _pwd_ret.stdout }}'

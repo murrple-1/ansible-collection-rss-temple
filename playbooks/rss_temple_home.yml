@@ -3,32 +3,32 @@
   hosts: all
 
   vars_prompt:
-    - name: docker_version
+    - name: rss_temple_home__docker_version
       prompt: Docker tag name
       default: latest
       private: false
 
-    - name: app_url
+    - name: rss_temple_home__app_url
       prompt: URL for the RSS Temple app
       default: https://app.rsstemple.com
 
-    - name: twitter_url
+    - name: rss_temple_home__twitter_url
       prompt: URL for our Twitter page
       default: https://twitter.com/rsstemple
 
-    - name: facebook_url
+    - name: rss_temple_home__facebook_url
       prompt: URL for our Facebook page
       default: https://www.facebook.com/RSSTemple/
 
-    - name: instagram_url
+    - name: rss_temple_home__instagram_url
       prompt: URL for our Instagram page
       default: https://www.instagram.com/rsstempleapp/
 
-    - name: og_image_host
+    - name: rss_temple_home__og_image_host
       prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.png")
       default: https://rsstemple.com
 
-    - name: og_url_host
+    - name: rss_temple_home__og_url_host
       prompt: Hostname for the OpenGraph URL (formatted similar to "<HOSTNAME>/contact.html")
       default: https://rsstemple.com
 

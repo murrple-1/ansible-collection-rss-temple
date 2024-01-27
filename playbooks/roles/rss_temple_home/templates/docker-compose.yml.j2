@@ -1,10 +1,10 @@
 version: '3.9'
 
 x-rss-temple-home-image: &rss-temple-home-image
-  image: 'murraychristopherson/rss_temple_home:{{ docker_version }}'
+  image: 'murraychristopherson/rss_temple_home:{{ rss_temple_home__docker_version }}'
 
 services:
-  {{ app_docker_service_prefix }}caddy-rss_temple_home:
+  {{ rss_temple_home__app_docker_service_prefix }}caddy-rss_temple_home:
     image: caddy:2
     restart: always
     expose:
@@ -17,7 +17,7 @@ services:
     networks:
       - default
       - rss_temple_net
-  {{ app_docker_service_prefix }}rss_temple_home:
+  {{ rss_temple_home__app_docker_service_prefix }}rss_temple_home:
     <<: *rss-temple-home-image
     command: >
       ash -c "

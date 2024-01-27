@@ -1,14 +1,14 @@
 version: '3.9'
 
 x-rss-temple-image: &rss-temple-image
-  image: 'murraychristopherson/rss_temple:{{ docker_version }}'
+  image: 'murraychristopherson/rss_temple:{{ rss_temple__docker_version }}'
 
 services:
-  {{ app_docker_service_prefix }}redis:
+  {{ rss_temple__app_docker_service_prefix }}redis:
     image: redis:7
-    command: redis-server --maxmemory {{ redis_max_memory }} --maxmemory-policy {{ redis_max_memory_policy }}
+    command: redis-server --maxmemory {{ rss_temple__redis_max_memory }} --maxmemory-policy {{ rss_temple__redis_max_memory_policy }}
     restart: always
-  {{ app_docker_service_prefix }}postgresql:
+  {{ rss_temple__app_docker_service_prefix }}postgresql:
     image: postgres:15
     restart: always
     shm_size: '256m'
@@ -20,7 +20,7 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - default
-  {{ app_docker_service_prefix }}caddy-rss_temple:
+  {{ rss_temple__app_docker_service_prefix }}caddy-rss_temple:
     image: caddy:2
     restart: always
     expose:
@@ -32,7 +32,7 @@ services:
     networks:
       - default
       - rss_temple_net
-  {{ app_docker_service_prefix }}rss_temple:
+  {{ rss_temple__app_docker_service_prefix }}rss_temple:
     <<: *rss-temple-image
     command: >
       sh -c "
@@ -49,28 +49,28 @@ services:
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
-{% if app_malloc_conf %}
-      MALLOC_CONF: {{ app_malloc_conf | quote }}
+{% if rss_temple__app_malloc_conf %}
+      MALLOC_CONF: {{ rss_temple__app_malloc_conf | quote }}
 {% endif %}
     env_file:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
       - django_static:/code/_static/
-  {{ app_docker_service_prefix }}rss_temple_dramatiq:
+  {{ rss_temple__app_docker_service_prefix }}rss_temple_dramatiq:
     <<: *rss-temple-image
     command: dramatiq api_dramatiq.tasks -Q rss_temple
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
-{% if dramatiq_malloc_conf %}
-      MALLOC_CONF: {{ dramatiq_malloc_conf | quote }}
+{% if rss_temple__dramatiq_malloc_conf %}
+      MALLOC_CONF: {{ rss_temple__dramatiq_malloc_conf | quote }}
 {% endif %}
     env_file:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
-  {{ app_docker_service_prefix }}rss_temple_schedulerdaemon:
+  {{ rss_temple__app_docker_service_prefix }}rss_temple_schedulerdaemon:
     <<: *rss-temple-image
     command: >
       sh -c "
@@ -85,15 +85,15 @@ services:
         python ./manage.py checkclassifierlabels
 
         exec python ./manage.py schedulerdaemon \\
-          --extract-top-images-response-max-byte-count {{ app_download_max_byte_count | int }} \\
-          --feed-scrape-response-max-byte-count {{ app_download_max_byte_count | int }} \\
-          --setup-subscriptions-response-max-byte-count {{ app_download_max_byte_count | int }}
+          --extract-top-images-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
+          --feed-scrape-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
+          --setup-subscriptions-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }}
       "
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
-{% if schedulerdaemon_malloc_conf %}
-      MALLOC_CONF: {{ schedulerdaemon_malloc_conf | quote }}
+{% if rss_temple__schedulerdaemon_malloc_conf %}
+      MALLOC_CONF: {{ rss_temple__schedulerdaemon_malloc_conf | quote }}
 {% endif %}
     env_file:
       - .env

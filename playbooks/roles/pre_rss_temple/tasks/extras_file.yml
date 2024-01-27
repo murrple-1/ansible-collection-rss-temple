@@ -5,11 +5,11 @@
     mode: '0600'
     content: |
       {{  {
-          "service_path": service_path,
-          "server_domains": server_domains,
-          "app_domains": app_domains,
-          "home_domains": home_domains,
-          "should_add_ansible_user_to_docker_group": should_add_ansible_user_to_docker_group,
-          "papertrail_destination_host": papertrail_destination_host,
-          "papertrail_destination_port": papertrail_destination_port,
+          "pre_rss_temple__service_path": pre_rss_temple__service_path,
+          "pre_rss_temple__server_domains": pre_rss_temple__server_domains,
+          "pre_rss_temple__app_domains": pre_rss_temple__app_domains,
+          "pre_rss_temple__home_domains": pre_rss_temple__home_domains,
+          "pre_rss_temple__should_add_ansible_user_to_docker_group": pre_rss_temple__should_add_ansible_user_to_docker_group,
+          "pre_rss_temple__papertrail_destination_host": pre_rss_temple__papertrail_destination_host,
+          "pre_rss_temple__papertrail_destination_port": pre_rss_temple__papertrail_destination_port,
         } | to_nice_yaml(explicit_start=True) }}

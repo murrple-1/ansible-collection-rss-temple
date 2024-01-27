@@ -18,7 +18,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: syslog+tls://{{ papertrail_destination_host }}:{{ papertrail_destination_port| int }}
+    command: syslog+tls://{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
 volumes:
   caddy_data:
 networks:
