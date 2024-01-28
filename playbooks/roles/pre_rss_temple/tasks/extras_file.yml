@@ -1,15 +1,12 @@
 ---
+- ansible.builtin.set_fact:
+    _pre_rss_temple__extras_dict: "{{ _pre_rss_temple__extras_dict | default({}) | combine({ item.key: item.value }) }}"
+  loop: "{{ vars | dict2items }}"
+  when: item.key is match('^pre_rss_temple__')
+
 - name: Create Extra Vars file
   ansible.builtin.copy:
     dest: ~/pre-rss-temple-extras.{{ ansible_date_time.iso8601_basic }}.yml
     mode: '0600'
     content: |
-      {{  {
-          "pre_rss_temple__service_path": pre_rss_temple__service_path,
-          "pre_rss_temple__server_domains": pre_rss_temple__server_domains,
-          "pre_rss_temple__app_domains": pre_rss_temple__app_domains,
-          "pre_rss_temple__home_domains": pre_rss_temple__home_domains,
-          "pre_rss_temple__should_add_ansible_user_to_docker_group": pre_rss_temple__should_add_ansible_user_to_docker_group,
-          "pre_rss_temple__papertrail_destination_host": pre_rss_temple__papertrail_destination_host,
-          "pre_rss_temple__papertrail_destination_port": pre_rss_temple__papertrail_destination_port,
-        } | to_nice_yaml(explicit_start=True) }}
+      {{  _pre_rss_temple__extras_dict | to_nice_yaml(explicit_start=True) }}

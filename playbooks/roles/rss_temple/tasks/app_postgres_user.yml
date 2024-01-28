@@ -1,7 +1,7 @@
 ---
 - name: Check if '{{ rss_temple__app_postgres_user }}' Postgres User already exists
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -20,11 +20,11 @@
   register: _django_user_exists_ret
 
 - ansible.builtin.set_fact:
-    _django_user_exists: "{{ '1' in _django_user_exists_ret.stdout }}"
+    _rss_temple__django_user_exists: "{{ '1' in _django_user_exists_ret.stdout }}"
 
 - name: Create '{{ rss_temple__app_postgres_user }}' Postgres User
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -40,11 +40,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: Alter Default Privileges to ALL for '{{ rss_temple_app_postgres_user }}'
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -60,11 +60,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: Grant ALL Privileges on existing tables to '{{ rss_temple__app_postgres_user }}'
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -80,11 +80,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: Grant ALL on schema to '{{ rss_temple__app_postgres_user }}'
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -100,11 +100,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: "Django-Specific: Alter client_encoding to utf8 for '{{ rss_temple__app_postgres_user }}'"
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -120,11 +120,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: "Django-Specific: Alter default_transaction_isolation to read committed for '{{ rss_temple__app_postgres_user }}'"
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -140,11 +140,11 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists
 
 - name: "Django-Specific: Alter timezone to UTC for '{{ rss_temple__app_postgres_user }}'"
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -160,4 +160,4 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
-  when: not _django_user_exists
+  when: not _rss_temple__django_user_exists

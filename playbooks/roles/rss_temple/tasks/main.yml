@@ -11,7 +11,7 @@
 
 - name: Setup `overrides/`
   ansible.builtin.file:
-    path: '{{ rss_temple__absolute_service_path }}/overrides/'
+    path: '{{ _rss_temple__absolute_service_path }}/overrides/'
     state: directory
     mode: '0775'
 
@@ -19,7 +19,7 @@
 
 - name: Docker Compose Up
   community.docker.docker_compose:
-    project_src: '{{ rss_temple__absolute_service_path }}'
+    project_src: '{{ _rss_temple__absolute_service_path }}'
     pull: true
   become: true
   notify:

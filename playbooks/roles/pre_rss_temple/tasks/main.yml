@@ -29,7 +29,7 @@
 
 - name: Docker Compose Up
   community.docker.docker_compose:
-    project_src: '{{ pre_rss_temple__absolute_service_path }}'
+    project_src: '{{ _pre_rss_temple__absolute_service_path }}'
     pull: true
   become: true
 

@@ -1,22 +1,22 @@
 ---
 - name: Set Docker's repo/distro fact
   ansible.builtin.set_fact:
-    docker_repo_distro_name: centos
+    _pre_rss_temple__docker_repo_distro_name: centos
 
 - name: Install Docker's `rpm` key
   become: true
   ansible.builtin.rpm_key:
-    key: https://download.docker.com/linux/{{ pre_rss_temple__docker_repo_distro_name }}/gpg
+    key: https://download.docker.com/linux/{{ _pre_rss_temple__docker_repo_distro_name }}/gpg
 
 - name: Install Docker's `yum` repo
   become: true
   ansible.builtin.yum_repository:
     name: docker
     description: docker repository
-    baseurl: https://download.docker.com/linux/{{ pre_rss_temple__docker_repo_distro_name }}/$releasever/$basearch/stable
+    baseurl: https://download.docker.com/linux/{{ _pre_rss_temple__docker_repo_distro_name }}/$releasever/$basearch/stable
     enabled: true
     gpgcheck: true
-    gpgkey: https://download.docker.com/linux/{{ pre_rss_temple__docker_repo_distro_name }}/gpg
+    gpgkey: https://download.docker.com/linux/{{ _pre_rss_temple__docker_repo_distro_name }}/gpg
 
 - name: Remove conflicting packages which are occassionally installed by default
   become: true

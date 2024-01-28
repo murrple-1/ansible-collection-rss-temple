@@ -1,7 +1,7 @@
 ---
 - name: Continue when DB is Migrated
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -21,7 +21,7 @@
 - name: Create App Superuser
   when: rss_temple__app_superuser_email
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose
@@ -49,7 +49,7 @@
     rss_temple__app_facebook_client_id and
     rss_temple__app_facebook_secret
   ansible.builtin.command:
-    chdir: '{{ rss_temple__absolute_service_path }}'
+    chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
       - docker
       - compose

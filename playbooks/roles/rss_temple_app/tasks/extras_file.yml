@@ -1,23 +1,12 @@
 ---
+- ansible.builtin.set_fact:
+    _rss_temple_app__extras_dict: "{{ _rss_temple_app__extras_dict | default({}) | combine({ item.key: item.value }) }}"
+  loop: "{{ vars | dict2items }}"
+  when: item.key is match('^rss_temple_app__')
+
 - name: Create Extra Vars file
   ansible.builtin.copy:
-    dest: ~/rss-temple-app-extras.{{ ansible_date_time.iso8601_basic }}.yml
+    dest: ~/pre-rss-temple-extras.{{ ansible_date_time.iso8601_basic }}.yml
     mode: '0600'
     content: |
-      {{  {
-          "rss_temple_app__service_path": rss_temple_app__service_path,
-          "rss_temple_app__app_docker_service_prefix": rss_temple_app__app_docker_service_prefix,
-          "rss_temple_app__docker_version": rss_temple_app__docker_version,
-          "rss_temple_app__app_api_host": rss_temple_app__app_api_host,
-          "rss_temple_app__app_google_client_id": rss_temple_app__app_google_client_id,
-          "rss_temple_app__app_facebook_client_id": rss_temple_app__app_facebook_client_id,
-          "rss_temple_app__app_onboarding_youtube_embeded_url": rss_temple_app__app_onboarding_youtube_embeded_url,
-          "rss_temple_app__app_issue_tracker_url": rss_temple_app__app_issue_tracker_url,
-          "rss_temple_app__app_client_repo_url": rss_temple_app__app_client_repo_url,
-          "rss_temple_app__app_server_repo_url": rss_temple_app__app_server_repo_url,
-          "rss_temple_app__og_title": rss_temple_app__og_title,
-          "rss_temple_app__og_image": rss_temple_app__og_image,
-          "rss_temple_app__og_url": rss_temple_app__og_url,
-          "rss_temple_app__og_description": rss_temple_app__og_description,
-          "rss_temple_app__app_force_label_threshold": rss_temple_app__app_force_label_threshold,
-        } | to_nice_yaml(explicit_start=True) }}
+      {{  _rss_temple_app__extras_dict | to_nice_yaml(explicit_start=True) }}

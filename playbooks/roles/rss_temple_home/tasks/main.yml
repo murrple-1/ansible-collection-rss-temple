@@ -13,6 +13,6 @@
 
 - name: Docker Compose Up
   community.docker.docker_compose:
-    project_src: '{{ rss_temple_home__absolute_service_path }}'
+    project_src: '{{ _rss_temple_home__absolute_service_path }}'
     pull: true
   become: true
