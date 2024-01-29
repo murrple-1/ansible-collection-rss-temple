@@ -5,7 +5,7 @@
         cmd: pwd
         chdir: '{{ rss_temple_home__service_path }}'
       changed_when: false
-      register: _pwd_ret
+      register: _rss_temple_home__pwd_ret
 
     - ansible.builtin.set_fact:
-        _rss_temple_home__absolute_service_path: '{{ _pwd_ret.stdout }}'
+        _rss_temple_home__absolute_service_path: '{{ _rss_temple_home__pwd_ret.stdout }}'

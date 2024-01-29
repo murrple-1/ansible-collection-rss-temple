@@ -12,9 +12,9 @@
       - migrate
       - --check
   become: true
-  register: _migrate_check_result
+  register: _rss_temple__migrate_check_result
   changed_when: false
-  until: _migrate_check_result.rc == 0
+  until: _rss_temple__migrate_check_result.rc == 0
   retries: 10
   delay: 5
 
@@ -36,9 +36,11 @@
       - '{{ rss_temple__app_superuser_email }}'
       - --noinput
   become: true
-  register: _create_su_results
-  changed_when: "'Superuser created successfully' in _create_su_results.stdout"
-  failed_when: "'Superuser created successfully' not in _create_su_results.stdout and 'That email is already taken' not in _create_su_results.stderr"
+  register: _rss_temple__create_su_results
+  changed_when: "'Superuser created successfully' in _rss_temple__create_su_results.stdout"
+  failed_when: >
+    'Superuser created successfully' not in _rss_temple__create_su_results.stdout and
+    'That email is already taken' not in _rss_temple__create_su_results.stderr"
 
 - name: Setup Social Apps
   when: >
@@ -65,6 +67,6 @@
       - '{{ rss_temple__app_facebook_client_id }}'
       - '{{ rss_temple__app_facebook_secret }}'
   become: true
-  register: _seed_recurring_tasks_result
-  changed_when: "'new social app' in _seed_recurring_tasks_result.stderr"
-  failed_when: "'social apps setup complete' not in _seed_recurring_tasks_result.stderr"
+  register: _rss_temple__seed_recurring_tasks_result
+  changed_when: "'new social app' in _rss_temple__seed_recurring_tasks_result.stderr"
+  failed_when: "'social apps setup complete' not in _rss_temple__seed_recurring_tasks_result.stderr"

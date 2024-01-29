@@ -1,6 +1,6 @@
 ---
 - ansible.builtin.set_fact:
-    _rss_temple_home__extras_dict: "{{ _rss_temple_home__extras_dict | default({}) | combine({ item.key: item.value }) }}"
+    _rss_temple_home__extras_dict: "{{ _rss_temple_home__extras_dict | default({}) | combine({item.key: item.value}) }}"
   loop: "{{ vars | dict2items }}"
   when: item.key is match('^rss_temple_home__')
 

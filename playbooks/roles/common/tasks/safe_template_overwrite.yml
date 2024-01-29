@@ -19,7 +19,7 @@
     get_checksum: true
     get_mime: false
     get_attributes: false
-  register: _temp_file_stat
+  register: _common__temp_file_stat
 
 - name: Stat `{{ item.name }}`
   ansible.builtin.stat:
@@ -27,10 +27,10 @@
     get_checksum: true
     get_mime: false
     get_attributes: false
-  register: _file_stat
+  register: _common__file_stat
 
 - name: Remove `{{ item.name }}` temp file
   ansible.builtin.file:
     path: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
     state: absent
-  when: _temp_file_stat.stat.checksum == _file_stat.stat.checksum
+  when: _common__temp_file_stat.stat.checksum == _common__file_stat.stat.checksum

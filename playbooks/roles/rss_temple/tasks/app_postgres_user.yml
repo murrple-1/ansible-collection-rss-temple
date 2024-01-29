@@ -17,10 +17,10 @@
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: false
-  register: _django_user_exists_ret
+  register: _rss_temple__django_user_exists_ret
 
 - ansible.builtin.set_fact:
-    _rss_temple__django_user_exists: "{{ '1' in _django_user_exists_ret.stdout }}"
+    _rss_temple__django_user_exists: "{{ '1' in _rss_temple__django_user_exists_ret.stdout }}"
 
 - name: Create '{{ rss_temple__app_postgres_user }}' Postgres User
   ansible.builtin.command:
