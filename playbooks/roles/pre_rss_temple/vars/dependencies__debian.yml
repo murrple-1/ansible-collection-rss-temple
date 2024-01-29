@@ -1,5 +1,5 @@
 ---
-pre_rss_temple__deb_architecture: {
+_pre_rss_temple__deb_architecture: {
   "armv6l": "armhf",
   "armv7l": "armhf",
   "aarch64": "arm64",
