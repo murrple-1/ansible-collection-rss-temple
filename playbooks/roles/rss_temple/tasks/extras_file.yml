@@ -8,5 +8,4 @@
   ansible.builtin.copy:
     dest: ~/rss-temple-extras.{{ ansible_date_time.iso8601_basic }}.yml
     mode: '0600'
-    content: |
-      {{  _rss_temple__extras_dict | to_nice_yaml(explicit_start=True) }}
+    content: '{{  _rss_temple__extras_dict | to_nice_yaml(explicit_start=True) }}'
