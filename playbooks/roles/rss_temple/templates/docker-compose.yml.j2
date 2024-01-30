@@ -8,6 +8,8 @@ services:
     image: redis:7
     command: redis-server --maxmemory {{ rss_temple__redis_max_memory }} --maxmemory-policy {{ rss_temple__redis_max_memory_policy }}
     restart: always
+    networks:
+      - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}postgresql:
     image: postgres:15
     restart: always
@@ -19,7 +21,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
-      - default
+      - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}caddy-rss_temple:
     image: caddy:2
     restart: always
@@ -30,8 +32,8 @@ services:
       - caddy_data:/data/
       - django_static:/srv/
     networks:
-      - default
       - rss_temple_net
+      - global_rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple:
     <<: *rss-temple-image
     command: >
@@ -57,6 +59,9 @@ services:
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
       - django_static:/code/_static/
+    networks:
+      - default
+      - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple_dramatiq:
     <<: *rss-temple-image
     command: dramatiq api_dramatiq.tasks -Q rss_temple
@@ -70,6 +75,9 @@ services:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+    networks:
+      - default
+      - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple_schedulerdaemon:
     <<: *rss-temple-image
     command: >
@@ -99,10 +107,14 @@ services:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+    networks:
+      - rss_temple_net
 volumes:
   db_data:
   caddy_data:
   django_static:
 networks:
-  rss_temple_net:
+  global_rss_temple_net:
     external: true
+  rss_temple_net:
+    internal: true

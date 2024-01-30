@@ -12,15 +12,17 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
       - default
-      - rss_temple_net
+      - global_rss_temple_net
   logspout:
     image: gliderlabs/logspout:latest
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: syslog+tls://{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
+    networks:
+      - default
 volumes:
   caddy_data:
 networks:
-  rss_temple_net:
+  global_rss_temple_net:
     external: true

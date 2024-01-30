@@ -15,8 +15,8 @@ services:
       - caddy_srv:/srv/
       - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
-      - default
-      - rss_temple_net
+      - rss_temple_home_net
+      - global_rss_temple_net
   {{ rss_temple_home__app_docker_service_prefix }}rss_temple_home:
     <<: *rss-temple-home-image
     command: >
@@ -41,10 +41,14 @@ services:
       - ./contact.head.html:/custom/contact.head.html
       - ./privacy.head.html:/custom/privacy.head.html
       - ./tos.head.html:/custom/tos.head.html
+    networks:
+      - rss_temple_home_net
 volumes:
   caddy_data:
   caddy_config:
   caddy_srv:
 networks:
-  rss_temple_net:
+  global_rss_temple_net:
     external: true
+  rss_temple_home_net:
+    internal: true

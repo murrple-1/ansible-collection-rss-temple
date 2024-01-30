@@ -25,6 +25,7 @@
 - name: Setup global Docker network
   community.docker.docker_network:
     name: rss_temple_net
+    internal: true
   become: true
 
 - name: Docker Compose Up

@@ -24,11 +24,13 @@ services:
       - ./config.json:/srv/assets/config.json
       - ./index.head.html:/custom/index.head.html
     networks:
-      - default
-      - rss_temple_net
+      - rss_temple_app_net
+      - global_rss_temple_net
 volumes:
   caddy_data:
   caddy_config:
 networks:
-  rss_temple_net:
+  global_rss_temple_net:
     external: true
+  rss_temple_app_net:
+    internal: true
