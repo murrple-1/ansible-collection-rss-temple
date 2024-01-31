@@ -1,11 +1,11 @@
 version: '3.9'
 
-x-rss-temple-app-image: &rss-temple-app-image
-  image: 'murraychristopherson/rss_temple_app:{{ rss_temple_app__docker_version }}'
+x-rss-temple-web-app-image: &rss-temple-web-app-image
+  image: 'murraychristopherson/rss_temple_web_app:{{ rss_temple_web_app__docker_version }}'
 
 services:
-  {{ rss_temple_app__app_docker_service_prefix }}caddy-rss_temple_app:
-    <<: *rss-temple-app-image
+  {{ rss_temple_web_app__app_docker_service_prefix }}caddy-rss_temple_web_app:
+    <<: *rss-temple-web-app-image
     command: >
       ash -c "
         if [ -e /custom/index.head.html ]; then
@@ -24,7 +24,7 @@ services:
       - ./config.json:/srv/assets/config.json
       - ./index.head.html:/custom/index.head.html
     networks:
-      - rss_temple_app_net
+      - rss_temple_web_app_net
       - global_rss_temple_net
 volumes:
   caddy_data:
@@ -32,5 +32,5 @@ volumes:
 networks:
   global_rss_temple_net:
     external: true
-  rss_temple_app_net:
+  rss_temple_web_app_net:
     internal: true

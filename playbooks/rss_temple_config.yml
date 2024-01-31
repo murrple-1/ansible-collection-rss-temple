@@ -35,7 +35,7 @@
     - name: rss_temple__app_email_host
       prompt: Email host
 
-    - name: rss_temple_app_email_port
+    - name: rss_temple__app_email_port
       prompt: Email port
       default: '25'
 

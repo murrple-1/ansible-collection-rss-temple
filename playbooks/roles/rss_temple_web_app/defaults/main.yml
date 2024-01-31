@@ -1,18 +1,18 @@
 ---
 # Remote directory path where to store the app config files
-rss_temple_app__service_path: ~/rss_temple_app/
+rss_temple_web_app__service_path: ~/rss_temple_web_app/
 
 # If you want your Docker services to be prefixed (as in, `rss_temple-app` -> `staging-rss_temple-app`), set this string
-rss_temple_app__app_docker_service_prefix: ''
+rss_temple_web_app__app_docker_service_prefix: ''
 
 # Max age property for `Strict-Transport-Security` HTTP header. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
-rss_temple_app__strict_transport_security_max_age: 31536000
+rss_temple_web_app__strict_transport_security_max_age: 31536000
 
 # OpenGraph title
-rss_temple_app__og_title: RSS Temple App
+rss_temple_web_app__og_title: RSS Temple App
 
 # OpenGraph description
-rss_temple_app__og_description: The Zen of Syndication
+rss_temple_web_app__og_description: The Zen of Syndication
 
 # Threshold (between 0.0 and 1.0) over which randomly we will show the "Is this article labeled like...?" alert
-rss_temple_app__app_force_label_threshold: 0.8
+rss_temple_web_app__app_force_label_threshold: 0.8

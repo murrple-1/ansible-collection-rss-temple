@@ -8,7 +8,7 @@
       default: latest
       private: false
 
-    - name: rss_temple_home__app_url
+    - name: rss_temple_home__web_app_url
       prompt: URL for the RSS Temple app
       default: https://app.rsstemple.com
 

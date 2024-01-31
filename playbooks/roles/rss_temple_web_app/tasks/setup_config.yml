@@ -5,13 +5,13 @@
   loop:
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
-      dest: '{{ _rss_temple_app__absolute_service_path }}/docker-compose.yml'
+      dest: '{{ _rss_temple_web_app__absolute_service_path }}/docker-compose.yml'
     - name: config.json
       template: templates/config.json.j2
-      dest: '{{ _rss_temple_app__absolute_service_path }}/config.json'
+      dest: '{{ _rss_temple_web_app__absolute_service_path }}/config.json'
     - name: Caddyfile
       template: templates/Caddyfile.j2
-      dest: '{{ _rss_temple_app__absolute_service_path }}/Caddyfile'
+      dest: '{{ _rss_temple_web_app__absolute_service_path }}/Caddyfile'
     - name: index.head.html
       template: templates/index.head.html.j2
-      dest: '{{ _rss_temple_app__absolute_service_path }}/index.head.html'
+      dest: '{{ _rss_temple_web_app__absolute_service_path }}/index.head.html'

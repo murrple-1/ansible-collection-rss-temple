@@ -1,0 +1,10 @@
+{{ {
+  "apiHost": rss_temple_web_app__app_api_host,
+  "googleClientId": rss_temple_web_app__app_google_client_id,
+  "facebookAppId": rss_temple_web_app__app_facebook_client_id,
+  "onboardingYoutubeEmbededUrl": rss_temple_web_app__app_onboarding_youtube_embeded_url,
+  "issueTrackerUrl": rss_temple_web_app__app_issue_tracker_url,
+  "clientRepoUrl": rss_temple_web_app__app_client_repo_url,
+  "serverRepoUrl": rss_temple_web_app__app_server_repo_url,
+  "forceLabelThreshold": rss_temple_web_app__app_force_label_threshold,
+} | to_json(indent=2, sort_keys=True) }}

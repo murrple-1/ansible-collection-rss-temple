@@ -5,14 +5,14 @@
 
 	reverse_proxy caddy-rss_temple:8000
 }
-{% endif %}{% if pre_rss_temple__app_domains %}
+{% endif %}{% if pre_rss_temple__web_app_domains %}
 
-{{ pre_rss_temple__app_domains | join(", ") }} {
+{{ pre_rss_temple__web_app_domains | join(", ") }} {
 	log
 
 	encode gzip
 
-	reverse_proxy caddy-rss_temple_app:4200
+	reverse_proxy caddy-rss_temple_web_app:4200
 }
 {% endif %}{% if pre_rss_temple__home_domains %}
 

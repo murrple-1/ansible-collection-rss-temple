@@ -5,8 +5,8 @@ pre_rss_temple__service_path: ~/rss_temple_infra/
 # list of fully-qualified domains that should direct to the rss_temple server
 pre_rss_temple__server_domains: []
 
-# list of fully-qualified domains that should direct to the rss_temple_app server
-pre_rss_temple__app_domains: []
+# list of fully-qualified domains that should direct to the rss_temple_web_app server
+pre_rss_temple__web_app_domains: []
 
 # list of fully-qualified domains that should direct to the rss_temple_home server
 pre_rss_temple__home_domains: []

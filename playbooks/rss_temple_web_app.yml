@@ -3,44 +3,44 @@
   hosts: all
 
   vars_prompt:
-    - name: rss_temple_app__docker_version
+    - name: rss_temple_web_app__docker_version
       prompt: Docker tag name
       default: latest
       private: false
 
-    - name: rss_temple_app__app_api_host
+    - name: rss_temple_web_app__app_api_host
       prompt: Host domain for the API
       default: https://api.rsstemple.com
 
-    - name: rss_temple_app__app_google_client_id
+    - name: rss_temple_web_app__app_google_client_id
       prompt: Google Client ID
 
-    - name: rss_temple_app__app_facebook_client_id
+    - name: rss_temple_web_app__app_facebook_client_id
       prompt: Facebook App ID
 
-    - name: rss_temple_app__app_onboarding_youtube_embeded_url
+    - name: rss_temple_web_app__app_onboarding_youtube_embeded_url
       prompt: Embeded Youtube Video URL for onboarding
       default: https://www.youtube.com/embed/dQw4w9WgXcQ
 
-    - name: rss_temple_app__app_issue_tracker_url
+    - name: rss_temple_web_app__app_issue_tracker_url
       prompt: URL for Issue tracking
       default: https://github.com/murrple-1/rss_temple/issues
 
-    - name: rss_temple_app__app_client_repo_url
+    - name: rss_temple_web_app__app_client_repo_url
       prompt: URL to the client/app Git repo
-      default: https://github.com/murrple-1/rss_temple_http
+      default: https://github.com/murrple-1/rss_temple_ui
 
-    - name: rss_temple_app__app_server_repo_url
+    - name: rss_temple_web_app__app_server_repo_url
       prompt: URL to the server Git repo
       default: https://github.com/murrple-1/rss_temple
 
-    - name: rss_temple_app__og_image
+    - name: rss_temple_web_app__og_image
       prompt: URL for the OpenGraph image
       default: https://app.rsstemple.com/assets/images/og_image.jpg
 
-    - name: rss_temple_app__og_url
+    - name: rss_temple_web_app__og_url
       prompt: URL for the OpenGraph URL
       default: https://app.rsstemple.com
 
   roles:
-    - rss_temple_app
+    - rss_temple_web_app

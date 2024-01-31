@@ -42,7 +42,7 @@
   changed_when: true
   when: not _rss_temple__django_user_exists
 
-- name: Alter Default Privileges to ALL for '{{ rss_temple_app_postgres_user }}'
+- name: Alter Default Privileges to ALL for '{{ rss_temple__app_postgres_user }}'
   ansible.builtin.command:
     chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
