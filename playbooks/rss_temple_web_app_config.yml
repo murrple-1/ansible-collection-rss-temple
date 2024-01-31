@@ -18,10 +18,10 @@
 
   tasks:
     - ansible.builtin.include_role:
-        name: rss_temple_app
+        name: rss_temple_web_app
         tasks_from: _absolute_service_path
         public: true
 
     - ansible.builtin.include_role:
-        name: rss_temple_app
+        name: rss_temple_web_app
         tasks_from: setup_config
