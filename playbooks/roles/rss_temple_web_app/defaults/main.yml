@@ -14,5 +14,8 @@ rss_temple_web_app__og_title: RSS Temple App
 # OpenGraph description
 rss_temple_web_app__og_description: The Zen of Syndication
 
+# TODO
+rss_temple_web_app__app_donation_links: []
+
 # Threshold (between 0.0 and 1.0) over which randomly we will show the "Is this article labeled like...?" alert
 rss_temple_web_app__app_force_label_threshold: 0.8
