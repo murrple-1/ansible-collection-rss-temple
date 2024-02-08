@@ -16,6 +16,9 @@ rss_temple__postgres_name: postgres
 # PostgreSQL role name of the semi-limited role used by rss_temple
 rss_temple__app_postgres_user: monk
 
+# Location to store the PostgreSQL data directory. If empty, use a docker volume instead.
+rss_temple__postgres_local_data_directory: ''
+
 # If you want your Docker services to be prefixed (as in, `rss_temple` -> `staging-rss_temple`), set this string
 rss_temple__app_docker_service_prefix: ''
 

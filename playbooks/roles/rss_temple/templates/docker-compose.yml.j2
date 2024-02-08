@@ -19,7 +19,11 @@ services:
     env_file:
       - .env
     volumes:
-      - db_data:/var/lib/postgresql/data
+{% if not rss_temple__postgres_local_data_directory %}
+      - db_data:/var/lib/postgresql/data/
+{% else %}
+      - {{ rss_temple__postgres_local_data_directory }}:/var/lib/postgresql/data/
+{% endif %}
     networks:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}caddy-rss_temple:
@@ -110,7 +114,9 @@ services:
     networks:
       - rss_temple_net
 volumes:
+{% if not rss_temple__postgres_local_data_directory %}
   db_data:
+{% endif %}
   caddy_data:
   django_static:
 networks:
