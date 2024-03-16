@@ -76,6 +76,14 @@
       prompt: Site name
       default: RSS Temple
 
+    - name: rss_temple__app_session_cookie_domain
+      prompt: Session Cookie Domain
+      default: .rsstemple.com
+
+    - name: rss_temple__app_csrf_cookie_domain
+      prompt: CSRF Cookie Domain
+      default: .rsstemple.com
+
     - name: rss_temple__app_google_client_id
       prompt: Google Client ID
 
