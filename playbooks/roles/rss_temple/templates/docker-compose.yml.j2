@@ -99,6 +99,7 @@ services:
         exec python ./manage.py schedulerdaemon \\
           --extract-top-images-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
           --feed-scrape-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
+          --feed-scrape-should-scrape-dead-feeds \\
           --setup-subscriptions-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }}
       "
     restart: always
