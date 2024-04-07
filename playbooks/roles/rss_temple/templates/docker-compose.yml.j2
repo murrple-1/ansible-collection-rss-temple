@@ -3,13 +3,13 @@ x-rss-temple-image: &rss-temple-image
 
 services:
   {{ rss_temple__app_docker_service_prefix }}redis:
-    image: redis:7
+    image: redis:7-alpine
     command: redis-server --maxmemory {{ rss_temple__redis_max_memory }} --maxmemory-policy {{ rss_temple__redis_max_memory_policy }}
     restart: always
     networks:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}postgresql:
-    image: postgres:15
+    image: postgres:15-alpine
     restart: always
     shm_size: '256m'
     expose:
@@ -25,7 +25,7 @@ services:
     networks:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}caddy-rss_temple:
-    image: caddy:2
+    image: caddy:2-alpine
     restart: always
     expose:
       - '8000'

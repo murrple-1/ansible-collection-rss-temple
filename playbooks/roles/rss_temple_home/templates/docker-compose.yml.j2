@@ -3,7 +3,7 @@ x-rss-temple-home-image: &rss-temple-home-image
 
 services:
   {{ rss_temple_home__app_docker_service_prefix }}caddy-rss_temple_home:
-    image: caddy:2
+    image: caddy:2-alpine
     restart: always
     expose:
       - '3000'
