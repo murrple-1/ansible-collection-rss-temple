@@ -7,8 +7,10 @@ services:
     command: >
       ash -c "
         if [ -e /custom_html/index.head.html ]; then
+          echo 'customizing /srv/index.html...'
           sed -i -e \"/<!-- DEPLOYMENT HEAD START -->/,/<!-- DEPLOYMENT HEAD END -->/{/<!-- DEPLOYMENT HEAD START -->/{r /custom_html/index.head.html
       p};/<!-- DEPLOYMENT HEAD END -->/!d}\" /srv/index.html
+          echo 'done'
         fi
         exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
       "
