@@ -34,6 +34,10 @@
       prompt: URL to the server Git repo
       default: https://github.com/murrple-1/rss_temple
 
+    - name: rss_temple_web_app__privacy_policy_url
+      prompt: URL to the app privacy policy
+      default: https://rsstemple.com/privacy
+
     - name: rss_temple_web_app__og_image
       prompt: URL for the OpenGraph image
       default: https://app.rsstemple.com/assets/images/og_image.jpg
