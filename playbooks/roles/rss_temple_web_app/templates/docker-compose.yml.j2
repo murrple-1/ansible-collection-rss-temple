@@ -6,8 +6,8 @@ services:
     <<: *rss-temple-web-app-image
     command: >
       ash -c "
-        if [ -e /custom/index.head.html ]; then
-          sed -i -e \"/<!-- DEPLOYMENT HEAD START -->/,/<!-- DEPLOYMENT HEAD END -->/{/<!-- DEPLOYMENT HEAD START -->/{r /custom/index.head.html
+        if [ -e /custom_html/index.head.html ]; then
+          sed -i -e \"/<!-- DEPLOYMENT HEAD START -->/,/<!-- DEPLOYMENT HEAD END -->/{/<!-- DEPLOYMENT HEAD START -->/{r /custom_html/index.head.html
       p};/<!-- DEPLOYMENT HEAD END -->/!d}\" /srv/index.html
         fi
         exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
@@ -20,7 +20,7 @@ services:
       - caddy_config:/config/
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./config.json:/srv/assets/config.json
-      - ./index.head.html:/custom/index.head.html
+      - ./custom_html/:/custom_html/
     networks:
       - rss_temple_web_app_net
       - global_rss_temple_net

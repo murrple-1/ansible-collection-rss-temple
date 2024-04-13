@@ -1,4 +1,10 @@
 ---
+- name: Create custom HTML directory
+  ansible.builtin.file:
+    path: '{{ _rss_temple_web_app__absolute_service_path }}/custom_html'
+    state: directory
+    mode: '0755'
+
 - ansible.builtin.include_role:
     name: common
     tasks_from: safe_template_overwrite
@@ -14,4 +20,4 @@
       dest: '{{ _rss_temple_web_app__absolute_service_path }}/Caddyfile'
     - name: index.head.html
       template: templates/index.head.html.j2
-      dest: '{{ _rss_temple_web_app__absolute_service_path }}/index.head.html'
+      dest: '{{ _rss_temple_web_app__absolute_service_path }}/custom_html/index.head.html'
