@@ -7,6 +7,17 @@
 
 - ansible.builtin.include_role:
     name: common
+    tasks_from: safe_file_overwrite
+  loop:
+    - name: privacy.html
+      src: files/privacy.html
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/privacy.html'
+    - name: tos.html
+      src: files/tos.html
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/tos.html'
+
+- ansible.builtin.include_role:
+    name: common
     tasks_from: safe_template_overwrite
   loop:
     - name: docker-compose.yml
