@@ -32,13 +32,10 @@ services:
     env_file:
       - .env
     environment:
-      HEAD_CUSTOM_DIR: '/custom/'
+      CUSTOM_HTML_DIR: '/custom_html/'
     volumes:
       - caddy_srv:/srv/
-      - ./index.head.html:/custom/index.head.html
-      - ./contact.head.html:/custom/contact.head.html
-      - ./privacy.head.html:/custom/privacy.head.html
-      - ./tos.head.html:/custom/tos.head.html
+      - ./custom_html/:/custom_html/
     networks:
       - rss_temple_home_net
 volumes:

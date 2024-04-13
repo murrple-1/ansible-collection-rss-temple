@@ -1,4 +1,10 @@
 ---
+- name: Create custom HTML directory
+  ansible.builtin.file:
+    path: '{{ _rss_temple_home__absolute_service_path }}/custom_html'
+    state: directory
+    mode: '0755'
+
 - ansible.builtin.include_role:
     name: common
     tasks_from: safe_template_overwrite
@@ -14,13 +20,13 @@
       dest: '{{ _rss_temple_home__absolute_service_path }}/Caddyfile'
     - name: index.head.html
       template: templates/index.head.html.j2
-      dest: '{{ _rss_temple_home__absolute_service_path }}/index.head.html'
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/index.head.html'
     - name: contact.head.html
       template: templates/contact.head.html.j2
-      dest: '{{ _rss_temple_home__absolute_service_path }}/contact.head.html'
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/contact.head.html'
     - name: privacy.head.html
       template: templates/privacy.head.html.j2
-      dest: '{{ _rss_temple_home__absolute_service_path }}/privacy.head.html'
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/privacy.head.html'
     - name: tos.head.html
       template: templates/tos.head.html.j2
-      dest: '{{ _rss_temple_home__absolute_service_path }}/tos.head.html'
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/tos.head.html'
