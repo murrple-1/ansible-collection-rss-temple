@@ -15,6 +15,9 @@
     - name: tos.html
       src: files/tos.html
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/tos.html'
+    - name: contact.html
+      src: files/contact.html
+      dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/contact.html'
 
 - ansible.builtin.include_role:
     name: common
