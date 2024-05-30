@@ -2,6 +2,11 @@
 - name: Setup Config (pre-rss-temple)
   hosts: all
 
+  vars_prompt:
+    - name: pre_rss_temple__ca_email
+      prompt: Email (for creating an ACME account with your CA)
+      private: false
+
   tasks:
     - ansible.builtin.include_role:
         name: pre_rss_temple

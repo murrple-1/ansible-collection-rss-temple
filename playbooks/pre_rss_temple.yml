@@ -3,6 +3,10 @@
   hosts: all
 
   vars_prompt:
+    - name: pre_rss_temple__ca_email
+      prompt: Email (for creating an ACME account with your CA)
+      private: false
+
     - name: pre_rss_temple__papertrail_destination_host
       prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com')
 

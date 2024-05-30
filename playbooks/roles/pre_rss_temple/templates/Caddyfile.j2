@@ -1,9 +1,19 @@
-{% if pre_rss_temple__server_domains %}{{ pre_rss_temple__server_domains | join(", ") }} {
+{
+	email {{ pre_rss_temple__ca_email }}
+}
+
+{% if pre_rss_temple__server_domains %}{{ pre_rss_temple__server_domains | map('regex_replace', '^', 'https://') | join(", ") }} {
 	log
 
 	encode gzip
 
 	reverse_proxy caddy-rss_temple:8000
+}
+
+{{ pre_rss_temple__server_domains | map('regex_replace', '^', 'http://') | join(", ") }} {
+	respond "The API is only accessible over HTTPS" 403 {
+		close
+	}
 }
 {% endif %}{% if pre_rss_temple__web_app_domains %}
 
