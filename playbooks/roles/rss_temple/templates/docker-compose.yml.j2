@@ -59,7 +59,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./schedulerdaemon.json:/schedulerdaemon.json
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
       - django_static:/code/_static/
     networks:
@@ -106,6 +105,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./schedulerdaemon.json:/schedulerdaemon.json
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
     networks:
       - rss_temple_net
