@@ -15,3 +15,6 @@
     - name: overrides/local_settings.py
       template: templates/local_settings.py.j2
       dest: '{{ _rss_temple__absolute_service_path }}/overrides/local_settings.py'
+    - name: schedulerdaemon.json
+      template: templates/schedulerdaemon.json.j2
+      dest: '{{ _rss_temple__absolute_service_path }}/schedulerdaemon.json'

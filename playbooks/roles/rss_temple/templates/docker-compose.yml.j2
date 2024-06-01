@@ -59,6 +59,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./schedulerdaemon.json:/schedulerdaemon.json
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
       - django_static:/code/_static/
     networks:
@@ -94,11 +95,7 @@ services:
 
         python ./manage.py checkclassifierlabels
 
-        exec python ./manage.py schedulerdaemon \\
-          --extract-top-images-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
-          --feed-scrape-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }} \\
-          --feed-scrape-should-scrape-dead-feeds \\
-          --setup-subscriptions-response-max-byte-count {{ rss_temple__app_download_max_byte_count | int }}
+        exec python ./manage.py schedulerdaemon /schedulerdaemon.json
       "
     restart: always
     environment:

@@ -1,0 +1,19 @@
+{{ {
+	"delete_old_job_executions": {},
+	"archive_feed_entries": {},
+	"extract_top_images": {
+		"responseMaxByteCount": (rss_temple__app_download_max_byte_count | int)
+	},
+	"label_feeds": {},
+	"label_users": {},
+	"feed_scrape": {
+		"responseMaxByteCount": (rss_temple__app_download_max_byte_count | int),
+		"shouldScrapeDeadFeeds": True
+	},
+	"setup_subscriptions": {
+		"responseMaxByteCount": (rss_temple__app_download_max_byte_count | int)
+	},
+	"purge_expired_data": {},
+	"flag_duplicate_feeds": {},
+	"purge_duplicate_feed_urls": {}
+} | to_nice_json }}
