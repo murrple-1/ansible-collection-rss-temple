@@ -18,3 +18,11 @@
     - name: schedulerdaemon.json
       template: templates/schedulerdaemon.json.j2
       dest: '{{ _rss_temple__absolute_service_path }}/schedulerdaemon.json'
+
+- ansible.builtin.include_role:
+    name: common
+    tasks_from: safe_file_overwrite
+  loop:
+    - name: gunicorn.conf.py
+      src: files/gunicorn.conf.py
+      dest: '{{ _rss_temple__absolute_service_path }}/overrides/gunicorn.conf.py'

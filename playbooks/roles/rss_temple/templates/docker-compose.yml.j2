@@ -60,6 +60,7 @@ services:
       - .env
     volumes:
       - ./overrides/local_settings.py:/code/rss_temple/local_settings.py
+      - ./overrides/gunicorn.conf.py:/code/gunicorn.conf.py
       - django_static:/code/_static/
     networks:
       - default  # necessary, because functionality requires making calls to the external internet
