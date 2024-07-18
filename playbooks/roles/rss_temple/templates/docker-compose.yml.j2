@@ -67,7 +67,7 @@ services:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple_dramatiq:
     <<: *rss-temple-image
-    command: dramatiq api_dramatiq.tasks -Q rss_temple
+    command: dramatiq api_dramatiq.main -Q rss_temple
     restart: always
     environment:
       APP_IN_DOCKER: 'true'
