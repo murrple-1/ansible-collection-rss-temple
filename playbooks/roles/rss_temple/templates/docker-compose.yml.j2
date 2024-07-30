@@ -48,7 +48,14 @@ services:
 
         python ./manage.py migrate
 
-        exec gunicorn -b 0.0.0.0:8000 rss_temple.wsgi:application
+        exec gunicorn \\
+          -b 0.0.0.0:8000 \\
+          --worker-class gthread \\
+          --workers {{ gray_os__gunicorn_workers | int }} \\
+          --threads {{ gray_os__gunicorn_threads | int }} \\
+          --capture-output \\
+          --access-logfile='-' \\
+          rss_temple.wsgi:application
       "
     restart: always
     environment:
