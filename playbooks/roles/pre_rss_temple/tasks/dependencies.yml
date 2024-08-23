@@ -1,8 +1,1 @@
 ---
-- name: Install dependencies via `pip`
-  become: true
-  ansible.builtin.pip:
-    name:
-      # TODO pinned until https://github.com/docker/docker-py/issues/3194 is resolved
-      - docker==6.1.3
-      - docker-compose

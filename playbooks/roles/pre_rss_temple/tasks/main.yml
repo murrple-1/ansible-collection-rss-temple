@@ -24,14 +24,14 @@
 
 - name: Setup global Docker network
   community.docker.docker_network:
-    name: rss_temple_net
+    name: global_rss_temple_net
     internal: true
   become: true
 
 - name: Docker Compose Up
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: '{{ _pre_rss_temple__absolute_service_path }}'
-    pull: true
+    pull: always
   become: true
 
 - name: Firewall (Ubuntu)

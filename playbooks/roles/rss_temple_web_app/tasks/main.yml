@@ -12,7 +12,7 @@
 - ansible.builtin.include_tasks: setup_config.yml
 
 - name: Docker Compose Up
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: '{{ _rss_temple_web_app__absolute_service_path }}'
-    pull: true
+    pull: always
   become: true

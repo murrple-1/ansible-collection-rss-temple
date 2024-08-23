@@ -40,7 +40,7 @@
   changed_when: "'Superuser created successfully' in _rss_temple__create_su_results.stdout"
   failed_when: >
     'Superuser created successfully' not in _rss_temple__create_su_results.stdout and
-    'That email is already taken' not in _rss_temple__create_su_results.stderr"
+    'That email is already taken' not in _rss_temple__create_su_results.stderr
 
 - name: Setup Social Apps
   when: >
