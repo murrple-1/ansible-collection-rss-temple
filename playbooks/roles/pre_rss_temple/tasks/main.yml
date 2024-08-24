@@ -2,15 +2,12 @@
 - ansible.builtin.include_tasks: extras_file.yml
 
 - name: Dependencies (Debian)
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_distribution in ('Debian', 'Ubuntu')
   ansible.builtin.include_tasks: dependencies__debian.yml
 
 - name: Dependencies (Red Hat)
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
+  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
   ansible.builtin.include_tasks: dependencies__red_hat.yml
-
-- name: Dependencies
-  ansible.builtin.import_tasks: dependencies.yml
 
 - name: Setup `{{ pre_rss_temple__service_path }}/`
   ansible.builtin.file:

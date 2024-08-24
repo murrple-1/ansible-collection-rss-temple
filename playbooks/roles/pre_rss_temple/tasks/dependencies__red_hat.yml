@@ -40,7 +40,7 @@
     update_cache: true
 
 - name: Add `{{ ansible_user }}` to `docker` group
-  when: should_add_ansible_user_to_docker_group
+  when: pre_rss_temple__should_add_ansible_user_to_docker_group
   become: true
   ansible.builtin.user:
     name: '{{ ansible_user }}'
