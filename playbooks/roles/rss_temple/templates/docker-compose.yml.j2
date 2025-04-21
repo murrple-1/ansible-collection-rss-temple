@@ -2,9 +2,9 @@ x-rss-temple-image: &rss-temple-image
   image: 'murraychristopherson/rss_temple:{{ rss_temple__docker_version }}'
 
 services:
-  {{ rss_temple__app_docker_service_prefix }}redis:
-    image: redis:7-alpine
-    command: redis-server --maxmemory {{ rss_temple__redis_max_memory }} --maxmemory-policy {{ rss_temple__redis_max_memory_policy }}
+  {{ rss_temple__app_docker_service_prefix }}valkey:
+    image: valkey/valkey:8-alpine
+    command: valkey-server --maxmemory {{ rss_temple__valkey_max_memory }} --maxmemory-policy {{ rss_temple__valkey_max_memory_policy }}
     restart: always
     networks:
       - rss_temple_net
