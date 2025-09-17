@@ -1,0 +1,45 @@
+version: 2.1
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_tag:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+      - lint
+jobs:
+  build_tag:
+    docker:
+      - image: cimg/python:3.13.2
+    steps:
+      - checkout
+      - run:
+          name: Install Ansible
+          command: |
+            pip install -U pip
+            pip install ansible
+      - run:
+          name: Ansible Build
+          command: ansible-galaxy collection build
+      -run:
+        name: Ansible Publish
+        command: >
+          find . -type f -name murrple_1-rss_temple-*.tar.gz
+          -exec ansible-galaxy collection publish --api-key $ANSIBLE_API_KEY {} \;
+
+  lint:
+    docker:
+      - image: cimg/python:3.13.2
+    steps:
+      - checkout
+      - run:
+          name: Install Ansible-Lint
+          command: |
+            pip install -U pip
+            pip install ansible-lint
+      - run:
+          name: ansible-lint lint
+          command: ansible-lint

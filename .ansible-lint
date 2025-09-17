@@ -2,3 +2,6 @@
 skip_list:
   - name[missing]
   - name[template]
+exclude_paths:
+  - .cache/ # implicit unless exclude_paths is defined in config
+  - .circleci/
