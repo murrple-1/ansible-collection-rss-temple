@@ -51,8 +51,8 @@ services:
         exec gunicorn \\
           -b 0.0.0.0:8000 \\
           --worker-class gthread \\
-          --workers {{ gray_os__gunicorn_workers | int }} \\
-          --threads {{ gray_os__gunicorn_threads | int }} \\
+          --workers {{ rss_temple__gunicorn_workers | int }} \\
+          --threads {{ rss_temple__gunicorn_threads | int }} \\
           --capture-output \\
           --access-logfile='-' \\
           rss_temple.wsgi:application

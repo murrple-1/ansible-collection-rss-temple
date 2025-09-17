@@ -39,7 +39,11 @@ jobs:
           name: Install Ansible-Lint
           command: |
             pip install -U pip
-            pip install ansible-lint==6.22.2
+            pip install ansible-lint==25.9.0
+      - run:
+          name: Install required collections
+          command: |
+            ansible-galaxy collection install --force community.docker
       - run:
           name: ansible-lint lint
           command: ansible-lint

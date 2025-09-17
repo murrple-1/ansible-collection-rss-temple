@@ -7,10 +7,10 @@
       - rsyslog-gnutls
     state: present
 
-- name: Install dependencies via `yum`
+- name: Install dependencies via `dnf`
   become: true
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - rsyslog-gnutls
     state: present

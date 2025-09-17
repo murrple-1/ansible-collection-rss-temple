@@ -20,15 +20,15 @@
 
 - name: Remove conflicting packages which are occassionally installed by default
   become: true
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - podman
       - buildah
     state: absent
 
-- name: Install dependencies via `yum`
+- name: Install dependencies via `dnf`
   become: true
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - docker-ce
       - docker-ce-cli

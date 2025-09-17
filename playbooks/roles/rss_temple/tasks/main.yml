@@ -1,15 +1,15 @@
 ---
 - name: Calculate Gunicorn worker count
-  when: gray_os__gunicorn_workers is undefined
+  when: rss_temple__gunicorn_workers is undefined
   ansible.builtin.set_fact:
     # The number of Gunicorn worker processes for handling requests. See https://docs.gunicorn.org/en/stable/settings.html#workers
-    gray_os__gunicorn_workers: '{{ ansible_processor_cores + 1 }}'
+    rss_temple__gunicorn_workers: '{{ ansible_processor_cores + 1 }}'
 
 - name: Calculate Gunicorn thread count
-  when: gray_os__gunicorn_threads is undefined
+  when: rss_temple__gunicorn_threads is undefined
   ansible.builtin.set_fact:
     # The number of Gunicorn threads for handling requests. See https://docs.gunicorn.org/en/stable/settings.html#threads
-    gray_os__gunicorn_threads: 2
+    rss_temple__gunicorn_threads: 2
 
 - ansible.builtin.include_tasks: extras_file.yml
 
