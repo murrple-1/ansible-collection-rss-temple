@@ -24,11 +24,11 @@ jobs:
       - run:
           name: Ansible Build
           command: ansible-galaxy collection build
-      -run:
-        name: Ansible Publish
-        command: >
-          find . -type f -name murrple_1-rss_temple-*.tar.gz
-          -exec ansible-galaxy collection publish --api-key $ANSIBLE_API_KEY {} \;
+      - run:
+          name: Ansible Publish
+          command: >
+            find . -type f -name murrple_1-rss_temple-*.tar.gz
+            -exec ansible-galaxy collection publish --api-key $ANSIBLE_API_KEY {} \;
 
   lint:
     docker:
