@@ -39,7 +39,7 @@ jobs:
           name: Install Ansible-Lint
           command: |
             pip install -U pip
-            pip install ansible-lint
+            pip install ansible-lint==6.22.2
       - run:
           name: ansible-lint lint
           command: ansible-lint
