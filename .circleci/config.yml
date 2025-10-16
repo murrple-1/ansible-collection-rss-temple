@@ -13,7 +13,7 @@ workflows:
 jobs:
   build_tag:
     docker:
-      - image: cimg/python:3.13.2
+      - image: cimg/python:3.14.0
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
 
   lint:
     docker:
-      - image: cimg/python:3.13.2
+      - image: cimg/python:3.14.0
     steps:
       - checkout
       - run:
