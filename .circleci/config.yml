@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Install required collections
           command: |
-            ansible-galaxy collection install --force community.docker
+            ansible-galaxy collection install -r requirements.yml
       - run:
           name: ansible-lint lint
           command: ansible-lint .
