@@ -1,6 +1,19 @@
 ---
 - ansible.builtin.include_tasks: extras_file.yml
 
+- ansible.builtin.stat:
+    path: "{{ pre_rss_temple__repo_path | regex_replace('/$', '') | dirname }}"
+  register: _pre_rss_temple__repo_parent_stat
+
+- ansible.builtin.fail:
+    msg: |
+      Git repo parent directory '{{ pre_rss_temple__repo_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
+      This needs to handled manually, as its handling is dependant on if the directory is to be considered
+      a user directory (like a home directory) or a system directory (like `/opt/*`).
+      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
+      want to set those things on a system directory.
+  when: not _pre_rss_temple__repo_parent_stat.stat.writeable | default(false)
+
 - name: Dependencies (Debian)
   when: ansible_distribution in ('Debian', 'Ubuntu')
   ansible.builtin.include_tasks: dependencies__debian.yml
@@ -8,6 +21,19 @@
 - name: Dependencies (Red Hat)
   when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
   ansible.builtin.include_tasks: dependencies__red_hat.yml
+
+- name: Setup Umask
+  ansible.builtin.blockinfile:
+    path: '{{ item }}'
+    block: |
+      umask 027
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - Umask'
+  register: _pre_rss_temple__aliases_blockinfile_ret
+  failed_when: _pre_rss_temple__aliases_blockinfile_ret.failed and _pre_rss_temple__aliases_blockinfile_ret.rc != 257
+  loop:
+    - ~/.bashrc
+    - ~/.profile
+    - ~/.bash_profile
 
 - name: Setup `{{ pre_rss_temple__service_path }}/`
   ansible.builtin.file:

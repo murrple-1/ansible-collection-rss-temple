@@ -4,7 +4,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
   name: django_secret
-  author: Murray Christopherson <murray@gray-os.com>
+  author: Murray Christopherson <murraychristopherson@gmail.com>
   version_added: "1.0.0"
   short_description: generate or retrive a Django SECRET_KEY
   description:

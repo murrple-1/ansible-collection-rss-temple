@@ -2,20 +2,20 @@
 - name: Setup `{{ item.name }}` temp file
   ansible.builtin.copy:
     src: '{{ item.src }}'
-    dest: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
-    mode: '0664'
+    dest: '{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}'
+    mode: '{{ item.mode }}'
 
 - name: Copy in `{{ item.name }}`
   ansible.builtin.copy:
-    src: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    src: '{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}'
     dest: '{{ item.dest }}'
     remote_src: true
     force: false
-    mode: '0664'
+    mode: '{{ item.mode }}'
 
 - name: Stat `{{ item.name }}` temp file
   ansible.builtin.stat:
-    path: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    path: '{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}'
     get_checksum: true
     get_mime: false
     get_attributes: false
@@ -31,6 +31,6 @@
 
 - name: Remove `{{ item.name }}` temp file
   ansible.builtin.file:
-    path: '{{ item.dest }}.{{ ansible_date_time.iso8601_basic }}'
+    path: '{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}'
     state: absent
   when: _common__temp_file_stat.stat.checksum == _common__file_stat.stat.checksum

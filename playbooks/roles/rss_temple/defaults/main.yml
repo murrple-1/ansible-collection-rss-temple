@@ -1,6 +1,9 @@
 ---
+# Remote directory path when the application is being installed
+rss_temple__opt_path: /opt/rss_temple/
+
 # Remote directory path where to store the app config files
-rss_temple__service_path: ~/rss_temple/
+rss_temple__service_path: '{{ rss_temple__opt_path }}/rss_temple/'
 
 # jemalloc configuration env vars. See https://github.com/jemalloc/jemalloc/blob/dev/TUNING.md
 rss_temple__app_malloc_conf: background_thread:true,max_background_threads:1,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000

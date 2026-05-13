@@ -1,6 +1,9 @@
 ---
-# Remote directory path where to clone the `gray-infra` repo to
-pre_rss_temple__service_path: ~/rss_temple_infra/
+# Remote directory path when the application is being installed
+pre_rss_temple__opt_path: /opt/rss_temple/
+
+# Remote directory path where the infra configuration is installed
+pre_rss_temple__service_path: '{{ pre_rss_temple__opt_path }}/rss_temple_infra/'
 
 # list of fully-qualified domains that should direct to the rss_temple server
 pre_rss_temple__server_domains: []

@@ -13,6 +13,19 @@
 
 - ansible.builtin.include_tasks: extras_file.yml
 
+- ansible.builtin.stat:
+    path: "{{ rss_temple__repo_path | regex_replace('/$', '') | dirname }}"
+  register: _rss_temple__repo_parent_stat
+
+- ansible.builtin.fail:
+    msg: |
+      Git repo parent directory '{{ rss_temple__repo_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
+      This needs to handled manually, as its handling is dependant on if the directory is to be considered
+      a user directory (like a home directory) or a system directory (like `/opt/*`).
+      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
+      want to set those things on a system directory.
+  when: not _rss_temple__repo_parent_stat.stat.writeable | default(false)
+
 - name: Setup `{{ rss_temple__service_path }}/`
   ansible.builtin.file:
     path: '{{ rss_temple__service_path }}/overrides/'

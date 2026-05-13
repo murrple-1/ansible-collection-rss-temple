@@ -1,6 +1,9 @@
 ---
+# Remote directory path when the application is being installed
+rss_temple_home__opt_path: /opt/rss_temple/
+
 # Remote directory path where to store the app config files
-rss_temple_home__service_path: ~/rss_temple_home/
+rss_temple_home__service_path: '{{ rss_temple_home__opt_path }}/rss_temple_home/'
 
 # If you want your Docker services to be prefixed (as in, `rss_temple-home` -> `staging-rss_temple-home`), set this string
 rss_temple_home__app_docker_service_prefix: ''

@@ -12,12 +12,15 @@
     - name: privacy.html
       src: files/privacy.html
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/privacy.html'
+      mode: '0664'
     - name: tos.html
       src: files/tos.html
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/tos.html'
+      mode: '0664'
     - name: contact.html
       src: files/contact.html
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/contact.html'
+      mode: '0664'
 
 - ansible.builtin.include_role:
     name: common
@@ -26,21 +29,28 @@
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/docker-compose.yml'
+      mode: '0660'
     - name: .env
       template: templates/.env.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/.env'
+      mode: '0660'
     - name: Caddyfile
       template: templates/Caddyfile.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/Caddyfile'
+      mode: '0664'
     - name: index.head.html
       template: templates/index.head.html.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/index.head.html'
+      mode: '0664'
     - name: contact.head.html
       template: templates/contact.head.html.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/contact.head.html'
+      mode: '0664'
     - name: privacy.head.html
       template: templates/privacy.head.html.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/privacy.head.html'
+      mode: '0664'
     - name: tos.head.html
       template: templates/tos.head.html.j2
       dest: '{{ _rss_temple_home__absolute_service_path }}/custom_html/tos.head.html'
+      mode: '0664'

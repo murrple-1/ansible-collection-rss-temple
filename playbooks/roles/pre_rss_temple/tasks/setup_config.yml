@@ -6,6 +6,8 @@
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
       dest: '{{ _pre_rss_temple__absolute_service_path }}/docker-compose.yml'
+      mode: '0660'
     - name: Caddyfile
       template: templates/Caddyfile.j2
       dest: '{{ _pre_rss_temple__absolute_service_path }}/Caddyfile'
+      mode: '0664'

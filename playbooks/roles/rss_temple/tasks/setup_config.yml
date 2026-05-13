@@ -6,18 +6,23 @@
     - name: docker-compose.yml
       template: templates/docker-compose.yml.j2
       dest: '{{ _rss_temple__absolute_service_path }}/docker-compose.yml'
+      mode: '0660'
     - name: .env
       template: templates/.env.j2
       dest: '{{ _rss_temple__absolute_service_path }}/.env'
+      mode: '0660'
     - name: Caddyfile
       template: templates/Caddyfile.j2
       dest: '{{ _rss_temple__absolute_service_path }}/Caddyfile'
+      mode: '0664'
     - name: overrides/local_settings.py
       template: templates/local_settings.py.j2
       dest: '{{ _rss_temple__absolute_service_path }}/overrides/local_settings.py'
+      mode: '0664'
     - name: schedulerdaemon.json
       template: templates/schedulerdaemon.json.j2
       dest: '{{ _rss_temple__absolute_service_path }}/schedulerdaemon.json'
+      mode: '0664'
 
 - ansible.builtin.include_role:
     name: common
@@ -26,3 +31,4 @@
     - name: gunicorn.conf.py
       src: files/gunicorn.conf.py
       dest: '{{ _rss_temple__absolute_service_path }}/overrides/gunicorn.conf.py'
+      mode: '0664'
