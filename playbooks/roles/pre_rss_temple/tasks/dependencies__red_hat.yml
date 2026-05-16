@@ -19,7 +19,7 @@
       - dnf
       - config-manager
       - --add-repo
-      - 'https://download.docker.com/linux/{{ _pre_rss_temple__docker_repo_distro_name }}/docker-ce.repo'
+      - 'https://download.docker.com/linux/{{ _pre_rss_temple__docker_variant }}/docker-ce.repo'
     creates: '/etc/yum/yum.repos.d/docker-ce.repo'
   become: true
 
