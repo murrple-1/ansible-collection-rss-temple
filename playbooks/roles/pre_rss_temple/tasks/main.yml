@@ -58,11 +58,11 @@
   become: true
 
 - name: Firewall (Ubuntu)
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_distribution in ('Debian', 'Ubuntu')
   ansible.builtin.include_tasks: firewall__debian.yml
 
 - name: Firewall (Red Hat)
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'Rocky'
+  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
   ansible.builtin.include_tasks: firewall__red_hat.yml
 
 - name: Papertrail

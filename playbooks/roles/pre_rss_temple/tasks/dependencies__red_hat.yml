@@ -5,11 +5,7 @@
 
 - ansible.builtin.set_fact:
     _pre_rss_temple__docker_variant: rhel
-  when: ansible_facts["distribution"] | lower == 'rocky'
-
-- ansible.builtin.set_fact:
-    _pre_rss_temple__docker_variant: fedora
-  when: ansible_facts["distribution"] | lower == 'oraclelinux'
+  when: ansible_facts["distribution"] | lower in ('rocky', 'oraclelinux')
 
 - name: Install `dnf-plugins-core` (so additional repos can be added)
   ansible.builtin.dnf:
