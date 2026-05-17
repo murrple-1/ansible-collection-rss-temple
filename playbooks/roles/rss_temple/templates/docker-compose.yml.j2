@@ -17,10 +17,10 @@ services:
     env_file:
       - .env
     volumes:
-{% if not rss_temple__postgres_local_data_directory %}
-      - db_data:/var/lib/postgresql/data/
+{% if not rss_temple__postgres_local_var_directory %}
+      - db_data:/var/lib/postgresql/
 {% else %}
-      - {{ rss_temple__postgres_local_data_directory }}:/var/lib/postgresql/data/
+      - {{ rss_temple__postgres_local_var_directory }}:/var/lib/postgresql/
 {% endif %}
     networks:
       - rss_temple_net
@@ -118,7 +118,7 @@ services:
     networks:
       - rss_temple_net
 volumes:
-{% if not rss_temple__postgres_local_data_directory %}
+{% if not rss_temple__postgres_local_var_directory %}
   db_data:
 {% endif %}
   caddy_data:

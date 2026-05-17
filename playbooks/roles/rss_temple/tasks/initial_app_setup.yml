@@ -19,7 +19,7 @@
   delay: 5
 
 - name: Create App Superuser
-  when: rss_temple__app_superuser_email
+  when: rss_temple__app_superuser_email | length > 0
   ansible.builtin.command:
     chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
@@ -44,12 +44,12 @@
 
 - name: Setup Social Apps
   when: >
-    rss_temple__app_site_domain and
-    rss_temple__app_site_name and
-    rss_temple__app_google_client_id and
-    rss_temple__app_google_secret and
-    rss_temple__app_facebook_client_id and
-    rss_temple__app_facebook_secret
+    rss_temple__app_site_domain | length > 0 and
+    rss_temple__app_site_name | length > 0 and
+    rss_temple__app_google_client_id | length > 0 and
+    rss_temple__app_google_secret | length > 0 and
+    rss_temple__app_facebook_client_id | length > 0 and
+    rss_temple__app_facebook_secret | length > 0
   ansible.builtin.command:
     chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
