@@ -28,7 +28,7 @@
 
 - name: Setup `{{ rss_temple__service_path }}/`
   ansible.builtin.file:
-    path: '{{ rss_temple__service_path }}/overrides/'
+    path: '{{ rss_temple__service_path }}/'
     state: directory
     mode: '0775'
 

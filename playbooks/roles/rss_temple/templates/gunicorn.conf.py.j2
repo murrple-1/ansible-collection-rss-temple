@@ -1,0 +1,5 @@
+worker_class = "gthread"
+workers = {{ rss_temple__gunicorn_workers | int }}
+threads = {{ rss_temple__gunicorn_threads | int }}
+capture_output = True
+accesslog = "-"
