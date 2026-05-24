@@ -4,8 +4,10 @@ x-rss-temple-image: &rss-temple-image
 services:
   {{ rss_temple__app_docker_service_prefix }}valkey:
     image: valkey/valkey:8-alpine
-    command: valkey-server --maxmemory {{ rss_temple__valkey_max_memory }} --maxmemory-policy {{ rss_temple__valkey_max_memory_policy }}
+    command: valkey-server /usr/local/etc/valkey/valkey.conf
     restart: always
+    volumes:
+      - ./overrides/valkey.conf:/usr/local/etc/valkey/valkey.conf
     networks:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}postgresql:
