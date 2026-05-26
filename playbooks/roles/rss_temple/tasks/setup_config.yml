@@ -15,10 +15,6 @@
       template: templates/Caddyfile.j2
       dest: '{{ _rss_temple__absolute_service_path }}/Caddyfile'
       mode: '0664'
-    - name: overrides/local_settings.py
-      template: templates/local_settings.py.j2
-      dest: '{{ _rss_temple__absolute_service_path }}/overrides/local_settings.py'
-      mode: '0664'
     - name: gunicorn.conf.py
       template: templates/gunicorn.conf.py.j2
       dest: '{{ _rss_temple__absolute_service_path }}/overrides/gunicorn.conf.py'
@@ -30,4 +26,13 @@
     - name: schedulerdaemon.json
       template: templates/schedulerdaemon.json.j2
       dest: '{{ _rss_temple__absolute_service_path }}/schedulerdaemon.json'
+      mode: '0664'
+
+- ansible.builtin.include_role:
+    name: common
+    tasks_from: safe_file_overwrite
+  loop:
+    - name: overrides/local_settings.py
+      src: files/local_settings.py
+      dest: '{{ _rss_temple_home__absolute_service_path }}/overrides/local_settings.py'
       mode: '0664'
