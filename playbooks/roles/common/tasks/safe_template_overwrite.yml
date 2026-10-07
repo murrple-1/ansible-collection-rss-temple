@@ -34,3 +34,10 @@
     path: '{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}'
     state: absent
   when: _common__temp_file_stat.stat.checksum == _common__file_stat.stat.checksum
+
+- name: Report `{{ item.name }}` was left unchanged
+  ansible.builtin.debug:
+    msg: >-
+      `{{ item.dest }}` already exists and differs from the new version, so it was NOT overwritten.
+      The new version is at `{{ item.dest }}.{{ ansible_facts["date_time"].iso8601_basic }}`; diff and merge it manually.
+  when: _common__temp_file_stat.stat.checksum != _common__file_stat.stat.checksum
