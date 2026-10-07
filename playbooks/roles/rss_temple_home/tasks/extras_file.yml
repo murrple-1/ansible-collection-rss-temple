@@ -2,7 +2,7 @@
 - ansible.builtin.set_fact:
     _rss_temple_home__extras_dict: "{{ _rss_temple_home__extras_dict | default({}) | combine({item.key: item.value}) }}"
   loop: "{{ vars | dict2items }}"
-  when: item.key is match('^rss_temple_home__')
+  when: item.key is match('^rss_temple_home__') and item.key is not search('_(password|secret|secret_key)$')
 
 - name: Create Extra Vars file
   ansible.builtin.copy:
