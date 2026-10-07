@@ -1,16 +1,38 @@
 ---
 - ansible.builtin.include_vars: dependencies__debian.yml
 
+- name: Create `/etc/apt/keyrings/`
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- ansible.builtin.set_fact:
+    _pre_rss_temple__docker_apt_arch: "{{ [ansible_architecture] | map('extract', _pre_rss_temple__deb_architecture) | first }}"
+    _pre_rss_temple__docker_apt_url: https://download.docker.com/linux/{{ ansible_distribution | lower }}
+
+# `apt-key` is deprecated (and removed in newer releases), so keep the key in its own keyring and reference it with `signed-by`
 - name: Download Docker's `apt` key
   become: true
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
-    state: present
+  ansible.builtin.get_url:
+    url: '{{ _pre_rss_temple__docker_apt_url }}/gpg'
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+
+# Hosts provisioned by older versions of this role have the repo without `signed-by`; apt refuses conflicting entries
+- name: Remove Docker's legacy `apt` repo entry
+  become: true
+  ansible.builtin.apt_repository:
+    repo: deb [arch={{ _pre_rss_temple__docker_apt_arch }}] {{ _pre_rss_temple__docker_apt_url }} {{ ansible_distribution_release }} stable
+    state: absent
+    filename: docker
+    update_cache: false
 
 - name: Install Docker's `apt` repo
   become: true
   ansible.builtin.apt_repository:
-    repo: deb [arch={{ [ansible_architecture] | map('extract', _pre_rss_temple__deb_architecture) | first }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable # noqa yaml[line-length]
+    repo: deb [arch={{ _pre_rss_temple__docker_apt_arch }} signed-by=/etc/apt/keyrings/docker.asc] {{ _pre_rss_temple__docker_apt_url }} {{ ansible_distribution_release }} stable # noqa yaml[line-length]
     state: present
     filename: docker
 
