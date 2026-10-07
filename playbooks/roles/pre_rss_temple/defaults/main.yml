@@ -14,5 +14,9 @@ pre_rss_temple__web_app_domains: []
 # list of fully-qualified domains that should direct to the rss_temple_home server
 pre_rss_temple__home_domains: []
 
+# Papertrail log destination (ie 'logsN.papertrailapp.com' and its port). If the host is empty, Papertrail logging is not set up
+pre_rss_temple__papertrail_destination_host: ''
+pre_rss_temple__papertrail_destination_port: ''
+
 # Should the Ansible user be added to the `docker` group (so docker commands can be run without `sudo`)
 pre_rss_temple__should_add_ansible_user_to_docker_group: true

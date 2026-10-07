@@ -35,9 +35,5 @@
       *.*    @@{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
     marker: '# {mark} ANSIBLE MANAGED BLOCK - Papertrail'
   become: true
-
-- name: Restart service rsyslog
-  ansible.builtin.service:
-    name: rsyslog
-    state: restarted
-  become: true
+  notify:
+    - rsyslog changed

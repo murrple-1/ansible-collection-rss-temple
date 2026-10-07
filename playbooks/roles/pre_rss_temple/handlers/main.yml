@@ -6,3 +6,11 @@
     state: restarted
   listen:
     - firewall changed
+
+- name: Restart rsyslog Service
+  become: true
+  ansible.builtin.service:
+    name: rsyslog
+    state: restarted
+  listen:
+    - rsyslog changed

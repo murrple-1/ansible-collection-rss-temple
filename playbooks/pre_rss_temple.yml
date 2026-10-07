@@ -8,7 +8,7 @@
       private: false
 
     - name: pre_rss_temple__papertrail_destination_host
-      prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com')
+      prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com'; leave empty to skip Papertrail)
 
     - name: pre_rss_temple__papertrail_destination_port
       prompt: Papertrail Destination Port
