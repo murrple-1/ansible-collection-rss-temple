@@ -3,13 +3,18 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - lint:
+          filters:
+            tags:
+              only: /.*/
       - build_tag:
+          requires:
+            - lint
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /.*/
-      - lint
 jobs:
   build_tag:
     docker:
@@ -21,6 +26,14 @@ jobs:
           command: |
             pip install -U pip
             pip install ansible
+      - run:
+          name: Check tag matches galaxy.yml version
+          command: |
+            version="$(sed -n 's/^version: *//p' galaxy.yml)"
+            if [ "$CIRCLE_TAG" != "$version" ]; then
+              echo "Tag '$CIRCLE_TAG' does not match galaxy.yml version '$version'"
+              exit 1
+            fi
       - run:
           name: Ansible Build
           command: ansible-galaxy collection build

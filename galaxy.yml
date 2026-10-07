@@ -59,6 +59,8 @@ issues: https://github.com/murrple-1/ansible-collection-rss-temple/issues
 # and '.git' are always filtered
 build_ignore: [
   '.github',
+  '.circleci',
+  '.ansible',
   '.ansible-lint',
   '.pre-commit-config.yaml',
   '*.password',
