@@ -31,6 +31,16 @@ rss_temple__timezone: UTC
 # Are the services running in debug mode? Should be false in production, unless specifically needed
 rss_temple__app_debug: false
 
+# Enable django-silk request profiling. It records request/response bodies, so keep it off in production unless needed
+rss_temple__app_enable_silk: false
+
+# Comma-separated list of origins trusted for CSRF (eg 'https://app.rsstemple.com')
+rss_temple__app_csrf_trusted_origins: ''
+
+# Comma-separated list of origins allowed to make credentialed cross-origin requests (ie the web app's origin).
+# If empty, the server only allows 'http://localhost:4200'
+rss_temple__app_cors_allowed_origins: ''
+
 # Max number of bytes downloadable before considered too big to fit in memory
 rss_temple__app_download_max_byte_count: 1000000
 

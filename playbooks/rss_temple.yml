@@ -38,6 +38,10 @@
       prompt: CSRF Trusted Origins - comma-separated list (eg 'https://google.com,https://api.rsstemple.com')
       default: ''
 
+    - name: rss_temple__app_cors_allowed_origins
+      prompt: CORS Allowed Origins (ie the web app) - comma-separated list (eg 'https://app.rsstemple.com')
+      default: https://app.rsstemple.com
+
     - name: rss_temple__app_email_host
       prompt: Email host
 
