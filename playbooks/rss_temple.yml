@@ -129,7 +129,7 @@
       block:
         - ansible.builtin.fail:
             msg: '`rss_temple__app_superuser_email` is malformed'
-          when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+          when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.\+]+@([\w\-]+\.)+[\w\-]{2,}$')
 
     - name: Generate Random Passwords and the like
       block:
