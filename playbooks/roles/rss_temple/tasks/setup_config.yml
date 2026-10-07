@@ -34,5 +34,5 @@
   loop:
     - name: overrides/local_settings.py
       src: files/local_settings.py
-      dest: '{{ _rss_temple_home__absolute_service_path }}/overrides/local_settings.py'
+      dest: '{{ _rss_temple__absolute_service_path }}/overrides/local_settings.py'
       mode: '0664'
