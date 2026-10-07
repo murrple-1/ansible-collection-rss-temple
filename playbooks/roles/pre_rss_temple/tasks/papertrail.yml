@@ -1,7 +1,7 @@
 ---
 - name: Install dependencies via `apt`
   become: true
-  when: ansible_distribution in ('Debian', 'Ubuntu')
+  when: ansible_os_family == 'Debian'
   ansible.builtin.apt:
     name:
       - rsyslog-gnutls
@@ -9,7 +9,7 @@
 
 - name: Install dependencies via `dnf`
   become: true
-  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
+  when: ansible_os_family == 'RedHat'
   ansible.builtin.dnf:
     name:
       - rsyslog-gnutls
