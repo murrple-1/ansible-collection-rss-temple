@@ -7,7 +7,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -30,7 +30,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -50,7 +50,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -70,7 +70,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -90,7 +90,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -110,7 +110,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -130,7 +130,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -150,7 +150,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
