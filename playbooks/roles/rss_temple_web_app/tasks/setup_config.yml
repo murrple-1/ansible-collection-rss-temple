@@ -1,4 +1,12 @@
 ---
+- ansible.builtin.assert:
+    that:
+      - rss_temple_web_app__app_api_host | urlsplit('scheme') in ('http', 'https')
+      - rss_temple_web_app__app_api_host | urlsplit('netloc') | length > 0
+    fail_msg: >-
+      `rss_temple_web_app__app_api_host` must be a full URL including the scheme (eg 'https://api.rsstemple.com'),
+      got '{{ rss_temple_web_app__app_api_host }}'
+
 - name: Create custom HTML directory
   ansible.builtin.file:
     path: '{{ _rss_temple_web_app__absolute_service_path }}/custom_html'

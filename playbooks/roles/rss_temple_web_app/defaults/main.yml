@@ -17,6 +17,10 @@ rss_temple_web_app__og_title: RSS Temple App
 # OpenGraph description
 rss_temple_web_app__og_description: The Zen of Syndication
 
+# Extra sources to allow in the Content-Security-Policy `connect-src` directive, beyond the app itself, the API host, and Facebook
+# (eg ['https://media.example.com'])
+rss_temple_web_app__csp_extra_connect_src: []
+
 # Array of links to add to the nav bar, for customization
 # Entries of the schema:
 # - title: <string>
