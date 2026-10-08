@@ -1,22 +1,20 @@
 ---
-- ansible.builtin.include_tasks: extras_file.yml
+- ansible.builtin.include_role:
+    name: murrple_1.rss_temple.common
+    tasks_from: extras_file
+  vars:
+    common__extras_var_prefix: pre_rss_temple__
+    common__extras_file_prefix: pre-rss-temple-extras
 
 - ansible.builtin.assert:
     that: ansible_os_family in ('Debian', 'RedHat')
     fail_msg: "Unsupported OS family '{{ ansible_os_family }}' ({{ ansible_distribution }}); only Debian- and Red Hat-based hosts are supported"
 
-- ansible.builtin.stat:
-    path: "{{ pre_rss_temple__service_path | regex_replace('/$', '') | dirname }}"
-  register: _pre_rss_temple__service_parent_stat
-
-- ansible.builtin.fail:
-    msg: |
-      Git repo parent directory '{{ pre_rss_temple__service_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
-      This needs to handled manually, as its handling is dependant on if the directory is to be considered
-      a user directory (like a home directory) or a system directory (like `/opt/*`).
-      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
-      want to set those things on a system directory.
-  when: not _pre_rss_temple__service_parent_stat.stat.writeable | default(false)
+- ansible.builtin.include_role:
+    name: murrple_1.rss_temple.common
+    tasks_from: service_dir
+  vars:
+    common__service_path: '{{ pre_rss_temple__service_path }}'
 
 - name: Dependencies (Debian)
   when: ansible_os_family == 'Debian'
@@ -38,12 +36,6 @@
     - ~/.bashrc
     - ~/.profile
     - ~/.bash_profile
-
-- name: Setup `{{ pre_rss_temple__service_path }}/`
-  ansible.builtin.file:
-    path: '{{ pre_rss_temple__service_path }}/'
-    state: directory
-    mode: '0775'
 
 - ansible.builtin.include_tasks: _absolute_service_path.yml
 
