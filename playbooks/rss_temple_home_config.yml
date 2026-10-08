@@ -18,10 +18,10 @@
 
   tasks:
     - ansible.builtin.include_role:
-        name: rss_temple_home
+        name: murrple_1.rss_temple.rss_temple_home
         tasks_from: _absolute_service_path
         public: true
 
     - ansible.builtin.include_role:
-        name: rss_temple_home
+        name: murrple_1.rss_temple.rss_temple_home
         tasks_from: setup_config

@@ -47,4 +47,4 @@
       default: https://app.rsstemple.com
 
   roles:
-    - rss_temple_web_app
+    - murrple_1.rss_temple.rss_temple_web_app

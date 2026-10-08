@@ -1,6 +1,6 @@
 ---
 - ansible.builtin.include_role:
-    name: common
+    name: murrple_1.rss_temple.common
     tasks_from: safe_template_overwrite
   loop:
     - name: docker-compose.yml
@@ -29,7 +29,7 @@
       mode: '0664'
 
 - ansible.builtin.include_role:
-    name: common
+    name: murrple_1.rss_temple.common
     tasks_from: safe_file_overwrite
   loop:
     - name: overrides/local_settings.py
