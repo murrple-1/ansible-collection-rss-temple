@@ -1,5 +1,10 @@
 x-rss-temple-image: &rss-temple-image
   image: 'murraychristopherson/rss_temple:{{ rss_temple__docker_version }}'
+  depends_on:
+    {{ rss_temple__app_docker_service_prefix }}postgresql:
+      condition: service_healthy
+    {{ rss_temple__app_docker_service_prefix }}valkey:
+      condition: service_healthy
 
 services:
   {{ rss_temple__app_docker_service_prefix }}valkey:
@@ -8,6 +13,12 @@ services:
     restart: always
     volumes:
       - ./overrides/valkey.conf:/usr/local/etc/valkey/valkey.conf
+    healthcheck:
+      test: ['CMD-SHELL', '[ "$$(valkey-cli ping)" = PONG ]']
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 30s
     networks:
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}postgresql:
@@ -18,6 +29,13 @@ services:
       - '5432'
     env_file:
       - .env
+    # Check over TCP: on first start, the image runs a temporary server for initialization that only listens on the socket
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
     volumes:
 {% if not rss_temple__postgres_local_var_directory %}
       - db_data:/var/lib/postgresql/

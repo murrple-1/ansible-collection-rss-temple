@@ -20,6 +20,10 @@
   become: true
   changed_when: false
   register: _rss_temple__django_user_exists_ret
+  # `docker-compose.yml` files from earlier versions have no healthcheck to wait on (existing files aren't overwritten)
+  until: _rss_temple__django_user_exists_ret.rc == 0
+  retries: 10
+  delay: 3
 
 - ansible.builtin.set_fact:
     _rss_temple__django_user_exists: "{{ _rss_temple__django_user_exists_ret.stdout | trim == '1' }}"
