@@ -3,7 +3,7 @@
   when: rss_temple__gunicorn_workers is undefined
   ansible.builtin.set_fact:
     # The number of Gunicorn worker processes for handling requests. See https://docs.gunicorn.org/en/stable/settings.html#workers
-    rss_temple__gunicorn_workers: '{{ ansible_processor_vcpus + 1 }}'
+    rss_temple__gunicorn_workers: '{{ ansible_facts["processor_vcpus"] + 1 }}'
 
 - name: Calculate Gunicorn thread count
   when: rss_temple__gunicorn_threads is undefined
