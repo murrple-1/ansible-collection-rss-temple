@@ -1,0 +1,17 @@
+---
+# Writes the variables whose names start with `common__extras_var_prefix` (except passwords and secrets) to a
+# timestamped file in the remote user's home directory, so a run can be repeated with `-e @<file>`.
+#
+# Params:
+#   common__extras_var_prefix: variable name prefix, eg `rss_temple__`
+#   common__extras_file_prefix: file name prefix, eg `rss-temple-extras`
+- name: Create Extra Vars file
+  ansible.builtin.copy:
+    dest: "~/{{ common__extras_file_prefix }}.{{ ansible_facts['date_time'].iso8601_basic }}.yml"
+    mode: '0600'
+    content: "{{ dict(_common__extras_var_names | zip(query('ansible.builtin.vars', *_common__extras_var_names))) | to_nice_yaml(explicit_start=True) }}"
+  vars:
+    _common__extras_var_names: >-
+      {{ query('ansible.builtin.varnames', '^' ~ common__extras_var_prefix)
+         | reject('search', '_(password|secret|secret_key)$')
+         | list }}

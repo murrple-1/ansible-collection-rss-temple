@@ -1,24 +1,16 @@
 ---
-- ansible.builtin.include_tasks: extras_file.yml
+- ansible.builtin.include_role:
+    name: murrple_1.rss_temple.common
+    tasks_from: extras_file
+  vars:
+    common__extras_var_prefix: rss_temple_web_app__
+    common__extras_file_prefix: rss-temple-app-extras
 
-- ansible.builtin.stat:
-    path: "{{ rss_temple_web_app__service_path | regex_replace('/$', '') | dirname }}"
-  register: _rss_temple_web_app__service_parent_stat
-
-- ansible.builtin.fail:
-    msg: |
-      Git repo parent directory '{{ rss_temple_web_app__service_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
-      This needs to handled manually, as its handling is dependant on if the directory is to be considered
-      a user directory (like a home directory) or a system directory (like `/opt/*`).
-      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
-      want to set those things on a system directory.
-  when: not _rss_temple_web_app__service_parent_stat.stat.writeable | default(false)
-
-- name: Setup `{{ rss_temple_web_app__service_path }}/`
-  ansible.builtin.file:
-    path: '{{ rss_temple_web_app__service_path }}/'
-    state: directory
-    mode: '0775'
+- ansible.builtin.include_role:
+    name: murrple_1.rss_temple.common
+    tasks_from: service_dir
+  vars:
+    common__service_path: '{{ rss_temple_web_app__service_path }}'
 
 - ansible.builtin.include_tasks: _absolute_service_path.yml
 

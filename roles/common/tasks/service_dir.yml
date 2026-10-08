@@ -1,0 +1,23 @@
+---
+# Creates the service directory. Its parent directory must already exist and be writable by the current user.
+#
+# Params:
+#   common__service_path: the service directory to create
+- ansible.builtin.stat:
+    path: "{{ common__service_path | regex_replace('/$', '') | dirname }}"
+  register: _common__service_parent_stat
+
+- ansible.builtin.fail:
+    msg: |
+      Parent directory '{{ common__service_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
+      This needs to be handled manually, as the right handling depends on whether the directory is a
+      user directory (like a home directory) or a system directory (like `/opt/*`).
+      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
+      want to set those things on a system directory.
+  when: not _common__service_parent_stat.stat.writeable | default(false)
+
+- name: Setup `{{ common__service_path }}/`
+  ansible.builtin.file:
+    path: '{{ common__service_path }}/'
+    state: directory
+    mode: '0775'
