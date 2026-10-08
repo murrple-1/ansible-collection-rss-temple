@@ -33,7 +33,7 @@ DOCUMENTATION = """
 EXAMPLES = """
 - name: create a random SECRET_KEY
   ansible.builtin.debug:
-    msg: "SECRET_KEY: {{ lookup('django_secrets', inventory_hostname + '.django_secret') }}"
+    msg: "SECRET_KEY: {{ lookup('murrple_1.rss_temple.django_secret', inventory_hostname + '.django_secret') }}"
 """
 
 RETURN = """

@@ -137,7 +137,7 @@
 
         - when: rss_temple__app_secret_key == '__rand__'
           ansible.builtin.set_fact:
-            _rss_temple__app_secret_key: "{{ lookup('django_secret', '_credentials/' + 'rss_temple__app_secret_key.' + inventory_hostname + '.django_secret') }}"  # noqa yaml[line-length]
+            _rss_temple__app_secret_key: "{{ lookup('murrple_1.rss_temple.django_secret', '_credentials/' + 'rss_temple__app_secret_key.' + inventory_hostname + '.django_secret') }}"  # noqa yaml[line-length]
 
         - when: rss_temple__app_secret_key != '__rand__'
           ansible.builtin.set_fact:
@@ -157,7 +157,7 @@
         rss_temple__gunicorn_threads: 2
 
     - ansible.builtin.include_role:
-        name: rss_temple
+        name: murrple_1.rss_temple.rss_temple
         tasks_from: _absolute_service_path
         public: true
 
@@ -168,5 +168,5 @@
           when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.\+]+@([\w\-]+\.)+[\w\-]{2,}$')
 
     - ansible.builtin.include_role:
-        name: rss_temple
+        name: murrple_1.rss_temple.rss_temple
         tasks_from: setup_config
