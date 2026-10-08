@@ -34,12 +34,6 @@
 
 - ansible.builtin.include_tasks: _absolute_service_path.yml
 
-- name: Setup `overrides/`
-  ansible.builtin.file:
-    path: '{{ _rss_temple__absolute_service_path }}/overrides/'
-    state: directory
-    mode: '0775'
-
 - ansible.builtin.include_tasks: setup_config.yml
 
 - name: Docker Compose Up
