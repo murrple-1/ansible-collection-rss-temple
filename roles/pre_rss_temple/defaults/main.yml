@@ -20,3 +20,7 @@ pre_rss_temple__papertrail_destination_port: ''
 
 # Should the Ansible user be added to the `docker` group (so docker commands can be run without `sudo`)
 pre_rss_temple__should_add_ansible_user_to_docker_group: true
+
+# The user to add to the `docker` group. Defaults to `ansible_user`, or the user Ansible connected as when that is
+# unset (eg `--connection=local`)
+pre_rss_temple__docker_group_user: "{{ ansible_user | default(ansible_facts['user_id']) }}"
