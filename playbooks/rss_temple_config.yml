@@ -32,6 +32,14 @@
       default: __rand__
       private: true
 
+    - name: rss_temple__app_csrf_trusted_origins
+      prompt: CSRF Trusted Origins - comma-separated list (eg 'https://google.com,https://api.rsstemple.com')
+      default: ''
+
+    - name: rss_temple__app_cors_allowed_origins
+      prompt: CORS Allowed Origins (ie the web app) - comma-separated list (eg 'https://app.rsstemple.com')
+      default: https://app.rsstemple.com
+
     - name: rss_temple__app_email_host
       prompt: Email host
 
@@ -140,7 +148,7 @@
       when: rss_temple__gunicorn_workers is undefined
       ansible.builtin.set_fact:
         # The number of Gunicorn worker processes for handling requests. See https://docs.gunicorn.org/en/stable/settings.html#workers
-        rss_temple__gunicorn_workers: '{{ ansible_processor_cores + 1 }}'
+        rss_temple__gunicorn_workers: '{{ ansible_processor_vcpus + 1 }}'
 
     - name: Calculate Gunicorn thread count
       when: rss_temple__gunicorn_threads is undefined
@@ -157,7 +165,7 @@
       block:
         - ansible.builtin.fail:
             msg: '`rss_temple__app_superuser_email` is malformed'
-          when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+          when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.\+]+@([\w\-]+\.)+[\w\-]{2,}$')
 
     - ansible.builtin.include_role:
         name: rss_temple

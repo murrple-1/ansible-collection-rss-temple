@@ -1,7 +1,7 @@
 ---
 - name: Install dependencies via `apt`
   become: true
-  when: ansible_distribution in ('Debian', 'Ubuntu')
+  when: ansible_os_family == 'Debian'
   ansible.builtin.apt:
     name:
       - rsyslog-gnutls
@@ -9,7 +9,7 @@
 
 - name: Install dependencies via `dnf`
   become: true
-  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
+  when: ansible_os_family == 'RedHat'
   ansible.builtin.dnf:
     name:
       - rsyslog-gnutls
@@ -35,9 +35,5 @@
       *.*    @@{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
     marker: '# {mark} ANSIBLE MANAGED BLOCK - Papertrail'
   become: true
-
-- name: Restart service rsyslog
-  ansible.builtin.service:
-    name: rsyslog
-    state: restarted
-  become: true
+  notify:
+    - rsyslog changed

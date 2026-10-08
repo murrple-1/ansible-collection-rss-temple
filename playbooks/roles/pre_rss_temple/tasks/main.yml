@@ -1,6 +1,10 @@
 ---
 - ansible.builtin.include_tasks: extras_file.yml
 
+- ansible.builtin.assert:
+    that: ansible_os_family in ('Debian', 'RedHat')
+    fail_msg: "Unsupported OS family '{{ ansible_os_family }}' ({{ ansible_distribution }}); only Debian- and Red Hat-based hosts are supported"
+
 - ansible.builtin.stat:
     path: "{{ pre_rss_temple__service_path | regex_replace('/$', '') | dirname }}"
   register: _pre_rss_temple__service_parent_stat
@@ -15,11 +19,11 @@
   when: not _pre_rss_temple__service_parent_stat.stat.writeable | default(false)
 
 - name: Dependencies (Debian)
-  when: ansible_distribution in ('Debian', 'Ubuntu')
+  when: ansible_os_family == 'Debian'
   ansible.builtin.include_tasks: dependencies__debian.yml
 
 - name: Dependencies (Red Hat)
-  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
+  when: ansible_os_family == 'RedHat'
   ansible.builtin.include_tasks: dependencies__red_hat.yml
 
 - name: Setup Umask
@@ -57,13 +61,14 @@
     pull: always
   become: true
 
-- name: Firewall (Ubuntu)
-  when: ansible_distribution in ('Debian', 'Ubuntu')
+- name: Firewall (Debian)
+  when: ansible_os_family == 'Debian'
   ansible.builtin.include_tasks: firewall__debian.yml
 
 - name: Firewall (Red Hat)
-  when: ansible_distribution in ('CentOS', 'Red Hat Enterprise Linux', 'Rocky')
+  when: ansible_os_family == 'RedHat'
   ansible.builtin.include_tasks: firewall__red_hat.yml
 
 - name: Papertrail
+  when: pre_rss_temple__papertrail_destination_host | length > 0
   ansible.builtin.include_tasks: papertrail.yml

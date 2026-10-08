@@ -1,13 +1,5 @@
 ---
-- name: Enable UFW
-  become: true
-  community.general.ufw:
-    state: enabled
-  notify:
-    - firewall changed
-
-- ansible.builtin.meta: flush_handlers
-
+# Add the allow rules before enabling UFW, so SSH access is never blocked
 - name: Allow SSH traffic
   become: true
   community.general.ufw:
@@ -27,3 +19,12 @@
     rule: allow
     port: '443'
     proto: tcp
+
+- name: Enable UFW
+  become: true
+  community.general.ufw:
+    state: enabled
+  notify:
+    - firewall changed
+
+- ansible.builtin.meta: flush_handlers

@@ -7,11 +7,13 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
       - '{{ rss_temple__postgres_admin_user }}'
+      - --tuples-only
+      - --no-align
       - -c
       - "SELECT 1 FROM pg_roles WHERE rolname='{{ rss_temple__app_postgres_user }}'"
       - '{{ rss_temple__postgres_name }}'
@@ -20,7 +22,7 @@
   register: _rss_temple__django_user_exists_ret
 
 - ansible.builtin.set_fact:
-    _rss_temple__django_user_exists: "{{ '1' in _rss_temple__django_user_exists_ret.stdout }}"
+    _rss_temple__django_user_exists: "{{ _rss_temple__django_user_exists_ret.stdout | trim == '1' }}"
 
 - name: Create '{{ rss_temple__app_postgres_user }}' Postgres User
   ansible.builtin.command:
@@ -30,13 +32,14 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
       - '{{ rss_temple__postgres_admin_user }}'
       - -c
-      - "CREATE USER {{ rss_temple__app_postgres_user }} WITH PASSWORD '{{ _rss_temple__app_postgres_password }}'"
+      - >-
+        CREATE USER {{ rss_temple__app_postgres_user }} WITH PASSWORD '{{ _rss_temple__app_postgres_password | replace("'", "''") }}'
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
@@ -50,7 +53,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -70,7 +73,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -90,7 +93,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -110,7 +113,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -130,7 +133,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U
@@ -150,7 +153,7 @@
       - compose
       - exec
       - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password | quote }}
+      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
       - '{{ rss_temple__app_docker_service_prefix }}postgresql'
       - psql
       - -U

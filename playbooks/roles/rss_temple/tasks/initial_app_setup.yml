@@ -27,7 +27,7 @@
       - compose
       - exec
       - -e
-      - DJANGO_SUPERUSER_PASSWORD={{ rss_temple__app_superuser_password | quote }}
+      - DJANGO_SUPERUSER_PASSWORD={{ _rss_temple__app_superuser_password }}
       - '{{ rss_temple__app_docker_service_prefix }}rss_temple'
       - python
       - ./manage.py
