@@ -59,4 +59,4 @@ jobs:
             ansible-galaxy collection install -r requirements.yml
       - run:
           name: ansible-lint lint
-          command: ansible-lint . playbooks/
+          command: ansible-lint . roles/ playbooks/
