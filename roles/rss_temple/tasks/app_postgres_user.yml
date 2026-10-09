@@ -28,7 +28,9 @@
 - ansible.builtin.set_fact:
     _rss_temple__django_user_exists: "{{ _rss_temple__django_user_exists_ret.stdout | trim == '1' }}"
 
-- name: Create '{{ rss_temple__app_postgres_user }}' Postgres User
+# A single `-c` runs as one implicit transaction, so a failure part-way leaves no half-configured user behind
+# (which the exists-check above would otherwise skip over on the next run)
+- name: Create and configure '{{ rss_temple__app_postgres_user }}' Postgres User
   ansible.builtin.command:
     chdir: '{{ _rss_temple__absolute_service_path }}'
     argv:
@@ -42,128 +44,15 @@
       - -U
       - '{{ rss_temple__postgres_admin_user }}'
       - -c
-      - >-
-        CREATE USER {{ rss_temple__app_postgres_user }} WITH PASSWORD '{{ _rss_temple__app_postgres_password | replace("'", "''") }}'
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: Alter Default Privileges to ALL for '{{ rss_temple__app_postgres_user }}'
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - 'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO {{ rss_temple__app_postgres_user }}'
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: Grant ALL Privileges on existing tables to '{{ rss_temple__app_postgres_user }}'
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - 'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ rss_temple__app_postgres_user }}'
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: Grant ALL on schema to '{{ rss_temple__app_postgres_user }}'
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - 'GRANT ALL ON SCHEMA public TO {{ rss_temple__app_postgres_user }}'
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: "Django-Specific: Alter client_encoding to utf8 for '{{ rss_temple__app_postgres_user }}'"
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - "ALTER ROLE {{ rss_temple__app_postgres_user }} SET client_encoding TO 'utf8'"
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: "Django-Specific: Alter default_transaction_isolation to read committed for '{{ rss_temple__app_postgres_user }}'"
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - "ALTER ROLE {{ rss_temple__app_postgres_user }} SET default_transaction_isolation TO 'read committed'"
-      - '{{ rss_temple__postgres_name }}'
-  become: true
-  changed_when: true
-  when: not _rss_temple__django_user_exists
-
-- name: "Django-Specific: Alter timezone to UTC for '{{ rss_temple__app_postgres_user }}'"
-  ansible.builtin.command:
-    chdir: '{{ _rss_temple__absolute_service_path }}'
-    argv:
-      - docker
-      - compose
-      - exec
-      - -e
-      - PGPASSWORD={{ _rss_temple__postgres_admin_password }}
-      - '{{ rss_temple__app_docker_service_prefix }}postgresql'
-      - psql
-      - -U
-      - '{{ rss_temple__postgres_admin_user }}'
-      - -c
-      - "ALTER ROLE {{ rss_temple__app_postgres_user }} SET timezone TO 'UTC'"
+      - |
+        CREATE USER {{ rss_temple__app_postgres_user }} WITH PASSWORD '{{ _rss_temple__app_postgres_password | replace("'", "''") }}';
+        ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO {{ rss_temple__app_postgres_user }};
+        GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ rss_temple__app_postgres_user }};
+        GRANT ALL ON SCHEMA public TO {{ rss_temple__app_postgres_user }};
+        -- Django-specific role settings (https://docs.djangoproject.com/en/stable/ref/databases/#optimizing-postgresql-s-configuration)
+        ALTER ROLE {{ rss_temple__app_postgres_user }} SET client_encoding TO 'utf8';
+        ALTER ROLE {{ rss_temple__app_postgres_user }} SET default_transaction_isolation TO 'read committed';
+        ALTER ROLE {{ rss_temple__app_postgres_user }} SET timezone TO 'UTC';
       - '{{ rss_temple__postgres_name }}'
   become: true
   changed_when: true
