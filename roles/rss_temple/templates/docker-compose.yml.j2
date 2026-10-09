@@ -13,6 +13,7 @@ services:
     restart: always
     volumes:
       - ./overrides/valkey.conf:/usr/local/etc/valkey/valkey.conf
+      - valkey_data:/data/
     healthcheck:
       test: ['CMD-SHELL', '[ "$$(valkey-cli ping)" = PONG ]']
       interval: 5s
@@ -138,6 +139,7 @@ volumes:
 {% endif %}
   caddy_data:
   django_static:
+  valkey_data:
 networks:
   global_rss_temple_net:
     external: true
