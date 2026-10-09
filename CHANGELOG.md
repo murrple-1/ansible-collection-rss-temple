@@ -4,7 +4,7 @@ All notable changes to the `murrple_1.rss_temple` collection. The format is base
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the collection follows
 [Semantic Versioning](https://semver.org/).
 
-## [2.0.0] - Unreleased
+## [2.0.0]
 
 ### Upgrading from 1.0.3
 
