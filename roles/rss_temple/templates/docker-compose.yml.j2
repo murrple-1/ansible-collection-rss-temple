@@ -1,5 +1,7 @@
 x-rss-temple-image: &rss-temple-image
   image: 'murraychristopherson/rss_temple:{{ rss_temple__docker_version }}'
+
+x-rss-temple-depends-on: &rss-temple-depends-on
   depends_on:
     {{ rss_temple__app_docker_service_prefix }}postgresql:
       condition: service_healthy
@@ -12,8 +14,8 @@ services:
     command: valkey-server /usr/local/etc/valkey/valkey.conf
     restart: always
     volumes:
-      - ./overrides/valkey.conf:/usr/local/etc/valkey/valkey.conf
       - valkey_data:/data/
+      - ./overrides/valkey.conf:/usr/local/etc/valkey/valkey.conf
     healthcheck:
       test: ['CMD-SHELL', '[ "$$(valkey-cli ping)" = PONG ]']
       interval: 5s
@@ -30,9 +32,8 @@ services:
       - '5432'
     env_file:
       - .env
-    # Check over TCP: on first start, the image runs a temporary server for initialization that only listens on the socket
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U "$${POSTGRES_USER:-postgres}" -d "$${POSTGRES_DB:-postgres}"']
       interval: 5s
       timeout: 5s
       retries: 6
@@ -58,7 +59,7 @@ services:
       - rss_temple_net
       - global_rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple:
-    <<: *rss-temple-image
+    <<: [*rss-temple-image, rss-temple-depends-on]
     command: >
       sh -c "
         while ! python ./manage.py checkready; do
@@ -89,7 +90,7 @@ services:
       - default  # necessary, because functionality requires making calls to the external internet
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple_dramatiq:
-    <<: *rss-temple-image
+    <<: [*rss-temple-image, rss-temple-depends-on]
     command: dramatiq api_dramatiq.main -Q rss_temple
     restart: always
     environment:
@@ -105,7 +106,7 @@ services:
       - default  # necessary, because functionality requires making calls to the external internet
       - rss_temple_net
   {{ rss_temple__app_docker_service_prefix }}rss_temple_schedulerdaemon:
-    <<: *rss-temple-image
+    <<: [*rss-temple-image, rss-temple-depends-on]
     command: >
       sh -c "
         while ! python ./manage.py checkready; do
@@ -134,12 +135,12 @@ services:
     networks:
       - rss_temple_net
 volumes:
+  valkey_data:
 {% if not rss_temple__postgres_local_var_directory %}
   db_data:
 {% endif %}
   caddy_data:
   django_static:
-  valkey_data:
 networks:
   global_rss_temple_net:
     external: true
