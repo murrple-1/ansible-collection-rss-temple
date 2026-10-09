@@ -1,0 +1,24 @@
+DOCUMENTATION:
+  name: dotenv_quote
+  author: Murray Christopherson <murraychristopherson@gmail.com>
+  version_added: "1.1.0"
+  short_description: quote a value for a Docker Compose `.env` file
+  description:
+    - Double-quotes the value and escapes C(\), C(") and C($) (and newlines), so Docker Compose reads it back exactly as given.
+    - Use instead of C(ansible.builtin.quote), which is for shells. Compose cannot parse its output for values containing C(').
+  options:
+    _input:
+      description: the value to quote
+      type: str
+      required: true
+
+EXAMPLES: |
+  # PASSWORD="it's \$ecret"
+  - ansible.builtin.copy:
+      content: "PASSWORD={{ \"it's $ecret\" | murrple_1.rss_temple.dotenv_quote }}\n"
+      dest: .env
+
+RETURN:
+  _value:
+    description: the double-quoted, escaped value
+    type: str
