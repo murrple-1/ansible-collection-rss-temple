@@ -4,7 +4,6 @@
     X-Content-Type-Options "nosniff"
     X-Frame-Options "DENY"
     Content-Security-Policy "default-src 'none'; script-src 'self' apis.google.com connect.facebook.net; connect-src 'self' {{ _api_origin }} *.facebook.com{% for src in rss_temple_web_app__csp_extra_connect_src %} {{ src }}{% endfor %}; img-src * data: blob:; style-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'; font-src 'self' data:; frame-src *; media-src blob:"
-    X-XSS-Protection "1"
     Strict-Transport-Security "max-age={{ rss_temple_web_app__strict_transport_security_max_age }}; includeSubDomains"
   }
 
