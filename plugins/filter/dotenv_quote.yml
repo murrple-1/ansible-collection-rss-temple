@@ -1,7 +1,7 @@
 DOCUMENTATION:
   name: dotenv_quote
   author: Murray Christopherson <murraychristopherson@gmail.com>
-  version_added: "1.1.0"
+  version_added: "2.0.0"
   short_description: quote a value for a Docker Compose `.env` file
   description:
     - Double-quotes the value and escapes C(\), C(") and C($) (and newlines), so Docker Compose reads it back exactly as given.
