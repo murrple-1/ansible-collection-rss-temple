@@ -49,3 +49,7 @@ rss_temple__valkey_max_memory: 0
 
 # Valkey Max Memory policy. See https://redis.io/docs/reference/eviction/
 rss_temple__valkey_max_memory_policy: noeviction
+
+# Persist Valkey writes (the Dramatiq job queue, caches) to the `valkey_data` volume with an append-only file,
+# instead of only the default periodic snapshots. See https://valkey.io/topics/persistence/
+rss_temple__valkey_appendonly: true
