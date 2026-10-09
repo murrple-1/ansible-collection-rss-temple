@@ -34,6 +34,7 @@ versions are merged in by hand, in each service directory.
   `depends_on`, and the `valkey_data` volume. Don't change the PostgreSQL image or volume path in the same step:
   see below.
 - **`rss_temple/overrides/valkey.conf`:** add `appendonly yes` and `appendfsync everysec`.
+- **`rss_temple/overrides/gunicorn.conf.py`:** add `preload_app = True` and the `on_starting` hook.
 - **`rss_temple_web_app/Caddyfile`:** take the new `Content-Security-Policy` (its `connect-src` now comes from the
   API host), and drop `X-XSS-Protection` here and in `rss_temple_home/Caddyfile`.
 - **Papertrail:** after the first `pre_rss_temple` run with Papertrail set up, remove the `logspout` service from
@@ -73,6 +74,9 @@ Keep `rss_temple.sql` until the app is confirmed working.
 - Server settings: `rss_temple__app_cors_allowed_origins` (prompted for; default `https://app.rsstemple.com`),
   `rss_temple__app_enable_silk` (default `false`) and the database name (`APP_DB_NAME`).
   `rss_temple_config.yml` now also prompts for the CSRF trusted origins.
+- Gunicorn `preload_app`, with the server's URL resolver warm-up before forking, so the workers share the app's
+  memory (`rss_temple__gunicorn_preload_app`, default `true`). With it, `kill -HUP` no longer reloads code: restart
+  the container instead.
 - `rss_temple_web_app__csp_extra_connect_src`, for extra `connect-src` sources in the web app's CSP.
 - `pre_rss_temple__docker_group_user`, the user added to the `docker` group (default: `ansible_user`, or the
   connecting user).
