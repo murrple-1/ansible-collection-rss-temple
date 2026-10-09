@@ -18,6 +18,10 @@ pre_rss_temple__home_domains: []
 pre_rss_temple__papertrail_destination_host: ''
 pre_rss_temple__papertrail_destination_port: ''
 
+# When Papertrail is set up, containers log to journald with this tag (the container name), and rsyslog forwards
+# them along with the rest of the host's logs. See https://docs.docker.com/engine/logging/drivers/journald/
+pre_rss_temple__docker_log_tag: !unsafe '{{.Name}}'
+
 # Should the Ansible user be added to the `docker` group (so docker commands can be run without `sudo`)
 pre_rss_temple__should_add_ansible_user_to_docker_group: true
 

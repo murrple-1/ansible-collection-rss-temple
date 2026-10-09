@@ -6,6 +6,7 @@
     state: restarted
   listen:
     - firewall changed
+    - docker daemon changed
 
 - name: Restart rsyslog Service
   become: true
@@ -14,3 +15,13 @@
     state: restarted
   listen:
     - rsyslog changed
+
+- name: Notice about recreating containers
+  ansible.builtin.debug:
+    msg: >-
+      Docker now logs containers to journald, but existing containers keep their old log driver until they are recreated:
+      run `docker compose up --detach --force-recreate` in each service directory under {{ pre_rss_temple__opt_path }}.
+      If {{ _pre_rss_temple__absolute_service_path }}/docker-compose.yml still has a `logspout` service, remove it first,
+      or logs are sent to Papertrail twice.
+  listen:
+    - docker daemon changed
