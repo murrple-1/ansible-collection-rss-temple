@@ -28,15 +28,14 @@
 
 - ansible.builtin.include_tasks: setup_config.yml
 
+# Waits for PostgreSQL and Valkey to be healthy and the other services to be running
 - name: Docker Compose Up
   community.docker.docker_compose_v2:
     project_src: '{{ _rss_temple__absolute_service_path }}'
     pull: always
+    wait: true
+    wait_timeout: 300
   become: true
-  notify:
-    - docker compose up'd
-
-- ansible.builtin.meta: flush_handlers
 
 - name: Setup PostgreSQL User
   ansible.builtin.import_tasks: app_postgres_user.yml

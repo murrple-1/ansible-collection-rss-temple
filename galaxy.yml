@@ -37,8 +37,8 @@ tags: ['application', 'cloud', 'database']
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  # `docker_compose_v2` was added in 3.6.0
-  community.docker: '>=3.6.0'
+  # `docker_compose_v2`'s `wait` option was added in 3.8.0
+  community.docker: '>=3.8.0'
   # `ufw`
   community.general: '*'
   # `firewalld`
