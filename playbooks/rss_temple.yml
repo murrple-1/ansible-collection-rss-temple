@@ -107,7 +107,7 @@
       default: http://localhost:4200/verify?token=%(key)s
 
     - name: rss_temple__app_account_email_verification_sent_url
-      prompt: 'Unknown usage: rss_temple__app_account_email_verification_sent_url'
+      prompt: URL users are sent to after signing up, while their email address awaits verification
       default: http://localhost:4200/emailsent
 
     - name: rss_temple__app_password_confirm_reset_url_format
@@ -117,11 +117,11 @@
       default: http://localhost:4200/resetpassword?token=%(token)s&userId=%(userId)s
 
     - name: rss_temple__app_social_connections_url
-      prompt: 'Unknown usage: rss_temple__app_social_connections_url'
+      prompt: URL users are sent to after connecting a social (Google/Facebook) account
       default: http://localhost:4200/main/profile
 
     - name: rss_temple__app_social_signup_url
-      prompt: 'Unknown usage: rss_temple__app_social_signup_url'
+      prompt: URL users are sent to when a social (Google/Facebook) login needs to finish signing up
       default: http://localhost:4200/register
 
   pre_tasks:
