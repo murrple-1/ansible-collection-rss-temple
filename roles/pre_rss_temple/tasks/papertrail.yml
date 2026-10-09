@@ -37,3 +37,28 @@
   become: true
   notify:
     - rsyslog changed
+
+# Container logs go to journald, which rsyslog (configured above) already forwards to Papertrail
+- name: Check for an existing Docker daemon config
+  ansible.builtin.stat:
+    path: /etc/docker/daemon.json
+  register: _pre_rss_temple__docker_daemon_json_stat
+
+- name: Read the existing Docker daemon config
+  when: _pre_rss_temple__docker_daemon_json_stat.stat.exists
+  ansible.builtin.slurp:
+    src: /etc/docker/daemon.json
+  register: _pre_rss_temple__docker_daemon_json_slurp
+
+# `log-opts` is replaced, not merged: options for another driver (eg `max-size`) would stop Docker from starting
+- name: Log containers to journald
+  ansible.builtin.copy:
+    content: |
+      {{ (_pre_rss_temple__docker_daemon_json_slurp.content | b64decode | from_json if _pre_rss_temple__docker_daemon_json_stat.stat.exists else {})
+         | combine({'log-driver': 'journald', 'log-opts': {'tag': pre_rss_temple__docker_log_tag}})
+         | to_nice_json }}
+    dest: /etc/docker/daemon.json
+    mode: '0644'
+  become: true
+  notify:
+    - docker daemon changed

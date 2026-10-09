@@ -11,16 +11,6 @@ services:
     networks:
       - default
       - global_rss_temple_net
-{% if pre_rss_temple__papertrail_destination_host %}
-  logspout:
-    image: gliderlabs/logspout:latest
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: syslog+tls://{{ pre_rss_temple__papertrail_destination_host }}:{{ pre_rss_temple__papertrail_destination_port | int }}
-    networks:
-      - default
-{% endif %}
 volumes:
   caddy_data:
 networks:

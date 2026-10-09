@@ -6,6 +6,7 @@
     state: restarted
   listen:
     - firewall changed
+    - docker daemon changed
 
 - name: Restart rsyslog Service
   become: true
