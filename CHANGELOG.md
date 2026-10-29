@@ -11,9 +11,18 @@ All notable changes to the `murrple_1.rss_temple` collection. The format is base
 The playbooks don't overwrite existing config files, so on an existing server merge these into the
 `rss_temple_home` service directory by hand:
 
-- **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`.
+- **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`, and add `SITE_URL` (the same value as
+  `rss_temple_home__og_url_host`, such as `'https://rsstemple.com'`).
 - **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
   `<HOST>/tos/`.
+
+`SITE_URL` needs an `rss_temple_home` image built from `rss_temple_ui` with its SEO changes. With an older
+image, it's ignored.
+
+### Added
+
+- `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
+  `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
 
 ### Fixed
 

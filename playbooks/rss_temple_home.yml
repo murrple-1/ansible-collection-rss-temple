@@ -29,7 +29,7 @@
       default: https://rsstemple.com
 
     - name: rss_temple_home__og_url_host
-      prompt: Hostname for the OpenGraph URL (formatted similar to "<HOSTNAME>/contact/")
+      prompt: Hostname for the OpenGraph URL (also the canonical site URL, formatted similar to "<HOSTNAME>/contact/")
       default: https://rsstemple.com
 
   roles:
