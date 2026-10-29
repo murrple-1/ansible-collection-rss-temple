@@ -21,6 +21,7 @@ The playbooks don't overwrite existing config files, so on an existing server me
   `TWITTER_X_URL`.
 - The `og:url` of the Contact, Privacy and Terms pages pointed to `/contact.html`, `/privacy.html` and `/tos.html`,
   which return 404. They now point to `/contact/`, `/privacy/` and `/tos/`.
+- The `og_image_host` prompt said the image is `og_image.png`. It's `og_image.jpg`.
 
 ## [2.0.0]
 

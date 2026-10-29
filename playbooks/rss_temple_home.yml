@@ -25,7 +25,7 @@
       default: https://www.instagram.com/rsstempleapp/
 
     - name: rss_temple_home__og_image_host
-      prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.png")
+      prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.jpg")
       default: https://rsstemple.com
 
     - name: rss_temple_home__og_url_host
