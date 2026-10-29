@@ -2,6 +2,12 @@ x-rss-temple-home-image: &rss-temple-home-image
   image: 'murraychristopherson/rss_temple_home:{{ rss_temple_home__docker_version }}'
 
 services:
+  {{ rss_temple_home__app_docker_service_prefix }}init-rss_temple_home:
+    image: alpine:3
+    volumes:
+      - caddy_srv:/srv/
+    command: chown -R 1000:1000 /srv/
+    network_mode: none
   {{ rss_temple_home__app_docker_service_prefix }}caddy-rss_temple_home:
     image: caddy:2-alpine
     restart: always
@@ -38,6 +44,9 @@ services:
       - ./custom_html/:/custom_html/
     networks:
       - rss_temple_home_net
+    depends_on:
+      {{ rss_temple_home__app_docker_service_prefix }}init-rss_temple_home:
+        condition: service_completed_successfully
 volumes:
   caddy_data:
   caddy_config:
