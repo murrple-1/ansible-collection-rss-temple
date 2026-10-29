@@ -13,18 +13,19 @@ The playbooks don't overwrite existing config files, so on an existing server me
 
 - **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`, and add `SITE_URL` (the same value as
   `rss_temple_home__og_url_host`, such as `'https://rsstemple.com'`).
-- **`Caddyfile`:** add `encode zstd gzip`.
+- **`Caddyfile`:** add `encode zstd gzip` and the `handle_errors 404` block.
 - **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
   `<HOST>/tos/`.
 
-`SITE_URL` needs an `rss_temple_home` image built from `rss_temple_ui` with its SEO changes. With an older
-image, it's ignored.
+`SITE_URL`, and the 404 page `handle_errors` serves, need an `rss_temple_home` image built from
+`rss_temple_ui` with its SEO changes. With an older image, `SITE_URL` is ignored and missing pages get Caddy's
+empty 404, as before.
 
 ### Added
 
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
-- The home page's Caddy compresses responses (`encode zstd gzip`).
+- The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.
 
 ### Fixed
 
