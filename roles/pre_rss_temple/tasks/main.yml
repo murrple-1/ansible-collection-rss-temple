@@ -62,3 +62,7 @@
 - name: Firewall (Red Hat)
   when: ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.include_tasks: firewall__red_hat.yml
+
+- name: Papertrail
+  when: pre_rss_temple__papertrail_destination_host | length > 0
+  ansible.builtin.include_tasks: papertrail.yml
