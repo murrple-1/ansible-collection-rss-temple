@@ -13,6 +13,7 @@ The playbooks don't overwrite existing config files, so on an existing server me
 
 - **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`, and add `SITE_URL` (the same value as
   `rss_temple_home__og_url_host`, such as `'https://rsstemple.com'`).
+- **`Caddyfile`:** add `encode zstd gzip`.
 - **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
   `<HOST>/tos/`.
 
@@ -23,6 +24,7 @@ image, it's ignored.
 
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
+- The home page's Caddy compresses responses (`encode zstd gzip`).
 
 ### Fixed
 
