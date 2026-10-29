@@ -11,11 +11,14 @@ All notable changes to the `murrple_1.rss_temple` collection. The format is base
 The playbooks don't overwrite existing config files, so on an existing server merge these into the
 `rss_temple_home` service directory by hand:
 
+- **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`.
 - **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
   `<HOST>/tos/`.
 
 ### Fixed
 
+- The home page's X (Twitter) link never showed, because `.env` set `TWITTER_URL` while the site reads
+  `TWITTER_X_URL`.
 - The `og:url` of the Contact, Privacy and Terms pages pointed to `/contact.html`, `/privacy.html` and `/tos.html`,
   which return 404. They now point to `/contact/`, `/privacy/` and `/tos/`.
 
