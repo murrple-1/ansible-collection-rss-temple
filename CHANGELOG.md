@@ -21,11 +21,30 @@ The playbooks don't overwrite existing config files, so on an existing server me
 `rss_temple_ui` with its SEO changes. With an older image, `SITE_URL` is ignored and missing pages get Caddy's
 empty 404, as before.
 
+Papertrail support is removed, but the playbooks don't undo its setup. On a server where Papertrail was set up,
+`rsyslog` keeps trying to forward the host's logs to it until you remove the Papertrail config by hand:
+
+1. Delete the block between `# BEGIN ANSIBLE MANAGED BLOCK - Papertrail` and
+   `# END ANSIBLE MANAGED BLOCK - Papertrail` (markers included) from `/etc/rsyslog.conf`.
+2. Delete `/etc/papertrail-bundle.pem`.
+3. Restart `rsyslog`: `sudo systemctl restart rsyslog`
+4. Optionally, remove `rsyslog-gnutls`, if nothing else uses it.
+
+`/etc/docker/daemon.json` can stay as it is: container logs keep going to journald (`docker logs` and
+`journalctl CONTAINER_NAME=<name>` still work). To use Docker's default log driver instead, remove `log-driver` and
+`log-opts` from it, restart Docker, and run `docker compose up --detach --force-recreate` in each service directory.
+
 ### Added
 
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
 - The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.
+
+### Removed
+
+- **Breaking:** Papertrail support, as Papertrail no longer has a free tier. The `pre_rss_temple` playbook no longer
+  prompts for it, and the `pre_rss_temple__papertrail_destination_host`, `pre_rss_temple__papertrail_destination_port`
+  and `pre_rss_temple__docker_log_tag` variables are gone (see the upgrade steps above to remove an existing setup).
 
 ### Fixed
 

@@ -7,11 +7,5 @@
       prompt: Email (for creating an ACME account with your CA)
       private: false
 
-    - name: pre_rss_temple__papertrail_destination_host
-      prompt: Papertrail Destination Host (ie 'logsN.papertrailapp.com'; leave empty to skip Papertrail)
-
-    - name: pre_rss_temple__papertrail_destination_port
-      prompt: Papertrail Destination Port
-
   roles:
     - murrple_1.rss_temple.pre_rss_temple
