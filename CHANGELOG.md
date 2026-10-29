@@ -4,6 +4,21 @@ All notable changes to the `murrple_1.rss_temple` collection. The format is base
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the collection follows
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Upgrading from 2.0.0
+
+The playbooks don't overwrite existing config files, so on an existing server merge these into the
+`rss_temple_home` service directory by hand:
+
+- **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
+  `<HOST>/tos/`.
+
+### Fixed
+
+- The `og:url` of the Contact, Privacy and Terms pages pointed to `/contact.html`, `/privacy.html` and `/tos.html`,
+  which return 404. They now point to `/contact/`, `/privacy/` and `/tos/`.
+
 ## [2.0.0]
 
 ### Upgrading from 1.0.3
