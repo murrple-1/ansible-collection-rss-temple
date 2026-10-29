@@ -1,4 +1,6 @@
 :3000 {
+  encode zstd gzip
+
   header {
     X-Content-Type-Options "nosniff"
     X-Frame-Options "DENY"
@@ -8,4 +10,9 @@
 
   root * /srv/
   file_server
+
+  handle_errors 404 {
+    rewrite * /404.html
+    file_server
+  }
 }

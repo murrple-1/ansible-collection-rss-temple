@@ -9,11 +9,11 @@
       private: false
 
     - name: rss_temple_home__og_image_host
-      prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.png")
+      prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.jpg")
       default: https://rsstemple.com
 
     - name: rss_temple_home__og_url_host
-      prompt: Hostname for the OpenGraph URL (formatted similar to "<HOSTNAME>/contact.html")
+      prompt: Hostname for the OpenGraph URL (also the canonical site URL, formatted similar to "<HOSTNAME>/contact/")
       default: https://rsstemple.com
 
   tasks:

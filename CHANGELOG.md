@@ -4,6 +4,37 @@ All notable changes to the `murrple_1.rss_temple` collection. The format is base
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the collection follows
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Upgrading from 2.0.0
+
+The playbooks don't overwrite existing config files, so on an existing server merge these into the
+`rss_temple_home` service directory by hand:
+
+- **`.env`:** rename `TWITTER_URL` to `TWITTER_X_URL`, and add `SITE_URL` (the same value as
+  `rss_temple_home__og_url_host`, such as `'https://rsstemple.com'`).
+- **`Caddyfile`:** add `encode zstd gzip` and the `handle_errors 404` block.
+- **`custom_html/*.head.html`:** change the `og:url` values to `<HOST>/`, `<HOST>/contact/`, `<HOST>/privacy/` and
+  `<HOST>/tos/`.
+
+`SITE_URL`, and the 404 page `handle_errors` serves, need an `rss_temple_home` image built from
+`rss_temple_ui` with its SEO changes. With an older image, `SITE_URL` is ignored and missing pages get Caddy's
+empty 404, as before.
+
+### Added
+
+- `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
+  `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
+- The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.
+
+### Fixed
+
+- The home page's X (Twitter) link never showed, because `.env` set `TWITTER_URL` while the site reads
+  `TWITTER_X_URL`.
+- The `og:url` of the Contact, Privacy and Terms pages pointed to `/contact.html`, `/privacy.html` and `/tos.html`,
+  which return 404. They now point to `/contact/`, `/privacy/` and `/tos/`.
+- The `og_image_host` prompt said the image is `og_image.png`. It's `og_image.jpg`.
+
 ## [2.0.0]
 
 ### Upgrading from 1.0.3
