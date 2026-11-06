@@ -24,7 +24,8 @@ empty 404, as before.
 In the `rss_temple` service directory:
 
 - **`Caddyfile`:** add the global `servers { trusted_proxies static private_ranges }` block at the top.
-- **`.env`:** add `APP_NUM_PROXIES=2`.
+- **`.env`:** add `APP_NUM_PROXIES=2`, and `APP_ALLOWED_HOSTS` set to the API's domains (such as
+  `api.rsstemple.com`).
 
 `APP_NUM_PROXIES` needs a server release with `NUM_PROXIES` support; older servers ignore it. The `Caddyfile`
 change alone already gives each client its own rate-limit bucket.
@@ -34,6 +35,9 @@ change alone already gives each client its own rate-limit bucket.
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
 - The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.
+- `rss_temple__app_allowed_hosts`, prompted for by the playbooks (default `api.rsstemple.com`) and written to `.env`
+  as `APP_ALLOWED_HOSTS`, so the server rejects requests for any other `Host`. It doesn't restrict which clients
+  can use the API.
 - `rss_temple__app_num_proxies` (default `2`), written to `.env` as `APP_NUM_PROXIES`, so the server's rate
   limiting keys on the real client IP.
 

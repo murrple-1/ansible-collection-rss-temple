@@ -37,6 +37,10 @@ rss_temple__app_enable_silk: false
 # Comma-separated list of origins trusted for CSRF (eg 'https://app.rsstemple.com')
 rss_temple__app_csrf_trusted_origins: ''
 
+# Comma-separated list of hostnames the API is served at (eg 'api.rsstemple.com'). Requests with any other `Host`
+# header are rejected. This doesn't restrict which clients can use the API. If empty, the server allows any host
+rss_temple__app_allowed_hosts: ''
+
 # Comma-separated list of origins allowed to make credentialed cross-origin requests (ie the web app's origin).
 # If empty, the server only allows 'http://localhost:4200'
 rss_temple__app_cors_allowed_origins: ''

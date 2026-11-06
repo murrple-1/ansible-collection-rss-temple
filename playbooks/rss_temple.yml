@@ -42,6 +42,10 @@
       prompt: CORS Allowed Origins (ie the web app) - comma-separated list (eg 'https://app.rsstemple.com')
       default: https://app.rsstemple.com
 
+    - name: rss_temple__app_allowed_hosts
+      prompt: Allowed Hosts (ie the API's domains) - comma-separated list (eg 'api.rsstemple.com')
+      default: api.rsstemple.com
+
     - name: rss_temple__app_email_host
       prompt: Email host
 
