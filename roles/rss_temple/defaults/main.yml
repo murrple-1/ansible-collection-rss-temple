@@ -41,6 +41,11 @@ rss_temple__app_csrf_trusted_origins: ''
 # If empty, the server only allows 'http://localhost:4200'
 rss_temple__app_cors_allowed_origins: ''
 
+# Number of reverse proxies in front of the app that append to `X-Forwarded-For` (the infra Caddy and this role's
+# Caddy), so rate limiting sees the real client IP. Raise it if you add a proxy in front, such as a CDN. If empty, the
+# server falls back to the whole header
+rss_temple__app_num_proxies: 2
+
 # Max number of bytes downloadable before considered too big to fit in memory
 rss_temple__app_download_max_byte_count: 1000000
 

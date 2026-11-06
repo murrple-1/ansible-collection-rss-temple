@@ -1,3 +1,11 @@
+{
+	servers {
+		# trust the `X-Forwarded-For` set by the infra Caddy (only reachable over the Docker networks), so it's
+		# appended to rather than replaced with that Caddy's IP
+		trusted_proxies static private_ranges
+	}
+}
+
 :8000 {
 	encode gzip
 

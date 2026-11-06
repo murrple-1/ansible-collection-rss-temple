@@ -21,14 +21,28 @@ The playbooks don't overwrite existing config files, so on an existing server me
 `rss_temple_ui` with its SEO changes. With an older image, `SITE_URL` is ignored and missing pages get Caddy's
 empty 404, as before.
 
+In the `rss_temple` service directory:
+
+- **`Caddyfile`:** add the global `servers { trusted_proxies static private_ranges }` block at the top.
+- **`.env`:** add `APP_NUM_PROXIES=2`.
+
+`APP_NUM_PROXIES` needs a server release with `NUM_PROXIES` support; older servers ignore it. The `Caddyfile`
+change alone already gives each client its own rate-limit bucket.
+
 ### Added
 
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
 - The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.
+- `rss_temple__app_num_proxies` (default `2`), written to `.env` as `APP_NUM_PROXIES`, so the server's rate
+  limiting keys on the real client IP.
 
 ### Fixed
 
+- The server's rate limits were shared by every client. The `rss_temple` Caddy didn't trust the infra Caddy, so it
+  replaced `X-Forwarded-For` with the infra Caddy's IP, and the server saw every request as coming from it. One
+  client could use up the login and anonymous limits for everyone. The `rss_temple` Caddy now trusts private
+  ranges, which only the Docker networks can reach it from.
 - The home page's X (Twitter) link never showed, because `.env` set `TWITTER_URL` while the site reads
   `TWITTER_X_URL`.
 - The `og:url` of the Contact, Privacy and Terms pages pointed to `/contact.html`, `/privacy.html` and `/tos.html`,
