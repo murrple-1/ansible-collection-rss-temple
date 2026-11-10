@@ -26,6 +26,12 @@ In the `rss_temple` service directory:
 - **`Caddyfile`:** add the global `servers { trusted_proxies static private_ranges }` block at the top.
 - **`.env`:** add `APP_NUM_PROXIES=2`, and `APP_ALLOWED_HOSTS` set to the API's domains (such as
   `api.rsstemple.com`).
+- **`docker-compose.yml` (required before deploying a newer server image):** take the new `rss_temple_migrate` and
+  `rss_temple_collectstatic` services, the `depends_on` that makes the app services wait for them, and the
+  simplified `command`s of `rss_temple` and `rss_temple_schedulerdaemon`. Remove the `django_static` volume from
+  `rss_temple`. Keep the service name prefix, if you set one. Server releases after 0.10.0 no longer have the
+  `checkready` command that the old `command`s loop on, so with the old file those two containers hang without
+  starting.
 
 `APP_NUM_PROXIES` needs a server release with `NUM_PROXIES` support; older servers ignore it. The `Caddyfile`
 change alone already gives each client its own rate-limit bucket.
@@ -40,6 +46,17 @@ change alone already gives each client its own rate-limit bucket.
   can use the API.
 - `rss_temple__app_num_proxies` (default `2`), written to `.env` as `APP_NUM_PROXIES`, so the server's rate
   limiting keys on the real client IP.
+
+### Changed
+
+- `migrate` and `collectstatic` run as one-shot Compose services (`rss_temple_migrate` and
+  `rss_temple_collectstatic`), instead of inside the `rss_temple` container's start-up command. `rss_temple` waits
+  for both to finish successfully (`condition: service_completed_successfully`), and `rss_temple_dramatiq` and
+  `rss_temple_schedulerdaemon` wait for `rss_temple_migrate`. A failed migration now stops `docker compose up` with
+  an error, instead of starting the app on an old schema. The Dramatiq worker no longer starts before migrations
+  are applied.
+- The playbook starts PostgreSQL on its own and creates the app's PostgreSQL user before it starts the rest of the
+  stack, because `rss_temple_migrate` connects as that user.
 
 ### Fixed
 
