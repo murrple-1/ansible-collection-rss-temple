@@ -65,4 +65,6 @@ build_ignore: [
   '.pre-commit-config.yaml',
   '*.password',
   '*.django_secret',
+  'AGENTS.md',
+  'CLAUDE.md',
 ]
