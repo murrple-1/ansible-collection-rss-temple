@@ -2,6 +2,12 @@
 # Remote directory path when the application is being installed
 pre_rss_temple__opt_path: /opt/rss_temple/
 
+# Group for `pre_rss_temple__opt_path`, used only when the Ansible user can't create that directory themselves
+# (eg under `/opt`). Then this system group is created, the Ansible user is added to it, and the directory is
+# created as `root:<this group>`, mode 2775. A directory the Ansible user can create (eg under their home
+# directory) gets no special group. A directory that already exists is never changed.
+pre_rss_temple__opt_group: rss_temple
+
 # Remote directory path where the infra configuration is installed
 pre_rss_temple__service_path: '{{ pre_rss_temple__opt_path }}/rss_temple_infra/'
 

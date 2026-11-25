@@ -10,10 +10,9 @@
 - ansible.builtin.fail:
     msg: |
       Parent directory '{{ common__service_path | regex_replace('/$', '') | dirname }}' is not writable by the current user.
-      This needs to be handled manually, as the right handling depends on whether the directory is a
-      user directory (like a home directory) or a system directory (like `/opt/*`).
-      Specifically, we don't want to (re)set the "group" and "sticky bit" on a user directory, but we probably
-      want to set those things on a system directory.
+      Run the `pre_rss_temple` playbook first: it prepares `pre_rss_temple__opt_path`. If this role uses a
+      different `*__opt_path`, prepare that directory by hand. The right permissions depend on whether it is a
+      user directory (like one in a home directory) or a system directory (like `/opt/*`).
   when: not _common__service_parent_stat.stat.writeable | default(false)
 
 - name: Setup `{{ common__service_path }}/`

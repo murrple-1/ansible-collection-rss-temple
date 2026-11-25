@@ -38,6 +38,13 @@ change alone already gives each client its own rate-limit bucket.
 
 ### Added
 
+- The `pre_rss_temple` playbook prepares `pre_rss_temple__opt_path`, so it works on a fresh server where
+  `/opt/rss_temple/` doesn't exist. Before, the play failed because the Ansible user can't write to `/opt`. A
+  missing directory is created as the Ansible user if possible (eg under `~`), with mode 0755. Otherwise the
+  `pre_rss_temple__opt_group` system group is created, the Ansible user is added to it, and the directory is
+  created with `become` as `root:<pre_rss_temple__opt_group>`, mode 2775 (setgid). An existing directory is never
+  changed: if the Ansible user can't write to it, the play fails and says why.
+- `pre_rss_temple__opt_group` (default `rss_temple`), the group for that system directory.
 - `SITE_URL` in the home page's `.env`, from `rss_temple_home__og_url_host`. The site uses it for canonical links,
   `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
 - The home page's Caddy compresses responses (`encode zstd gzip`) and serves `/404.html` for missing pages.

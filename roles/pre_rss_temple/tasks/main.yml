@@ -14,6 +14,13 @@
 
 - ansible.builtin.include_role:
     name: murrple_1.rss_temple.common
+    tasks_from: opt_dir
+  vars:
+    common__opt_path: '{{ pre_rss_temple__opt_path }}'
+    common__opt_group: '{{ pre_rss_temple__opt_group }}'
+
+- ansible.builtin.include_role:
+    name: murrple_1.rss_temple.common
     tasks_from: service_dir
   vars:
     common__service_path: '{{ pre_rss_temple__service_path }}'

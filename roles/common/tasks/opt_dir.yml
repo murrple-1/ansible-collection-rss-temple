@@ -1,0 +1,96 @@
+---
+# Prepares the directory that holds the service directories, so the current user can create service directories
+# in it without `become`. It never changes a directory that already exists:
+#
+# 1. If the directory exists and the current user can write to it, nothing is done.
+# 2. If the directory exists and the current user can't write to it, the play fails. Fix it by hand.
+# 3. If it does not exist, the current user tries to create it, with mode 0755. This works when an ancestor
+#    directory is writable by the current user, for example for `~/rss_temple/`.
+# 4. If the current user can't create it, it goes below a system directory, for example `/opt/rss_temple/` (`/opt`
+#    belongs to root). With `become`, the `common__opt_group` system group is created, the current user is added to
+#    it, and the directory is created as `root:<common__opt_group>`, mode 2775: group-writable, and setgid so that
+#    new files and directories in it get the same group. Missing parent directories are created the same way.
+#    The SSH connection is then reset, so that the new group membership applies.
+#
+# Params:
+#   common__opt_path: the directory to prepare
+#   common__opt_group: the name of the group for a directory that step 4 creates
+- name: Stat `{{ common__opt_path }}`
+  ansible.builtin.stat:
+    path: '{{ common__opt_path }}'
+  register: _common__opt_stat
+
+- name: Fail if `{{ common__opt_path }}` exists but is not usable
+  ansible.builtin.assert:
+    that:
+      - _common__opt_stat.stat.isdir
+      - _common__opt_stat.stat.writeable
+    fail_msg: >-
+      '{{ common__opt_path }}' already exists, but it is not a directory that the current user can write to
+      (owner '{{ _common__opt_stat.stat.pw_name }}', group '{{ _common__opt_stat.stat.gr_name }}', mode
+      {{ _common__opt_stat.stat.mode }}). An existing path is never changed automatically. Fix its ownership or
+      permissions by hand (for example, add the current user to its group and log in again), or choose a
+      different path.
+  when: _common__opt_stat.stat.exists
+
+# A failure here is expected when no ancestor directory is writable by the current user. Step 4 handles that.
+- name: Create `{{ common__opt_path }}` as the current user
+  ansible.builtin.file:
+    path: '{{ common__opt_path }}'
+    state: directory
+    mode: '0755'
+  register: _common__opt_user_create
+  failed_when: false
+  when: not _common__opt_stat.stat.exists
+
+- name: Stat `{{ common__opt_path }}` after the create attempt
+  ansible.builtin.stat:
+    path: '{{ common__opt_path }}'
+  register: _common__opt_stat_after_user
+  when: not _common__opt_stat.stat.exists
+
+- name: Create `{{ common__opt_path }}` as a system directory
+  when:
+    - not _common__opt_stat.stat.exists
+    - not _common__opt_stat_after_user.stat.exists
+  block:
+    - name: Create the `{{ common__opt_group }}` group
+      ansible.builtin.group:
+        name: '{{ common__opt_group }}'
+        system: true
+      become: true
+
+    - name: Add `{{ ansible_facts['user_id'] }}` to the `{{ common__opt_group }}` group
+      ansible.builtin.user:
+        name: "{{ ansible_facts['user_id'] }}"
+        groups: '{{ common__opt_group }}'
+        append: true
+      become: true
+
+    - name: Create `{{ common__opt_path }}` as root
+      ansible.builtin.file:
+        path: '{{ common__opt_path }}'
+        state: directory
+        owner: root
+        group: '{{ common__opt_group }}'
+        mode: '2775'
+      become: true
+
+    # A new group membership only applies to new login sessions
+    - name: Reset the connection, so the new group membership applies
+      ansible.builtin.meta: reset_connection
+
+    - name: Stat `{{ common__opt_path }}` after the system directory setup
+      ansible.builtin.stat:
+        path: '{{ common__opt_path }}'
+      register: _common__opt_stat_after_root
+
+    - name: Fail if the current user still can't write to `{{ common__opt_path }}`
+      ansible.builtin.assert:
+        that: _common__opt_stat_after_root.stat.writeable
+        fail_msg: >-
+          '{{ common__opt_path }}' was created as 'root:{{ common__opt_group }}', mode 2775, and
+          '{{ ansible_facts['user_id'] }}' was added to the '{{ common__opt_group }}' group, but the group
+          membership does not apply yet. This happens with `--connection=local`, where resetting the connection
+          does not start a new login session. Log in again (or run `newgrp {{ common__opt_group }}`), then run
+          the play again.
