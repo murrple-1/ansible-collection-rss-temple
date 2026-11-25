@@ -11,10 +11,12 @@
     - name: rss_temple_home__og_image_host
       prompt: Hostname for the OpenGraph image (formatted to "<HOSTNAME>/media/og_image.jpg")
       default: https://rsstemple.com
+      private: false
 
     - name: rss_temple_home__og_url_host
       prompt: Hostname for the OpenGraph URL (also the canonical site URL, formatted similar to "<HOSTNAME>/contact/")
       default: https://rsstemple.com
+      private: false
 
   tasks:
     - ansible.builtin.include_role:
