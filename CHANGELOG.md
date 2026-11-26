@@ -38,6 +38,11 @@ change alone already gives each client its own rate-limit bucket.
 
 ### Added
 
+- The `pre_rss_temple` and `pre_rss_temple_config` playbooks prompt for `pre_rss_temple__server_domains`,
+  `pre_rss_temple__web_app_domains` and `pre_rss_temple__home_domains`, as comma-separated lists (defaults
+  `api.rsstemple.com`, `app.rsstemple.com` and `rsstemple.com`). The prompt answer takes precedence over a value
+  set in the inventory; to skip the prompt, pass the variable with `--extra-vars`. A list or a comma-separated
+  string are both accepted.
 - The `pre_rss_temple` playbook prepares `pre_rss_temple__opt_path`, so it works on a fresh server where
   `/opt/rss_temple/` doesn't exist. Before, the play failed because the Ansible user can't write to `/opt`. A
   missing directory is created as the Ansible user if possible (eg under `~`), with mode 0755. Otherwise the
@@ -56,6 +61,9 @@ change alone already gives each client its own rate-limit bucket.
 
 ### Changed
 
+- The `pre_rss_temple` role fails before it changes the host if `pre_rss_temple__server_domains`,
+  `pre_rss_temple__web_app_domains` or `pre_rss_temple__home_domains` is empty. Before, an empty list silently
+  left that site out of the infra `Caddyfile`.
 - `migrate` and `collectstatic` run as one-shot Compose services (`rss_temple_migrate` and
   `rss_temple_collectstatic`), instead of inside the `rss_temple` container's start-up command. `rss_temple` waits
   for both to finish successfully (`condition: service_completed_successfully`), and `rss_temple_dramatiq` and

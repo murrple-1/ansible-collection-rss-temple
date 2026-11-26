@@ -11,13 +11,16 @@ pre_rss_temple__opt_group: rss_temple
 # Remote directory path where the infra configuration is installed
 pre_rss_temple__service_path: '{{ pre_rss_temple__opt_path }}/rss_temple_infra/'
 
-# list of fully-qualified domains that should direct to the rss_temple server
+# List of fully-qualified domains that should direct to the rss_temple server (or a comma-separated string of them).
+# Must not be empty: the playbooks prompt for it
 pre_rss_temple__server_domains: []
 
-# list of fully-qualified domains that should direct to the rss_temple_web_app server
+# List of fully-qualified domains that should direct to the rss_temple_web_app server (or a comma-separated string of them).
+# Must not be empty: the playbooks prompt for it
 pre_rss_temple__web_app_domains: []
 
-# list of fully-qualified domains that should direct to the rss_temple_home server
+# List of fully-qualified domains that should direct to the rss_temple_home server (or a comma-separated string of them).
+# Must not be empty: the playbooks prompt for it
 pre_rss_temple__home_domains: []
 
 # Papertrail log destination (ie 'logsN.papertrailapp.com' and its port). If the host is empty, Papertrail logging is not set up

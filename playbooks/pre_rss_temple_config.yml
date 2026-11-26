@@ -7,6 +7,21 @@
       prompt: Email (for creating an ACME account with your CA)
       private: false
 
+    - name: pre_rss_temple__server_domains
+      prompt: Server (API) domains - comma-separated list (eg 'api.rsstemple.com')
+      default: api.rsstemple.com
+      private: false
+
+    - name: pre_rss_temple__web_app_domains
+      prompt: Web app domains - comma-separated list (eg 'app.rsstemple.com')
+      default: app.rsstemple.com
+      private: false
+
+    - name: pre_rss_temple__home_domains
+      prompt: Home page domains - comma-separated list (eg 'rsstemple.com')
+      default: rsstemple.com
+      private: false
+
   tasks:
     - ansible.builtin.include_role:
         name: murrple_1.rss_temple.pre_rss_temple

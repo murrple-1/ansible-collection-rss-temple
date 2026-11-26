@@ -1,0 +1,25 @@
+---
+# The domain variables can be lists (inventory, `--extra-vars` JSON) or comma-separated strings (the playbook
+# prompts). Normalize them to lists of non-empty, trimmed domains, and fail if any is empty.
+- name: Normalize domain lists
+  ansible.builtin.set_fact:
+    _pre_rss_temple__server_domains: >-
+      {{ ((pre_rss_temple__server_domains.split(',')) if pre_rss_temple__server_domains is string
+          else pre_rss_temple__server_domains) | map('trim') | reject('equalto', '') | list }}
+    _pre_rss_temple__web_app_domains: >-
+      {{ ((pre_rss_temple__web_app_domains.split(',')) if pre_rss_temple__web_app_domains is string
+          else pre_rss_temple__web_app_domains) | map('trim') | reject('equalto', '') | list }}
+    _pre_rss_temple__home_domains: >-
+      {{ ((pre_rss_temple__home_domains.split(',')) if pre_rss_temple__home_domains is string
+          else pre_rss_temple__home_domains) | map('trim') | reject('equalto', '') | list }}
+
+- name: Check that every domain list is set
+  ansible.builtin.assert:
+    that:
+      - _pre_rss_temple__server_domains | length > 0
+      - _pre_rss_temple__web_app_domains | length > 0
+      - _pre_rss_temple__home_domains | length > 0
+    fail_msg: >-
+      `pre_rss_temple__server_domains`, `pre_rss_temple__web_app_domains` and `pre_rss_temple__home_domains` must
+      each contain at least one domain (got {{ _pre_rss_temple__server_domains }},
+      {{ _pre_rss_temple__web_app_domains }} and {{ _pre_rss_temple__home_domains }})
