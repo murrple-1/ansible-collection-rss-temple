@@ -38,6 +38,8 @@ change alone already gives each client its own rate-limit bucket.
 
 ### Added
 
+- The README recommends hardening the server with the `devsec.hardening` roles, with an example playbook that keeps
+  `net.ipv4.ip_forward` on for Docker.
 - The `pre_rss_temple` and `pre_rss_temple_config` playbooks prompt for `pre_rss_temple__server_domains`,
   `pre_rss_temple__web_app_domains` and `pre_rss_temple__home_domains`, as comma-separated lists (defaults
   `api.rsstemple.com`, `app.rsstemple.com` and `rsstemple.com`). The prompt answer takes precedence over a value
