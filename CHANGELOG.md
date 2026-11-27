@@ -36,8 +36,20 @@ In the `rss_temple` service directory:
 `APP_NUM_PROXIES` needs a server release with `NUM_PROXIES` support; older servers ignore it. The `Caddyfile`
 change alone already gives each client its own rate-limit bucket.
 
+In the `rss_temple_web_app` service directory:
+
+- **`config.json`:** add `tosUrl` (such as `"https://rsstemple.com/tos"`). Without it, the support page has no
+  Terms of Service link. Optionally, add `lemmyInstanceSuggestions` and `mastodonInstanceSuggestions` as lists of
+  host names. Without them, the web app uses its built-in lists.
+
 ### Added
 
+- The web app's `config.json` has `tosUrl`, from `rss_temple_web_app__tos_url`, which the `rss_temple_web_app` and
+  `rss_temple_web_app_config` playbooks prompt for (default `https://rsstemple.com/tos`). Before, the key was
+  missing, so the support page had no Terms of Service link.
+- `rss_temple_web_app__app_lemmy_instance_suggestions` and `rss_temple_web_app__app_mastodon_instance_suggestions`,
+  written to `config.json` as `lemmyInstanceSuggestions` and `mastodonInstanceSuggestions`. They set the instances
+  suggested in the "Share to Lemmy" and "Share to Mastodon" dialogs. The defaults are the web app's built-in lists.
 - The README recommends hardening the server with the `devsec.hardening` roles, with an example playbook that keeps
   `net.ipv4.ip_forward` on for Docker.
 - The `pre_rss_temple` and `pre_rss_temple_config` playbooks prompt for `pre_rss_temple__server_domains`,
