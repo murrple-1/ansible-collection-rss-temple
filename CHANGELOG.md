@@ -44,6 +44,16 @@ In the `rss_temple_web_app` service directory:
 - **`config.json`:** add `tosUrl` (such as `"https://rsstemple.com/tos"`). Without it, the support page has no
   Terms of Service link. Optionally, add `lemmyInstanceSuggestions` and `mastodonInstanceSuggestions` as lists of
   host names. Without them, the web app uses its built-in lists.
+- **Docker volumes (web app images that run as the non-root `caddy` user):** the `caddy_data` and
+  `caddy_config` volumes were created when the container ran as `root`, so they stay owned by `root` and Caddy
+  can't write its state to them. Remove them so that Docker creates them again with the correct owner. They hold
+  only Caddy state; TLS is done by the infra Caddy. In the service directory, run `docker compose down`, then
+  `docker volume rm <project>_caddy_data <project>_caddy_config` (`docker volume ls` shows the names), then
+  `docker compose up -d`.
+- **Web app image:** use an image whose `/srv/` is owned by the `caddy` user (murrple-1/rss_temple_ui#183). With the first non-root images,
+  the container logs `sed: can't create temp file '/srv/index.htmlXXXXXX': Permission denied` at start-up, and
+  `custom_html/index.head.html` is not added to the page. Until a fixed image is available, set
+  `rss_temple_web_app__docker_version` to a tag from before the change to non-root.
 
 ### Added
 
