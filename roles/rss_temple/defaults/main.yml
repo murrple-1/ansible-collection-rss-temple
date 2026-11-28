@@ -34,8 +34,10 @@ rss_temple__app_debug: false
 # Enable django-silk request profiling. It records request/response bodies, so keep it off in production unless needed
 rss_temple__app_enable_silk: false
 
-# Comma-separated list of origins trusted for CSRF (eg 'https://app.rsstemple.com')
-rss_temple__app_csrf_trusted_origins: ''
+# Comma-separated list of origins trusted for CSRF (eg 'https://app.rsstemple.com'). It must include the web app's
+# origin: the web app is on a different origin from the API, so without it every logged-in write (POST, PUT, PATCH,
+# DELETE) fails with 403. If empty, the server only trusts 'http://localhost:4200', and the playbooks fail
+rss_temple__app_csrf_trusted_origins: https://app.rsstemple.com
 
 # Comma-separated list of hostnames the API is served at (eg 'api.rsstemple.com'). Requests with any other `Host`
 # header are rejected. This doesn't restrict which clients can use the API. If empty, the server allows any host
