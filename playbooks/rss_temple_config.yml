@@ -33,8 +33,8 @@
       private: true
 
     - name: rss_temple__app_csrf_trusted_origins
-      prompt: CSRF Trusted Origins - comma-separated list (eg 'https://google.com,https://api.rsstemple.com')
-      default: ''
+      prompt: CSRF Trusted Origins (must include the web app) - comma-separated list (eg 'https://app.rsstemple.com')
+      default: https://app.rsstemple.com
       private: false
 
     - name: rss_temple__app_cors_allowed_origins
@@ -189,6 +189,12 @@
         - ansible.builtin.fail:
             msg: '`rss_temple__app_superuser_email` is malformed'
           when: rss_temple__app_superuser_email and rss_temple__app_superuser_email is not match('^[\w\-\.\+]+@([\w\-]+\.)+[\w\-]{2,}$')
+
+        - ansible.builtin.fail:
+            msg: >-
+              `rss_temple__app_csrf_trusted_origins` must include the web app's origin (such as
+              'https://app.rsstemple.com'). If it is empty, every logged-in write from the web app fails with 403
+          when: rss_temple__app_csrf_trusted_origins | trim | length == 0
 
     - ansible.builtin.include_role:
         name: murrple_1.rss_temple.rss_temple

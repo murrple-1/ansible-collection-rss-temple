@@ -26,6 +26,9 @@ In the `rss_temple` service directory:
 - **`Caddyfile`:** add the global `servers { trusted_proxies static private_ranges }` block at the top.
 - **`.env`:** add `APP_NUM_PROXIES=2`, and `APP_ALLOWED_HOSTS` set to the API's domains (such as
   `api.rsstemple.com`).
+- **`.env`:** if `APP_CSRF_TRUSTED_ORIGINS=` is empty, set it to the web app's origin (such as
+  `APP_CSRF_TRUSTED_ORIGINS='https://app.rsstemple.com'`), then restart the containers (`docker compose up -d`).
+  While it is empty, every logged-in write from the web app fails with 403.
 - **`docker-compose.yml` (required before deploying a newer server image):** take the new `rss_temple_migrate` and
   `rss_temple_collectstatic` services, the `depends_on` that makes the app services wait for them, and the
   simplified `command`s of `rss_temple` and `rss_temple_schedulerdaemon`. Remove the `django_static` volume from
@@ -36,8 +39,20 @@ In the `rss_temple` service directory:
 `APP_NUM_PROXIES` needs a server release with `NUM_PROXIES` support; older servers ignore it. The `Caddyfile`
 change alone already gives each client its own rate-limit bucket.
 
+In the `rss_temple_web_app` service directory:
+
+- **`config.json`:** add `tosUrl` (such as `"https://rsstemple.com/tos"`). Without it, the support page has no
+  Terms of Service link. Optionally, add `lemmyInstanceSuggestions` and `mastodonInstanceSuggestions` as lists of
+  host names. Without them, the web app uses its built-in lists.
+
 ### Added
 
+- The web app's `config.json` has `tosUrl`, from `rss_temple_web_app__tos_url`, which the `rss_temple_web_app` and
+  `rss_temple_web_app_config` playbooks prompt for (default `https://rsstemple.com/tos`). Before, the key was
+  missing, so the support page had no Terms of Service link.
+- `rss_temple_web_app__app_lemmy_instance_suggestions` and `rss_temple_web_app__app_mastodon_instance_suggestions`,
+  written to `config.json` as `lemmyInstanceSuggestions` and `mastodonInstanceSuggestions`. They set the instances
+  suggested in the "Share to Lemmy" and "Share to Mastodon" dialogs. The defaults are the web app's built-in lists.
 - The README recommends hardening the server with the `devsec.hardening` roles, with an example playbook that keeps
   `net.ipv4.ip_forward` on for Docker.
 - The `pre_rss_temple` and `pre_rss_temple_config` playbooks prompt for `pre_rss_temple__server_domains`,
@@ -77,6 +92,11 @@ change alone already gives each client its own rate-limit bucket.
 
 ### Fixed
 
+- `rss_temple__app_csrf_trusted_origins` defaulted to empty, in the role and in the `rss_temple` and
+  `rss_temple_config` prompts. The server then trusts only `http://localhost:4200`, so it rejected every logged-in
+  POST, PUT, PATCH and DELETE from the web app with 403 (`CSRF Failed: Origin checking failed`). The default is now
+  the web app's origin, `https://app.rsstemple.com`, and both playbooks fail before they change the host if the
+  value is empty.
 - The server's rate limits were shared by every client. The `rss_temple` Caddy didn't trust the infra Caddy, so it
   replaced `X-Forwarded-For` with the infra Caddy's IP, and the server saw every request as coming from it. One
   client could use up the login and anonymous limits for everyone. The `rss_temple` Caddy now trusts private

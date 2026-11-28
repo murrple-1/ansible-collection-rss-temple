@@ -109,9 +109,10 @@ CircleCI (`:latest` from `master`, `:<tag>` from git tags). The `*__docker_versi
   this collection should agree with.
 - **Release upgrade steps** — `../rss_temple/CHANGELOG.md` "Upgrading from X" sections, often mirrored here.
 - **Postgres backups and major upgrades** — `../rss_temple/DB.md`.
-- **Web app `config.json` keys** — the zod schema in
-  `../rss_temple_ui/rss-temple-web-app/src/app/services/config.service.ts` decides what
-  `roles/rss_temple_web_app/templates/config.json.j2` must contain. The dev example is
+- **Web app `config.json` keys** — `config.service.ts` has no per-key schema: it parses the file as
+  `z.record(z.string(), z.unknown())`, and each component reads its own keys. To find the keys that
+  `roles/rss_temple_web_app/templates/config.json.j2` must contain, grep
+  `../rss_temple_ui/rss-temple-web-app/src/app/` for `configService.get` and `getMany`, or look at the dev example
   `../rss_temple_ui/rss-temple-web-app/src/assets/config.json`.
 - **Home env vars** — `../rss_temple_ui/rss-temple-home/` (`.eleventy.js`, `Dockerfile`).
 - **Frontend URLs in backend settings** (email verify, password reset, social) must match routes in
